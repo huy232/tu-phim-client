@@ -1,0 +1,6 @@
+export * from "./home"
+export * from "./danh-sach"
+export * from "./quoc-gia"
+export * from "./top-hoat-hinh"
+export * from "./thong-tin"
+export * from "./xem-phim"

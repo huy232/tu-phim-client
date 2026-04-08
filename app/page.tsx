@@ -1,65 +1,266 @@
-import Image from "next/image";
+export const revalidate = 3600
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+import ShowcaseWrapper from "@/components/CommentShowcase/CommentShowcaseWrapper"
+import CountryHighlight from "@/components/CountryHighlight"
+import FilmSection from "@/components/FilmCarousel/FilmSection"
+import FilmListWrapper from "@/components/FilmList/FilmListDynamic"
+import {
+	AddictionSeriesHeading,
+	AnimatedSectionHeader,
+	CinemaMainHeading,
+	DubbedHeading,
+	MainAnimateHeadingSection,
+	NewestSeriesHeading,
+	NewestSingleHeading,
+	NewestTVShowsHeading,
+	TopDubbedHeading,
+	TopNewestHeading,
+	TopPeakSingleHeading,
+} from "@/components/Heading"
+import Banner from "@/components/Home/Banner"
+import SideAndHighlight from "@/components/SideAndHighlight"
+import { Spacer } from "@/components/Spacer"
+import TopFilm from "@/components/TopFilm"
+import { chinaVideos, japanVideos } from "@/constants"
+import {
+	getFilmByCountry,
+	getFilmByList,
+	getHomeData,
+	getTopAnime,
+} from "@/services"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+	title: {
+		default: "Tu Phim - Xem Phim Online Chất Lượng Cao",
+		template: "%s | Tu Phim",
+	},
+	description:
+		"Tu Phim - Nền tảng xem phim trực tuyến cập nhật nhanh nhất các bộ phim bom tấn, hành động, và anime vietsub chất lượng Full HD.",
+	keywords: [
+		"xem phim online",
+		"tu phim",
+		"phim moi",
+		"phim hay 2024",
+		"phim hay 2025",
+		"phim hay 2026",
+	],
+	metadataBase: new URL("https://tuphim.online"),
+
+	openGraph: {
+		title: "Tu Phim - Thế Giới Điện Ảnh Trong Tầm Tay",
+		description:
+			"Trải nghiệm xem phim mượt mà, không quảng cáo gây khó chịu tại Tu Phim.",
+		url: "https://tuphim.online",
+		siteName: "Tu Phim",
+		locale: "vi_VN",
+		type: "website",
+	},
+
+	twitter: {
+		card: "summary_large_image",
+		title: "Tu Phim - Xem Phim Online Miễn Phí",
+		description: "Cùng Tu Phim khám phá những bộ phim hot nhất hiện nay.",
+	},
+
+	robots: {
+		index: true,
+		follow: true,
+	},
+}
+
+export default async function Home() {
+	const [
+		homeResponse,
+		koreaFilmResponse,
+		chineseFilmResponse,
+		usFilmResponse,
+		getSeriesByListResponse,
+		getNewestSeriesByListResponse,
+		getSingleByListResponse,
+		getNewestSingleByListResponse,
+		getTopTVShowsByListResponse,
+		getNewestTVShowsByListResponse,
+		getTopAnimateByListResponse,
+		getNewestAnimeResponse,
+		getNewestChineseAnimateResponse,
+		getTopDubbedResponse,
+		getNewestDubbedResponse,
+		getNewestMovieResponse,
+		getNewestTrailerResponse,
+	] = await Promise.all([
+		getHomeData(),
+		getFilmByCountry("han-quoc", { limit: 40, loc_trailer: 1 }),
+		getFilmByCountry("trung-quoc", { limit: 40, loc_trailer: 1 }),
+		getFilmByCountry("au-my", { limit: 40, page: 1, loc_trailer: 1 }),
+		getFilmByList("phim-bo", { limit: 10, page: 1, sort_field: "view" }),
+		getFilmByList("phim-bo", { limit: 48 }),
+		getFilmByList("phim-le", { limit: 10, sort_field: "view" }),
+		getFilmByList("phim-le", { limit: 72 }),
+		getFilmByList("tv-shows", { limit: 10, sort_field: "view" }),
+		getFilmByList("tv-shows", { limit: 48 }),
+		getTopAnime(),
+		getFilmByList("hoat-hinh", { limit: 48, country: "nhat-ban" }),
+		getFilmByList("hoat-hinh", { limit: 48, country: "trung-quoc" }),
+		getFilmByList("phim-long-tieng", { limit: 48, sort_field: "view" }),
+		getFilmByList("phim-long-tieng", { limit: 48 }),
+		getFilmByList("phim-chieu-rap", { limit: 24 }),
+		getFilmByList("phim-sap-chieu", { limit: 24 }),
+	])
+	// ------------------------------------
+	const items = homeResponse?.data || []
+	const koreanFilm = koreaFilmResponse?.data || []
+	const chineseFilm = chineseFilmResponse?.data || []
+	const usFilm = usFilmResponse?.data || []
+	const getNewestSeriesByList = getNewestSeriesByListResponse?.data || []
+	const topSeriesFilm = getSeriesByListResponse?.data || []
+	const getNewestSingleByList = getNewestSingleByListResponse?.data || []
+	const topSingleFilm = getSingleByListResponse?.data || []
+	const topTVShowsByList = getTopTVShowsByListResponse?.data || []
+	const newestTVShowsByList = getNewestTVShowsByListResponse?.data || []
+	const topAnimate = getTopAnimateByListResponse?.data || []
+	const newestAnime = getNewestAnimeResponse?.data || []
+	const newestChineseAnimate = getNewestChineseAnimateResponse?.data || []
+	const topDubbed = getTopDubbedResponse?.data || []
+	const newestDubbed = getNewestDubbedResponse?.data || []
+	const newestMovie = getNewestMovieResponse?.data || []
+	const newestTrailer = getNewestTrailerResponse?.data || []
+
+	return (
+		<main className="min-h-svh w-full pt-16">
+			<Banner films={items} />
+			<div className="max-w-420 mx-auto px-4 md:px-10 space-y-8">
+				<CountryHighlight
+					koreanFilm={koreanFilm}
+					chineseFilm={chineseFilm}
+					usFilm={usFilm}
+				/>
+				<ShowcaseWrapper />
+				<NewestSeriesHeading />
+				<FilmListWrapper
+					items={getNewestSeriesByList.items}
+					id="home-newest-series"
+					viewMoreHref="/danh-sach/phim-bo"
+				/>
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<AddictionSeriesHeading />
+				<TopFilm items={topSeriesFilm.items} />
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<NewestSingleHeading />
+				<FilmListWrapper
+					items={getNewestSingleByList.items}
+					id="home-newest-single"
+					viewMoreHref="/danh-sach/phim-le"
+				/>
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<TopPeakSingleHeading />
+				<TopFilm items={topSingleFilm.items} />
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<NewestTVShowsHeading />
+				<FilmListWrapper
+					items={topTVShowsByList.items}
+					id="home-newest-tv-shows"
+					viewMoreHref="/danh-sach/tv-shows"
+				/>
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<div className="mx-auto my-4 text-white gap-4">
+					<FilmSection
+						title={"Những Show được người xem yêu thích nhất"}
+						data={newestTVShowsByList}
+						slug={"/the-loai/tv-shows"}
+						gradientFrom={"from-cyan-600"}
+						position={"right"}
+					/>
+				</div>
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<MainAnimateHeadingSection />
+				<SideAndHighlight items={topAnimate} />
+				<AnimatedSectionHeader
+					titleTop="Khám phá"
+					titleMain="Hoạt hình Trung Hoa"
+					subtitle="Đa sắc • Huyền ảo • Tu tiên • Nghịch thiên"
+					align="left"
+					videos={chinaVideos}
+					gradient="china"
+				/>
+				<FilmListWrapper
+					items={newestChineseAnimate.items}
+					id="newest-chinese-animate"
+					viewMoreHref="/danh-sach/hoat-hinh?country=trung-quoc"
+				/>
+				<div className="flex items-center justify-center my-2">
+					<div className="h-px w-20 bg-linear-to-r from-transparent via-white/20 to-transparent" />
+					<span className="mx-4 text-xs text-white/30 tracking-widest uppercase">
+						HOẶC
+					</span>
+					<div className="h-px w-20 bg-linear-to-r from-transparent via-white/20 to-transparent" />
+				</div>
+				<AnimatedSectionHeader
+					titleTop="Thế giới"
+					titleMain="Anime Nhật Bản"
+					subtitle="Cảm xúc • Phiêu lưu • Nghệ thuật • Học đường"
+					align="right"
+					videos={japanVideos}
+					gradient="japan"
+				/>
+				<FilmListWrapper
+					items={newestAnime.items}
+					id="newest-anime-animate"
+					viewMoreHref="/danh-sach/hoat-hinh?country=nhat-ban"
+				/>
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<DubbedHeading />
+				<TopDubbedHeading />
+				<FilmListWrapper
+					items={topDubbed.items}
+					id="top-dubbed"
+					dubbed={true}
+				/>
+				<TopNewestHeading />
+				<FilmListWrapper
+					items={newestDubbed.items}
+					id="newest-dubbed"
+					dubbed={true}
+					viewMoreHref="/danh-sach/phim-long-tieng"
+				/>
+
+				{/* ----------------- */}
+				<Spacer y={10} />
+				{/* ----------------- */}
+				<CinemaMainHeading />
+				<div className="mx-auto my-4 text-white gap-4">
+					<FilmSection
+						title={"Tận hưởng loạt phim chiếu rạp mới nhất"}
+						data={newestMovie}
+						slug={"/danh-sach/phim-chieu-rap"}
+						gradientFrom={"from-green-600"}
+						position={"left"}
+					/>
+				</div>
+				<div className="mx-auto mt-4 mb-20 text-white gap-4">
+					<FilmSection
+						title={"Trailer các phim sắp ra, liệu có thành bom tấn?"}
+						data={newestTrailer}
+						slug={"/danh-sach/phim-sap-chieu"}
+						gradientFrom={"from-red-600"}
+						position={"right"}
+					/>
+				</div>
+			</div>
+		</main>
+	)
 }

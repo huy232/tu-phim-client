@@ -1,0 +1,25 @@
+import { createClient } from "@/supabase/server"
+import { NextResponse } from "next/server"
+
+export async function GET(request: Request) {
+	const { searchParams } = new URL(request.url)
+	const userId = searchParams.get("userId")
+
+	if (!userId) {
+		return NextResponse.json({ error: "Thiếu userId" }, { status: 400 })
+	}
+
+	const supabase = await createClient()
+
+	const { data, error } = await supabase
+		.from("profiles")
+		.select("*")
+		.eq("id", userId)
+		.single()
+
+	if (error) {
+		return NextResponse.json({ error: error.message }, { status: 500 })
+	}
+
+	return NextResponse.json(data)
+}
