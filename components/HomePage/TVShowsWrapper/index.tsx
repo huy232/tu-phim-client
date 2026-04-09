@@ -26,7 +26,7 @@ export async function TVShowFullWrapper() {
 			<div className="mx-auto my-4 text-white gap-4">
 				<FilmSection
 					title="Những Show được người xem yêu thích nhất"
-					data={newestRes}
+					data={newestRes.data}
 					slug="/the-loai/tv-shows"
 					gradientFrom="from-cyan-600"
 					position="right"

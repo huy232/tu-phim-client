@@ -14,6 +14,7 @@ import {
 } from "@/components/HomePage/SingleFilm"
 import { TopSeriesWrapper } from "@/components/HomePage/TopListWrapper"
 import { TVShowFullWrapper } from "@/components/HomePage/TVShowsWrapper"
+import { Spacer } from "@/components/Spacer"
 import { fetchHomeDataFromBackend } from "@/services"
 import { Metadata } from "next"
 import { Suspense } from "react"
@@ -78,35 +79,49 @@ export default async function Home() {
 					<NewestSeriesWrapper />
 				</Suspense>
 
+				<Spacer y={10} />
+
 				{/* Top 10 phim bộ */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TopSeriesWrapper />
 				</Suspense>
+
+				<Spacer y={10} />
 
 				{/* Phim lẻ mới */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<NewestSingleWrapper />
 				</Suspense>
 
+				<Spacer y={10} />
+
 				{/* Top 10 phim lẻ*/}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TopSingleWrapper />
 				</Suspense>
+
+				<Spacer y={10} />
 
 				{/* TV Shows */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TVShowFullWrapper />
 				</Suspense>
 
+				<Spacer y={10} />
+
 				{/* Anime phức hợp */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<AnimeWrapper />
 				</Suspense>
 
+				<Spacer y={10} />
+
 				{/* Phim lồng tiếng */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<DubbedWrapper />
 				</Suspense>
+
+				<Spacer y={10} />
 
 				{/* Điện ảnh và Trailer */}
 				<Suspense fallback={<SectionSkeleton />}>

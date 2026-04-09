@@ -23,7 +23,7 @@ export async function AnimeWrapper() {
 		fetchFilmListFromBackend("hoat-hinh", japan),
 	])
 
-	const topAnimate = topAnimateRes?.data?.items || []
+	const topAnimate = topAnimateRes?.data || []
 	const newestChineseAnimate = newestChineseRes?.data || { items: [] }
 	const newestAnime = newestJapanRes?.data || { items: [] }
 
