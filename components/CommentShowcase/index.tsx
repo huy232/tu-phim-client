@@ -52,7 +52,7 @@ const CommentShowcaseClient = ({
 
 	return (
 		<section className="w-full py-8 overflow-hidden bg-linear-to-b from-transparent via-purple-500/5 to-transparent">
-			<div className="container mx-auto px-4 mb-6">
+			<div className="mx-auto px-4 mb-6">
 				<div className="flex items-center gap-3">
 					<div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse shadow-[0_0_10px_purple]" />
 					<h2 className="text-sm font-black text-white uppercase tracking-[0.3em]">
