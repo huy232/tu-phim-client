@@ -1,11 +1,12 @@
 "use client"
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useWatchHistory } from "@/hooks/useWatchHistory"
 import { ResumeToast } from "./ResumeToast"
 import { useArtplayer } from "@/hooks/useArtPlayer"
 import Artplayer from "artplayer"
+import { toast } from "sonner"
 
 interface WatchSectionProps {
 	episode: Episode
@@ -76,6 +77,21 @@ const WatchSection = ({
 		onCreated: handleArtCreated,
 		onDestroy: handleArtDestroy,
 	})
+
+	useEffect(() => {
+		const onSeekSignal = (e: Event) => {
+			const customEvent = e as CustomEvent<{ seconds: number }>
+			const seconds = customEvent.detail?.seconds
+
+			if (artInstance.current && seconds) {
+				artInstance.current.currentTime += seconds
+				toast.success(`Đã nhảy qua ${seconds}s`)
+			}
+		}
+
+		window.addEventListener("TU_PHIM_QUICK_SEEK", onSeekSignal)
+		return () => window.removeEventListener("TU_PHIM_QUICK_SEEK", onSeekSignal)
+	}, [])
 
 	return (
 		<div className="relative w-full h-full group bg-black">

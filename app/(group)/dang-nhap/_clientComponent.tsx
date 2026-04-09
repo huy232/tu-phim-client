@@ -75,10 +75,12 @@ const Login = () => {
 	}, [])
 
 	const handleOAuthLogin = async (provider: "google" | "discord") => {
+		const siteUrl = process.env.NEXT_PUBLIC_URL || window.location.origin
+
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider,
 			options: {
-				redirectTo: `${window.location.origin}/auth/callback`,
+				redirectTo: `${siteUrl}/auth/callback`,
 				queryParams: {
 					access_type: "offline",
 					prompt: "select_account",

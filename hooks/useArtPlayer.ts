@@ -78,6 +78,7 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		async (userId: string) => {
 			try {
 				const res = await handleGainExp(10)
+
 				if (res?.success) {
 					if (fetchProfile) {
 						await fetchProfile(userId)
@@ -184,7 +185,7 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 					watchExpTimeRef.current += 1
 				}
 
-				if (watchExpTimeRef.current >= 300) {
+				if (watchExpTimeRef.current >= 10) {
 					watchExpTimeRef.current = 0
 					syncExpAndProfile(user.id)
 				}
@@ -254,6 +255,7 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		history?.episode_slug,
 		onCreated,
 		onDestroy,
+		syncExpAndProfile,
 	])
 
 	return {}

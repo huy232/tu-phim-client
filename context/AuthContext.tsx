@@ -238,8 +238,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	// LOGOUT
 	// =========================
 	const logout = async () => {
-		console.log("Đã chạy vào logout")
-
 		await supabase.auth.signOut()
 		setUser(null)
 		setProfile(null)

@@ -1,21 +1,24 @@
 import { Dispatch, SetStateAction, useState } from "react"
-import { ActionButton } from "./ActionButton"
 import {
 	Check,
-	ChevronLeft,
-	ChevronRight,
+	FastForward,
 	Heart,
 	Lightbulb,
 	Maximize2,
 	PlayCircle,
 	Share2,
-	Timer,
 } from "lucide-react"
 import { motion } from "framer-motion"
 import clsx from "clsx"
-import Link from "next/link"
 import { FavoriteWrapper } from "../FavoriteWrapper"
 import { toast } from "sonner"
+import EpisodeNav from "./EpisodeNav"
+
+import dynamic from "next/dynamic"
+
+const CompactToggle = dynamic(() => import("./CompactToggle"), {
+	ssr: false,
+})
 
 const containerVariants = {
 	hidden: { opacity: 0, y: 10 },
@@ -42,6 +45,8 @@ interface ExtraFilmSectionProps {
 	autoNextOffset: number
 	setAutoNextOffset: Dispatch<SetStateAction<number>>
 	film: FilmInfo
+	skipIntroOffset: number
+	setSkipIntroOffset: Dispatch<SetStateAction<number>>
 }
 
 const ExtraFilmSection = ({
@@ -57,6 +62,8 @@ const ExtraFilmSection = ({
 	autoNextOffset,
 	setAutoNextOffset,
 	film,
+	skipIntroOffset,
+	setSkipIntroOffset,
 }: ExtraFilmSectionProps) => {
 	const [isShared, setIsShared] = useState(false)
 
@@ -84,136 +91,99 @@ const ExtraFilmSection = ({
 		return `?${params.toString()}`
 	}
 
+	const handleManualSkip = () => {
+		const event = new CustomEvent("TU_PHIM_QUICK_SEEK", {
+			detail: { seconds: skipIntroOffset },
+		})
+		window.dispatchEvent(event)
+	}
+
 	return (
 		<motion.div
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
-			className={clsx(
-				"w-full px-4 py-3 bg-[#0a0a0a] border-t border-white/10 border flex items-center justify-between gap-4 z-30 rounded-b-2xl",
-			)}
+			className="w-full px-3 py-2 bg-[#0a0a0a] border border-white/10 flex items-center justify-between gap-2 z-30 rounded-b-2xl"
 		>
-			{/* Nhóm điều hướng tập */}
-			<div className="flex items-center gap-3">
-				{/* Nút Tập trước */}
-				{prevEpisodeSlug ? (
-					<Link href={createUrl(prevEpisodeSlug)} scroll={false}>
-						<ActionButton
-							icon={ChevronLeft}
-							label="Tập trước"
-							className="text-[10px]"
-						/>
-					</Link>
-				) : (
-					<div className="opacity-40 cursor-not-allowed pointer-events-none">
-						<ActionButton
-							icon={ChevronLeft}
-							label="Tập trước"
-							className="text-[10px]"
-						/>
-					</div>
-				)}
+			<EpisodeNav
+				prevSlug={prevEpisodeSlug}
+				nextSlug={nextEpisodeSlug}
+				createUrl={createUrl}
+			/>
 
-				{/* Nút Tập tiếp */}
-				{nextEpisodeSlug ? (
-					<Link href={createUrl(nextEpisodeSlug)} scroll={false}>
-						<ActionButton
-							icon={ChevronRight}
-							label="Tập tiếp"
-							className="text-[10px]"
-						/>
-					</Link>
-				) : (
-					<div className="opacity-40 cursor-not-allowed pointer-events-none">
-						<ActionButton
-							icon={ChevronRight}
-							label="Tập tiếp"
-							className="text-[10px]"
-						/>
-					</div>
-				)}
+			<div className="flex items-center gap-2 px-3 border-x border-white/10">
+				<CompactToggle
+					active={true}
+					onClick={handleManualSkip}
+					icon={FastForward}
+					label="Skip"
+					activeClass="bg-blue-500/20 border-blue-500/50 text-blue-400"
+					offset={skipIntroOffset}
+					setOffset={setSkipIntroOffset}
+					colorCode="text-blue-400"
+				/>
+				<CompactToggle
+					active={autoNext}
+					onClick={() => nextEpisodeSlug && setAutoNext(!autoNext)}
+					icon={PlayCircle}
+					label="Auto"
+					activeClass="bg-purple-500/20 border-purple-500 text-purple-400"
+					offset={autoNextOffset}
+					setOffset={setAutoNextOffset}
+					colorCode="text-purple-400"
+				/>
 			</div>
 
-			<div className="flex items-center gap-2 ml-2 pl-4 border-l border-white/10">
-				<div
-					onClick={() => nextEpisodeSlug && setAutoNext(!autoNext)}
+			<div className="flex items-center gap-1.5">
+				<FavoriteWrapper film={film}>
+					{({ isFavorited, handleToggle }) => (
+						<button
+							onClick={handleToggle}
+							className={clsx(
+								"p-2 rounded-lg transition-colors",
+								isFavorited
+									? "text-red-500 bg-red-500/10"
+									: "text-gray-400 hover:text-white",
+							)}
+						>
+							<Heart size={16} fill={isFavorited ? "currentColor" : "none"} />
+						</button>
+					)}
+				</FavoriteWrapper>
+
+				<button
+					onClick={handleShare}
 					className={clsx(
-						"flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer transition-all border",
-						!nextEpisodeSlug ? "opacity-30 cursor-not-allowed" : "",
-						autoNext
-							? "bg-purple-500/20 border-purple-500 text-purple-400"
-							: "bg-white/5 border-white/10 text-gray-500 hover:text-white",
+						"p-2 rounded-lg transition-all duration-300",
+						isShared
+							? "text-green-400 bg-green-500/10"
+							: "text-gray-400 hover:text-white",
 					)}
 				>
-					<PlayCircle
-						size={14}
-						className={clsx(autoNext && "animate-spin-slow")}
-					/>
-					<span className="text-[10px] font-bold uppercase tracking-wider">
-						Tự chuyển tập
+					{isShared ? <Check size={16} /> : <Share2 size={16} />}
+				</button>
+
+				<div className="h-4 w-px bg-white/10 mx-1" />
+
+				<button
+					onClick={() => setIsDimmed((prev) => !prev)}
+					className={clsx(
+						"p-2 rounded-lg",
+						isDimmed ? "text-yellow-400 bg-yellow-400/10" : "text-gray-400",
+					)}
+				>
+					<Lightbulb size={16} />
+				</button>
+
+				<button
+					onClick={() => handleTheaterMode(!isTheaterMode)}
+					className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-all"
+				>
+					<Maximize2 size={14} />
+					<span className="text-[10px] font-bold uppercase hidden sm:block">
+						{isTheaterMode ? "Mặc định" : "Mở rộng"}
 					</span>
-				</div>
-
-				{/* Input chỉnh giây - Chỉ hiện khi bật Auto Next */}
-				{autoNext && (
-					<div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg px-2 py-1">
-						<Timer size={12} className="text-gray-500" />
-						<input
-							type="number"
-							value={autoNextOffset}
-							onChange={(e) => setAutoNextOffset(Number(e.target.value))}
-							className="bg-transparent w-8 text-[10px] text-center outline-none text-purple-400 font-bold"
-						/>
-						<span className="text-[10px] text-gray-600 font-bold">S</span>
-					</div>
-				)}
-			</div>
-
-			{/* Nhóm tương tác chính */}
-			<div className="flex items-center gap-3">
-				<div className="flex items-center gap-2 pr-2 border-r border-white/10">
-					<FavoriteWrapper film={film}>
-						{({ isFavorited, handleToggle, loading }) => (
-							<ActionButton
-								icon={Heart}
-								label={isFavorited ? "Đã thích" : "Yêu thích"}
-								onClick={handleToggle}
-								loading={loading}
-								variant={isFavorited ? "secondary" : "ghost"}
-								className="text-[10px]"
-							/>
-						)}
-					</FavoriteWrapper>
-					<ActionButton
-						icon={isShared ? Check : Share2}
-						label={isShared ? "Đã chép" : "Chia sẻ"}
-						variant="ghost"
-						className={clsx(
-							"text-[10px] transition-colors duration-300",
-							isShared && "text-green-400 border-green-500/30 bg-green-500/10",
-						)}
-						onClick={handleShare}
-					/>
-				</div>
-
-				<div className="flex items-center gap-2 pl-2">
-					<ActionButton
-						icon={Lightbulb}
-						label={isDimmed ? "Bật đèn" : "Tắt đèn"}
-						onClick={() => setIsDimmed(!isDimmed)}
-						className={clsx(
-							isDimmed ? "text-yellow-400" : "text-white",
-							"text-[10px]",
-						)}
-					/>
-					<ActionButton
-						icon={Maximize2}
-						label={isTheaterMode ? "Mặc định" : "Mở rộng"}
-						variant="primary"
-						onClick={() => handleTheaterMode(!isTheaterMode)}
-						className="text-[10px]"
-					/>
-				</div>
+				</button>
 			</div>
 		</motion.div>
 	)
