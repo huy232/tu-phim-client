@@ -45,7 +45,7 @@ export default function FilmList({
 	}
 
 	return (
-		<div className="w-full flex flex-col gap-4 my-4">
+		<div className="w-full flex flex-col gap-3 my-4">
 			<div className="text-white flex items-center gap-4 w-full min-w-0">
 				<button className={clsx(prevClass, btnStyles)}>
 					<BackNavigateIcon size={20} />
@@ -79,7 +79,7 @@ export default function FilmList({
 			</div>
 
 			{viewMoreHref && (
-				<div className="flex justify-end px-2 md:px-14 -mt-2">
+				<div className="flex justify-end px-2 md:px-14">
 					<Link
 						href={viewMoreHref}
 						className="group relative flex items-center gap-2 px-4 py-1.5 overflow-hidden rounded-full 
