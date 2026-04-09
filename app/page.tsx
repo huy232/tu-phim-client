@@ -8,6 +8,12 @@ import { CountryHighlightWrapper } from "@/components/HomePage/CountryHighlightW
 import { DubbedWrapper } from "@/components/HomePage/DubbedWrapper"
 import { NewestSeriesWrapper } from "@/components/HomePage/NewestSeriesWrapper"
 import SectionSkeleton from "@/components/HomePage/SectionSkeleton"
+import {
+	NewestSingleWrapper,
+	TopSingleWrapper,
+} from "@/components/HomePage/SingleFilm"
+import { TopSeriesWrapper } from "@/components/HomePage/TopListWrapper"
+import { TVShowFullWrapper } from "@/components/HomePage/TVShowsWrapper"
 import { fetchHomeDataFromBackend } from "@/services"
 import { Metadata } from "next"
 import { Suspense } from "react"
@@ -65,12 +71,31 @@ export default async function Home() {
 					<CountryHighlightWrapper />
 				</Suspense>
 
-				{/* Showcase không cần async thì để nguyên */}
 				<ShowcaseWrapper />
 
 				{/* Phim bộ mới */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<NewestSeriesWrapper />
+				</Suspense>
+
+				{/* Top 10 phim bộ */}
+				<Suspense fallback={<SectionSkeleton />}>
+					<TopSeriesWrapper />
+				</Suspense>
+
+				{/* Phim lẻ mới */}
+				<Suspense fallback={<SectionSkeleton />}>
+					<NewestSingleWrapper />
+				</Suspense>
+
+				{/* Top 10 phim lẻ*/}
+				<Suspense fallback={<SectionSkeleton />}>
+					<TopSingleWrapper />
+				</Suspense>
+
+				{/* TV Shows */}
+				<Suspense fallback={<SectionSkeleton />}>
+					<TVShowFullWrapper />
 				</Suspense>
 
 				{/* Anime phức hợp */}
