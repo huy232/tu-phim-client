@@ -5,6 +5,7 @@ import {
 	useRef,
 	MutableRefObject,
 	RefObject,
+	useCallback,
 } from "react"
 import Artplayer from "artplayer"
 import Hls from "hls.js"
@@ -16,6 +17,7 @@ import { handleSaveProgress } from "@/services/tien-trinh"
 import artplayerPluginAmbilight from "artplayer-plugin-ambilight"
 import artplayerPluginHlsControl from "artplayer-plugin-hls-control"
 import { handleGainExp } from "@/services/thang-cap"
+import { useAuth } from "./useAuth"
 
 interface UseArtplayerProps {
 	artRef: RefObject<HTMLDivElement | null>
@@ -69,6 +71,24 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 
 	const watchExpTimeRef = useRef(0)
 	const lastTickTimeRef = useRef(0)
+
+	const { fetchProfile } = useAuth()
+
+	const syncExpAndProfile = useCallback(
+		async (userId: string) => {
+			try {
+				const res = await handleGainExp(10)
+				if (res?.success) {
+					if (fetchProfile) {
+						await fetchProfile(userId)
+					}
+				}
+			} catch (err) {
+				console.error("Lỗi gì đó, chưa thể cộng EXP:", err)
+			}
+		},
+		[fetchProfile],
+	)
 
 	useEffect(() => {
 		callbacks.current = { onEnded, handleResume, film, user, episode }
@@ -158,17 +178,15 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 			}
 			// Track level
 			if (playing && user?.id) {
-				// Tính toán chênh lệch thời gian thực tế giữa các lần update
-				const floorTime = Math.floor(currentTime)
+				const floorTime = Math.floor(art.currentTime)
 				if (floorTime !== lastTickTimeRef.current) {
 					lastTickTimeRef.current = floorTime
 					watchExpTimeRef.current += 1
 				}
 
-				// Đủ 300 giây thì gọi service cộng EXP
 				if (watchExpTimeRef.current >= 300) {
-					handleGainExp(10) // Cộng 10 EXP
-					watchExpTimeRef.current = 0 // Reset bộ đếm
+					watchExpTimeRef.current = 0
+					syncExpAndProfile(user.id)
 				}
 			}
 
