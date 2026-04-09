@@ -8,6 +8,7 @@ import { CountryHighlightWrapper } from "@/components/HomePage/CountryHighlightW
 import { DubbedWrapper } from "@/components/HomePage/DubbedWrapper"
 import { NewestSeriesWrapper } from "@/components/HomePage/NewestSeriesWrapper"
 import SectionSkeleton from "@/components/HomePage/SectionSkeleton"
+import { FilmCarouselSkeleton } from "@/components/HomePage/SectionSkeleton/FilmCarouselSkeleton"
 import {
 	NewestSingleWrapper,
 	TopSingleWrapper,
@@ -34,13 +35,13 @@ export const metadata: Metadata = {
 		"phim hay 2025",
 		"phim hay 2026",
 	],
-	metadataBase: new URL("https://tuphim.online"),
+	metadataBase: new URL("https://tuphim.site"),
 
 	openGraph: {
 		title: "Tu Phim - Thế Giới Điện Ảnh Trong Tầm Tay",
 		description:
 			"Trải nghiệm xem phim mượt mà, không quảng cáo gây khó chịu tại Tu Phim.",
-		url: "https://tuphim.online",
+		url: "https://tuphim.site",
 		siteName: "Tu Phim",
 		locale: "vi_VN",
 		type: "website",
@@ -67,63 +68,54 @@ export default async function Home() {
 			<Banner films={items} />
 
 			<div className="max-w-420 mx-auto px-4 md:px-10 space-y-8">
-				{/* Khối quốc gia */}
-				<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<FilmCarouselSkeleton />}>
 					<CountryHighlightWrapper />
 				</Suspense>
 
 				<ShowcaseWrapper />
 
-				{/* Phim bộ mới */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<NewestSeriesWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Top 10 phim bộ */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TopSeriesWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Phim lẻ mới */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<NewestSingleWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Top 10 phim lẻ*/}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TopSingleWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* TV Shows */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<TVShowFullWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Anime phức hợp */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<AnimeWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Phim lồng tiếng */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<DubbedWrapper />
 				</Suspense>
 
 				<Spacer y={10} />
 
-				{/* Điện ảnh và Trailer */}
 				<Suspense fallback={<SectionSkeleton />}>
 					<CinemaWrapper />
 				</Suspense>
