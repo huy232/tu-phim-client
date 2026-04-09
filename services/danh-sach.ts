@@ -1,46 +1,22 @@
-import { WEB_URL } from "@/constants"
-interface FetchOptions {
-	page?: number
-	limit?: number
-	sort_field?: "modified.time" | "year" | "_id" | "view"
-	sort_type?: "desc" | "asc"
-	year?: string
-	country?: string
-	category?: string
-	tmdb?: number
-}
+import { API } from "@/constants"
 
-export async function getFilmByList(
+export async function fetchFilmListFromBackend(
 	slug: string,
-	{
-		page = 1,
-		limit = 20,
-		sort_field = "modified.time",
-		sort_type = "desc",
-		year,
-		country = "",
-		category = "",
-		tmdb = 0,
-	}: FetchOptions = {},
+	queryString: string = "",
 ) {
-	const params = new URLSearchParams({
-		page: page.toString(),
-		limit: limit.toString(),
-		sort_field,
-		sort_type,
-		country,
-		category,
-		tmdb: tmdb.toString(),
-	})
+	try {
+		const backendUrl = `${API}/danh-sach/${slug}${queryString ? `?${queryString}` : ""}`
 
-	if (year) params.append("year", year)
+		const res = await fetch(backendUrl, {
+			method: "GET",
+			headers: { "Content-Type": "application/json" },
+			next: { revalidate: 3600 },
+		})
 
-	const url = `${WEB_URL}/api/danh-sach/${slug}?${params.toString()}`
-
-	const res = await fetch(url, {
-		next: { revalidate: 3600 },
-	})
-
-	if (!res.ok) throw new Error(`Fetch failed for ${slug}`)
-	return res.json()
+		if (!res.ok) return null
+		return await res.json()
+	} catch (error) {
+		console.error(`❌ Lỗi linh mạch tại slug ${slug}:`, error)
+		return null
+	}
 }

@@ -1,9 +1,9 @@
 import { Metadata } from "next"
-import { getActorByInfo, getFilmByInfo } from "@/services"
 import InfoHero from "./_clientComponent"
 import { getMainComments } from "@/services/binh-luan"
 import { getStickers } from "@/services/emoji"
 import { IMAGE_URL } from "@/constants"
+import { fetchActorInfoFromBackend, fetchFilmInfoFromBackend } from "@/services"
 
 interface Props {
 	params: Promise<{ film_slug: string }>
@@ -12,7 +12,7 @@ interface Props {
 // --- PHẦN GENERATE METADATA ĐỘNG ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { film_slug } = await params
-	const filmResponse = await getFilmByInfo(film_slug)
+	const filmResponse = await fetchFilmInfoFromBackend(film_slug)
 	const film = filmResponse?.data
 
 	if (!film) {
@@ -27,7 +27,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		? film.content.slice(0, 160) + "..."
 		: `Xem phim ${film.name} tại Tu Phim - Nơi hội tụ các đại năng đam mê điện ảnh.`
 
-	// Tối ưu hóa ảnh hiển thị: Ưu tiên Thumb cho OpenGraph vì nó nằm ngang (1200x630)
 	const thumbUrl = film.thumb_url
 		? `${IMAGE_URL}/${film.thumb_url}`
 		: `${IMAGE_URL}/${film.poster_url}`
@@ -45,13 +44,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			siteName: "Tu Phim",
 			images: [
 				{
-					url: thumbUrl, // Ảnh ngang cho các nền tảng phổ biến
+					url: thumbUrl,
 					width: 1200,
 					height: 630,
 					alt: `Bí tịch ${film.name}`,
 				},
 				{
-					url: posterUrl, // Ảnh dọc - TypeScript sẽ thấy biến này đã được sử dụng
+					url: posterUrl,
 					width: 600,
 					height: 900,
 					alt: `Poster bí tịch ${film.name}`,
@@ -73,8 +72,8 @@ export default async function InfoPage({ params }: Props) {
 	const { film_slug } = await params
 	const [mainFilmInfoResponse, actorInfoResponse, stickersResponse] =
 		await Promise.all([
-			getFilmByInfo(film_slug),
-			getActorByInfo(film_slug),
+			fetchFilmInfoFromBackend(film_slug),
+			fetchActorInfoFromBackend(film_slug),
 			getStickers(),
 		])
 

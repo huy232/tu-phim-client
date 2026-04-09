@@ -1,6 +1,19 @@
-import { WEB_URL } from "@/constants"
-export async function getTopAnime() {
-	const res = await fetch(WEB_URL + `/api/top-hoat-hinh`)
-	if (!res.ok) throw new Error("Failed to fetch")
-	return res.json()
+import { API } from "@/constants"
+
+export async function fetchTopAnimeFromBackend() {
+	try {
+		const res = await fetch(`${API}/top-hoat-hinh`, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			next: { revalidate: 3600 },
+		})
+
+		if (!res.ok) return null
+		return await res.json()
+	} catch (error) {
+		console.error("❌ Lỗi fetch Top Hoạt Hình từ Backend:", error)
+		return null
+	}
 }

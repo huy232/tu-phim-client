@@ -8,26 +8,20 @@ interface Props {
 	params: Promise<{ slug: string }>
 }
 
-// --- GENERATE METADATA CHO THỂ LOẠI ---
+// --- GENERATE METADATA ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { slug } = await params
 	const { genres } = await getNavigationData()
 
-	// Tìm pháp môn (thể loại) hiện tại
-	const currentGenre = genres.find((g: Category) => g.slug === slug)
-
+	const currentGenre = genres.find((g) => g.slug === slug)
 	const genreName = currentGenre ? currentGenre.name : "Đặc Sắc"
 	const title = `Phim ${genreName} Hay Nhất - Tuyển Tập Bí Tịch | Tu Phim`
-	const description = `Tổng hợp những bộ phim ${genreName} chọn lọc, linh khí dồi dào, giúp đạo hữu khai phá những chân trời mới tại Tu Phim.`
 
 	return {
 		title,
-		description,
+		description: `Tổng hợp những bộ phim ${genreName} chọn lọc, linh khí dồi dào tại Tu Phim.`,
 		openGraph: {
 			title,
-			description,
-			siteName: "Tu Phim",
-			type: "website",
 			url: `${process.env.NEXT_PUBLIC_DOMAIN}/the-loai/${slug}`,
 		},
 	}
@@ -36,9 +30,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // --- GENRE PAGE COMPONENT ---
 export default async function GenrePage({ params }: Props) {
 	const { slug } = await params
+
 	const { genres, countries, years } = await getNavigationData()
 
-	const currentGenre = genres.find((g: Category) => g.slug === slug)
+	const currentGenre = genres.find((g) => g.slug === slug)
 	const displayTitle = currentGenre
 		? `Phim ${currentGenre.name}`
 		: "Thể Loại Bí Tịch"
@@ -52,6 +47,7 @@ export default async function GenrePage({ params }: Props) {
 				color="purple"
 			/>
 
+			{/* Dữ liệu sạch, không còn bóng dáng 'any' */}
 			<AdvanceFilter
 				genres={genres}
 				countries={countries}

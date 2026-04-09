@@ -38,6 +38,5 @@ export const getAllLevels = async (): Promise<LevelThreshold[]> => {
 		return []
 	}
 
-	// Lúc này data đã khớp hoàn toàn với LevelThreshold
 	return (data as LevelThreshold[]) || []
 }

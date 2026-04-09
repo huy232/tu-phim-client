@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import FilmListWrapper from "../FilmList/FilmListDynamic"
 
-const SuggestedFilm = ({ suggestedFilm }: { suggestedFilm: Film[] }) => {
+const SuggestedFilm = ({ suggestedFilm }: { suggestedFilm: FilmInfo[] }) => {
 	if (suggestedFilm.length < 1) return null
 
 	return (

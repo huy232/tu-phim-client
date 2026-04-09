@@ -1,4 +1,4 @@
-import { WEB_URL } from "@/constants"
+import { API } from "@/constants"
 interface FetchOptions {
 	page?: number
 	limit?: number
@@ -23,23 +23,29 @@ export async function getFilmByCountry(
 		loc_trailer = 0,
 	}: FetchOptions = {},
 ) {
-	const params = new URLSearchParams({
-		page: page.toString(),
-		limit: limit.toString(),
-		sort_field,
-		sort_type,
-		tmdb: tmdb.toString(),
-		loc_trailer: loc_trailer.toString(),
-	})
+	try {
+		const params = new URLSearchParams({
+			page: page.toString(),
+			limit: limit.toString(),
+			sort_field,
+			sort_type,
+			tmdb: tmdb.toString(),
+			loc_trailer: loc_trailer.toString(),
+		})
 
-	if (nam_san_xuat) params.append("nam_san_xuat", nam_san_xuat)
+		if (nam_san_xuat) params.append("nam_san_xuat", nam_san_xuat)
 
-	const url = `${WEB_URL}/api/quoc-gia/${slug}?${params.toString()}`
+		const url = `${API}/quoc-gia/${slug}?${params.toString()}`
 
-	const res = await fetch(url, {
-		next: { revalidate: 3600 },
-	})
+		const res = await fetch(url, {
+			next: { revalidate: 3600 },
+		})
 
-	if (!res.ok) throw new Error(`Fetch failed for ${slug}`)
-	return res.json()
+		if (!res.ok) return { data: { items: [] } }
+
+		return res.json()
+	} catch (error) {
+		console.log("Lỗi getFilmByCountry:", error)
+		return { data: { items: [] } }
+	}
 }

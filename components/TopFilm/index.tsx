@@ -4,7 +4,7 @@ import { FilmHoverWrapper } from "../FilmHoverCard"
 import clsx from "clsx"
 
 interface TopTenListProps {
-	items: Film[]
+	items: FilmInfo[]
 }
 
 const topGradients = [

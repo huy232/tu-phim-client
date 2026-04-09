@@ -5,5 +5,5 @@ type CountryData = {
 		isCurrent: boolean
 		position: number
 	}[]
-	items: Film[]
+	items: FilmInfo[]
 }

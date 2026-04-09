@@ -48,7 +48,18 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const navData = await getNavigationData()
+	let navData: NavigationData = { genres: [], countries: [], years: [] }
+
+	try {
+		const data = await getNavigationData()
+		if (data) {
+			navData = data
+		}
+	} catch (error) {
+		console.error(
+			"⚠️ RootLayout: Không thể kết nối API. Đang dùng dữ liệu dự phòng để Build.",
+		)
+	}
 
 	return (
 		<html
@@ -65,10 +76,10 @@ export default async function RootLayout({
 		>
 			<body className="bg-foreground text-white flex flex-col min-h-screen">
 				<AuthProvider>
+					{/* Header giờ đây sẽ nhận navData một cách danh chính ngôn thuận */}
 					<Header initialData={navData} />
 					{children}
 					<Footer />
-
 					<ScrollToTop />
 				</AuthProvider>
 			</body>

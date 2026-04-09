@@ -10,7 +10,7 @@ const TopCard = ({
 	ranking,
 	rankPosition = "left",
 }: {
-	filmCard: Film
+	filmCard: FilmInfo
 	ranking: number
 	rankPosition?: "left" | "right"
 }) => {

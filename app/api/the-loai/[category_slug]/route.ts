@@ -3,7 +3,7 @@ import { API } from "@/constants"
 
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { category_slug: string } },
+	{ params }: { params: Promise<{ category_slug: string }> },
 ) {
 	try {
 		const resolvedParams = await params

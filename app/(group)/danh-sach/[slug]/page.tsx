@@ -1,14 +1,14 @@
 import AdvanceFilter from "@/components/AdvanceFilter"
 import PageFilmListContainer from "@/components/PageFilmListContainer"
 import PageHeading from "@/components/PageHeading"
-import { getNavigationData, LIST_CATALOG } from "@/constants"
+import { getNavigationData, LIST_CATALOG } from "@/constants" // LIST_CATALOG là data tĩnh
 import { Metadata } from "next"
 
 interface Props {
 	params: Promise<{ slug: string }>
 }
 
-// --- GENERATE METADATA CHO THIÊN BẢNG (DANH SÁCH) ---
+// --- GENERATE METADATA ---
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { slug } = await params
 
@@ -18,27 +18,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 	const listName = currentList ? currentList.name : "Danh Sách Đặc Sắc"
 	const title = `${listName} - Tuyển Tập Phim Chọn Lọc | Tu Phim`
-	const description = `Khám phá ${listName} tại Tu Phim. Nơi tổng hợp những bộ phim hay nhất, mới nhất được các đại năng tin dùng.`
 
 	return {
 		title,
-		description,
+		description: `Khám phá ${listName} tại Tu Phim. Nơi tổng hợp những bộ phim hay nhất được các đại năng tin dùng.`,
 		openGraph: {
 			title,
-			description,
-			siteName: "Tu Phim",
-			type: "website",
 			url: `${process.env.NEXT_PUBLIC_DOMAIN}/danh-sach/${slug}`,
 		},
 	}
 }
 
+// --- LIST PAGE COMPONENT ---
 export default async function ListPage({ params }: Props) {
 	const { slug } = await params
+
 	const { genres, countries, years } = await getNavigationData()
 
 	const currentList = LIST_CATALOG.find(
-		(g: { slug: string; name: string }) => g.slug === slug,
+		(l: { slug: string; name: string }) => l.slug === slug,
 	)
 
 	const displayTitle = currentList ? `${currentList.name}` : "Danh Sách Bí Tịch"

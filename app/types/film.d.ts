@@ -126,9 +126,9 @@ type FilmInfo = {
 	year: number
 	_id: string
 	last_episodes: [{ server_name: string; is_ai: boolean; name: string }]
-	related: Film[]
-	suggest: Film[]
-	top_type: Film[]
+	related: FilmInfo[]
+	suggest: FilmInfo[]
+	top_type: FilmInfo[]
 }
 
 type TMDBData = {

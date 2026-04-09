@@ -1,9 +1,9 @@
 import { Metadata } from "next"
-import { getFilmByInfo } from "@/services"
 import WatchFilm from "./_clientComponent"
 import { getMainComments } from "@/services/binh-luan"
 import { getStickers } from "@/services/emoji"
 import { IMAGE_URL } from "@/constants"
+import { fetchFilmInfoFromBackend } from "@/services"
 
 interface Props {
 	params: Promise<{ film_slug: string }>
@@ -18,7 +18,7 @@ export async function generateMetadata({
 	const { film_slug } = await params
 	const { ep } = await searchParams
 
-	const filmResponse = await getFilmByInfo(film_slug)
+	const filmResponse = await fetchFilmInfoFromBackend(film_slug)
 	const film = filmResponse?.data
 
 	if (!film) {
@@ -68,7 +68,7 @@ export default async function WatchPage({ params, searchParams }: Props) {
 	const { ep, sid, svt } = await searchParams
 
 	const [watchFilmResponse, stickersResponse] = await Promise.all([
-		getFilmByInfo(film_slug),
+		fetchFilmInfoFromBackend(film_slug),
 		getStickers(),
 	])
 
@@ -90,7 +90,7 @@ export default async function WatchPage({ params, searchParams }: Props) {
 		<main className="min-h-screen container bg-[#0a0a0a] pb-12 px-4 md:px-6 pt-16">
 			<WatchFilm
 				film={watchFilmData}
-				ep={ep as string} // Ép kiểu đơn giản để truyền vào Client Component
+				ep={ep as string}
 				sid={sid as string}
 				svt={svt as string}
 				initialComments={initialComments}

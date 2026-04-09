@@ -1,37 +1,19 @@
+import { fetchFilmInfoFromBackend } from "@/services"
 import { NextResponse, NextRequest } from "next/server"
-import { API } from "@/constants"
 
 export async function GET(
 	request: NextRequest,
-	{ params }: { params: { film_slug: string } },
+	{ params }: { params: Promise<{ film_slug: string }> },
 ) {
-	try {
-		const resolvedParams = await params
-		const film_slug = resolvedParams.film_slug
+	const { film_slug } = await params
+	const data = await fetchFilmInfoFromBackend(film_slug)
 
-		const backendUrl = `${API}/thong-tin/${film_slug}`
-		const res = await fetch(backendUrl, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			credentials: "include",
-		})
-
-		if (!res.ok) {
-			return NextResponse.json(
-				{ success: false, message: "Lấy thông tin phim thất bại." },
-				{ status: res.status },
-			)
-		}
-
-		const data = await res.json()
-		return NextResponse.json(data, { status: 200 })
-	} catch (error) {
-		console.error("Lỗi API Route:", error)
+	if (!data) {
 		return NextResponse.json(
-			{ success: false, message: "Lỗi từ phía server." },
+			{ success: false, message: "Lấy thông tin phim thất bại." },
 			{ status: 500 },
 		)
 	}
+
+	return NextResponse.json(data, { status: 200 })
 }

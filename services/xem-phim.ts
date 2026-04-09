@@ -1,9 +1,15 @@
-import { WEB_URL } from "@/constants"
-export async function getWatchInfo(film_slug: string) {
-	const url = `${WEB_URL}/api/xem-phim/${film_slug}`
+import { API } from "@/constants"
 
-	const res = await fetch(url)
+export async function fetchWatchInfoFromBackend(film_slug: string) {
+	try {
+		const res = await fetch(`${API}/xem-phim/${film_slug}`, {
+			next: { revalidate: 3600 },
+		})
 
-	if (!res.ok) throw new Error(`Fetch failed for ${film_slug}`)
-	return res.json()
+		if (!res.ok) return null
+		return await res.json()
+	} catch (error) {
+		console.error(`❌ Lỗi fetch link xem phim ${film_slug}:`, error)
+		return null
+	}
 }

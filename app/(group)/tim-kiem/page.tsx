@@ -3,7 +3,6 @@ import PageFilmListContainer from "@/components/PageFilmListContainer"
 import PageHeading from "@/components/PageHeading"
 
 interface Props {
-	// Vì là query nên params có thể để trống hoặc giữ nguyên tùy cấu trúc folder
 	params: Promise<{ [key: string]: string }>
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
@@ -15,7 +14,6 @@ export async function generateMetadata({
 	const sParams = await searchParams
 	const keyword = (sParams.keyword as string) || ""
 
-	// Giải mã từ khóa (ví dụ: "tien%20nghich" -> "tien nghich")
 	const decodedQuery = decodeURIComponent(keyword)
 
 	const title = keyword

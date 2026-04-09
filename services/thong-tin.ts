@@ -1,22 +1,27 @@
-import { WEB_URL } from "@/constants"
-export async function getFilmByInfo(film_slug: string) {
-	const url = `${WEB_URL}/api/thong-tin/${film_slug}`
+import { API } from "@/constants"
 
-	const res = await fetch(url, {
-		next: { revalidate: 3600 },
-	})
-
-	if (!res.ok) throw new Error(`Fetch failed for ${film_slug}`)
-	return res.json()
+export async function fetchFilmInfoFromBackend(film_slug: string) {
+	try {
+		const res = await fetch(`${API}/thong-tin/${film_slug}`, {
+			next: { revalidate: 3600 },
+		})
+		if (!res.ok) return null
+		return await res.json()
+	} catch (error) {
+		console.error(`❌ Lỗi fetch thông tin phim ${film_slug}:`, error)
+		return null
+	}
 }
 
-export async function getActorByInfo(film_slug: string) {
-	const url = `${WEB_URL}/api/dien-vien/${film_slug}`
-
-	const res = await fetch(url, {
-		next: { revalidate: 3600 },
-	})
-
-	if (!res.ok) throw new Error(`Fetch failed for ${film_slug}`)
-	return res.json()
+export async function fetchActorInfoFromBackend(film_slug: string) {
+	try {
+		const res = await fetch(`${API}/dien-vien/${film_slug}`, {
+			next: { revalidate: 3600 },
+		})
+		if (!res.ok) return null
+		return await res.json()
+	} catch (error) {
+		console.error(`❌ Lỗi fetch diễn viên phim ${film_slug}:`, error)
+		return null
+	}
 }

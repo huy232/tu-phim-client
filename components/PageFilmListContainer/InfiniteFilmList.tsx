@@ -16,7 +16,7 @@ const InfiniteFilmList = ({
 	initialSlug,
 	type,
 }: InfiniteFilmListProps) => {
-	const [films, setFilms] = useState<Film[]>([])
+	const [films, setFilms] = useState<FilmInfo[]>([])
 	const [hasMore, setHasMore] = useState(true)
 	const [loading, setLoading] = useState(false)
 	const [initialLoading, setInitialLoading] = useState(true)

@@ -1,7 +1,7 @@
 "use client"
 import { WEB_URL } from "@/constants"
 import { motion } from "framer-motion"
-import { ArrowLeft, Film } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 interface BackToFilmInfoProps {

@@ -8,7 +8,7 @@ import clsx from "clsx"
 import { FilmImage } from "../ui/film-image"
 import { swiperInteraction } from "@/utilities"
 
-const Banner = ({ films }: { films: Film[] }) => {
+const Banner = ({ films }: { films: FilmInfo[] }) => {
 	const [isDesktop, setIsDesktop] = useState(false)
 	const [swiperRef, setSwiperRef] = useState<SwiperType | null>(null)
 	const [activeIndex, setActiveIndex] = useState(0)
