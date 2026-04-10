@@ -26,6 +26,7 @@ interface WatchFilmProps {
 	svt?: string | string[]
 	initialComments: CommentWithProfile[]
 	stickers: Sticker[]
+	watchedData: WatchedData
 }
 
 const normalize = (val?: string | string[]) =>
@@ -48,6 +49,7 @@ export default function WatchFilm({
 	svt,
 	initialComments,
 	stickers,
+	watchedData,
 }: WatchFilmProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
@@ -65,7 +67,6 @@ export default function WatchFilm({
 		setSkipIntroOffset,
 	} = usePlayerSettings()
 
-	// 🎬 Episode logic
 	const { currentEpisode, currentServer, prevEpisodeSlug, nextEpisodeSlug } =
 		useMemo(() => {
 			const s_ep = normalize(ep)
@@ -94,9 +95,12 @@ export default function WatchFilm({
 			}
 		}, [film, ep, sid, svt])
 
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: "smooth" })
-	}, [currentEpisode?.slug])
+	const watchedSlugs = useMemo(() => {
+		if (!currentServer) return []
+		const serverKey = `${currentServer.server_source}_${currentServer.server_type}`
+
+		return watchedData[serverKey] || []
+	}, [currentServer, watchedData])
 
 	const handleNextEpisode = useCallback(() => {
 		if (!nextEpisodeSlug) return
@@ -108,6 +112,9 @@ export default function WatchFilm({
 	const hasHydrated = usePlayerSettings((s) => s.hasHydrated)
 
 	const safeTheaterMode = hasHydrated ? isTheaterMode : false
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: "smooth" })
+	}, [currentEpisode?.slug])
 
 	if (!currentEpisode) {
 		return <div className="p-4 text-center">Không tìm thấy tập phim</div>
@@ -183,6 +190,8 @@ export default function WatchFilm({
 													autoNext={hasHydrated ? autoNext : false}
 													autoNextOffset={hasHydrated ? autoNextOffset : 10}
 													film={film}
+													sid={currentServer?.server_source || ""}
+													svt={currentServer?.server_type || ""}
 												/>
 											</motion.div>
 										</AnimatePresence>
@@ -253,6 +262,7 @@ export default function WatchFilm({
 								<EpisodeSection
 									episodes={film.episodes}
 									film_slug={film.slug}
+									watchedSlugs={watchedSlugs}
 								/>
 								<Disclaimer />
 								<RelatedFilm relatedFilm={film.related} />

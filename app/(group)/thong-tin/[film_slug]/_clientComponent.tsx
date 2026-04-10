@@ -63,11 +63,13 @@ const InfoHero = ({
 	actors,
 	initialComments,
 	stickers,
+	watchedSlugs,
 }: {
 	film: FilmInfo
 	actors: Actor
 	initialComments: CommentWithProfile[]
 	stickers: Sticker[]
+	watchedSlugs: string[]
 }) => {
 	const peoples = actors?.peoples || []
 
@@ -114,6 +116,7 @@ const InfoHero = ({
 								<EpisodeSection
 									episodes={film.episodes}
 									film_slug={film.slug}
+									watchedSlugs={watchedSlugs}
 								/>
 								<YoutubePlayer url={film.trailer_url} />
 								<FilmStats

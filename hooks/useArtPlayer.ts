@@ -36,6 +36,8 @@ interface UseArtplayerProps {
 	setPlayMode: Dispatch<SetStateAction<"m3u8" | "embed" | "error">>
 	onCreated: (art: Artplayer) => void
 	onDestroy: () => void
+	sid: string
+	svt: string
 }
 
 type HlsLevel = {
@@ -59,11 +61,21 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		setPlayMode,
 		onCreated,
 		onDestroy,
+		sid,
+		svt,
 	} = props
 	const hlsRef = useRef<Hls | null>(null)
 	const lastSavedTimeRef = useRef(0)
 
-	const callbacks = useRef({ onEnded, handleResume, film, user, episode })
+	const callbacks = useRef({
+		onEnded,
+		handleResume,
+		film,
+		user,
+		episode,
+		sid,
+		svt,
+	})
 	const internalArtRef = useRef<Artplayer | null>(null)
 
 	const autoNextRef = useRef(autoNext)
@@ -92,8 +104,8 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 	)
 
 	useEffect(() => {
-		callbacks.current = { onEnded, handleResume, film, user, episode }
-	}, [onEnded, handleResume, film, user, episode])
+		callbacks.current = { onEnded, handleResume, film, user, episode, sid, svt }
+	}, [onEnded, handleResume, film, user, episode, sid, svt])
 
 	useEffect(() => {
 		autoNextRef.current = autoNext
@@ -166,16 +178,26 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 
 		art.on("video:timeupdate", () => {
 			const { currentTime, duration, playing } = art
-			const { user, film, episode, onEnded } = callbacks.current
+			const { user, film, episode, onEnded, sid, svt } = callbacks.current
+
+			// console.log("Current Time: ", currentTime, "Duration: ", duration, "User: ", user?.id )
 
 			// Lưu xem tiếp
 			if (
 				!isNaN(duration) &&
-				currentTime - lastSavedTimeRef.current > 30 &&
+				currentTime - lastSavedTimeRef.current > 60 &&
 				user?.id
 			) {
 				lastSavedTimeRef.current = currentTime
-				handleSaveProgress(film, user.id, episode, currentTime, duration)
+				handleSaveProgress(
+					film,
+					user.id,
+					episode,
+					currentTime,
+					duration,
+					sid,
+					svt,
+				)
 			}
 			// Track level
 			if (playing && user?.id) {
@@ -202,7 +224,7 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		})
 
 		art.on("video:pause", () => {
-			const { user, film, episode } = callbacks.current
+			const { user, film, episode, sid, svt } = callbacks.current
 			if (user?.id) {
 				handleSaveProgress(
 					film,
@@ -210,6 +232,8 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 					episode,
 					art.currentTime,
 					art.duration,
+					sid,
+					svt,
 				)
 			}
 		})
@@ -219,7 +243,7 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		})
 
 		return () => {
-			const { user, film, episode } = callbacks.current
+			const { user, film, episode, sid, svt } = callbacks.current
 
 			if (user?.id) {
 				handleSaveProgress(
@@ -228,6 +252,8 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 					episode,
 					art.currentTime,
 					art.duration,
+					sid,
+					svt,
 				)
 			}
 

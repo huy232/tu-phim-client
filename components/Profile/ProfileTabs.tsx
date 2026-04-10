@@ -7,6 +7,7 @@ import UserComments from "./UserComments"
 import { motion } from "framer-motion"
 import clsx from "clsx"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import WatchHistoryList from "./WatchHistoryList"
 
 interface ProfileTabsProps {
 	initialData: {
@@ -41,7 +42,6 @@ const ProfileTabs = ({ initialData }: ProfileTabsProps) => {
 		{
 			id: "phim-anh",
 			label: "Tàng Kinh Các",
-			count: initialData.favoritesCount,
 		},
 		{
 			id: "binh-luan",
@@ -120,6 +120,7 @@ const ProfileTabs = ({ initialData }: ProfileTabsProps) => {
 							initialFavorites={initialData.favorites}
 							initialTotal={initialData.favoritesCount}
 						/>
+						<WatchHistoryList />
 					</div>
 				)}
 

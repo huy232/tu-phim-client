@@ -8,6 +8,8 @@ export const handleSaveProgress = async (
 	episode: { slug: string; name: string },
 	currentTime: number,
 	duration: number,
+	sid: string,
+	svt: string,
 ) => {
 	if (isSaving) return
 
@@ -22,6 +24,8 @@ export const handleSaveProgress = async (
 			episode,
 			currentTime,
 			duration,
+			sid,
+			svt,
 		})
 
 		if (result.success) {

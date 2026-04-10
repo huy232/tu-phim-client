@@ -22,6 +22,7 @@ interface ChunkModeProps {
 	activeEpisodeSlug: string
 	activeEpisodeIndex: number
 	playingServer: Episodes
+	watchedSlugs: string[]
 }
 
 const ChunkMode = ({
@@ -38,6 +39,7 @@ const ChunkMode = ({
 	activeEpisodeSlug,
 	activeEpisodeIndex,
 	playingServer,
+	watchedSlugs = [],
 }: ChunkModeProps) => {
 	const serverKey =
 		`${activeServer.server_source}-${activeServer.server_type}-${activeServer.server_name}`.toString()
@@ -158,6 +160,7 @@ const ChunkMode = ({
 						index={idx}
 						activeEpisodeIndex={activeEpisodeIndex}
 						playingServer={playingServer}
+						isWatched={watchedSlugs.includes(ep.slug)}
 					/>
 				))}
 			</motion.div>

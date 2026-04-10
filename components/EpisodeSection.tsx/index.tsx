@@ -11,13 +11,14 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 const EpisodeSection = ({
 	episodes,
 	film_slug,
+	watchedSlugs = [],
 }: {
 	episodes: Episodes[]
 	film_slug: string
+	watchedSlugs: string[]
 }) => {
 	const searchParams = useSearchParams()
 	const pathname = usePathname()
-	const router = useRouter()
 
 	const [isChunked, setIsChunked] = useState(true)
 	const [activeChunk, setActiveChunk] = useState(0)
@@ -107,6 +108,7 @@ const EpisodeSection = ({
 						activeEpisodeSlug={activeEpisodeSlug}
 						activeEpisodeIndex={activeEpisodeIndex}
 						playingServer={playingServer}
+						watchedSlugs={watchedSlugs}
 					/>
 				) : (
 					<GridMode
@@ -117,6 +119,7 @@ const EpisodeSection = ({
 						isWatchPage={isWatchPage}
 						activeEpisodeSlug={activeEpisodeSlug}
 						playingServer={playingServer}
+						watchedSlugs={watchedSlugs}
 					/>
 				)}
 			</div>

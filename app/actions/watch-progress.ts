@@ -8,25 +8,40 @@ export async function saveProgressAction(payload: {
 	episode: { slug: string; name: string }
 	currentTime: number
 	duration: number
+	sid: string
+	svt: string
 }) {
-	const { film, userId, episode, currentTime, duration } = payload
+	const { film, userId, episode, currentTime, duration, sid, svt } = payload
 	const supabase = await createClient()
 	const percent = (currentTime / duration) * 100
+	const serverKey = `${sid}_${svt}`
 
 	try {
 		const internalFilmId = await ensureFilmExists(supabase, film)
 		if (!internalFilmId) throw new Error("Không thể xác định phim")
 
-		// Nếu xem trên 80% -> Xóa lịch sử
-		if (percent > 80) {
+		const { error: historyError } = await supabase.rpc(
+			"upsert_watched_history",
+			{
+				p_user_id: userId,
+				p_film_id: internalFilmId,
+				p_server_key: serverKey,
+				p_episode_slug: episode.slug,
+				p_episode_name: episode.name,
+			},
+		)
+
+		if (historyError) console.error("❌ Lỗi lưu lịch sử JSONB:", historyError)
+
+		if (percent > 95) {
 			await supabase
 				.from("user_progress")
 				.delete()
 				.match({ user_id: userId, film_id: internalFilmId })
+
 			return { status: "finished", success: true }
 		}
 
-		// Cập nhật tiến độ
 		const { error: upsertError } = await supabase.from("user_progress").upsert(
 			{
 				user_id: userId,
@@ -43,7 +58,6 @@ export async function saveProgressAction(payload: {
 
 		if (upsertError) throw upsertError
 
-		// Giữ limit 10 slot
 		const { data: list } = await supabase
 			.from("user_progress")
 			.select("id")

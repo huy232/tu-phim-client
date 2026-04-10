@@ -33,7 +33,7 @@ const CommentReplies = ({
 	const { replies, loading } = useReplies(parentId, isExpanded)
 
 	if (!isExpanded) {
-		if (totalReplies <= 0) return null
+		if (!totalReplies || totalReplies <= 0) return null
 		return (
 			<button
 				onClick={() => setIsExpanded(true)}

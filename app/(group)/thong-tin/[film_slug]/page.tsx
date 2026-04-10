@@ -4,6 +4,7 @@ import { getMainComments } from "@/services/binh-luan"
 import { getStickers } from "@/services/emoji"
 import { IMAGE_URL } from "@/constants"
 import { fetchActorInfoFromBackend, fetchFilmInfoFromBackend } from "@/services"
+import { getWatchedEpisodes } from "@/services/lich-su"
 
 interface Props {
 	params: Promise<{ film_slug: string }>
@@ -70,16 +71,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 // --- COMPONENT CHÍNH ---
 export default async function InfoPage({ params }: Props) {
 	const { film_slug } = await params
-	const [mainFilmInfoResponse, actorInfoResponse, stickersResponse] =
-		await Promise.all([
-			fetchFilmInfoFromBackend(film_slug),
-			fetchActorInfoFromBackend(film_slug),
-			getStickers(),
-		])
+	const [
+		mainFilmInfoResponse,
+		actorInfoResponse,
+		watchedEpisodesResponse,
+		stickersResponse,
+	] = await Promise.all([
+		fetchFilmInfoFromBackend(film_slug),
+		fetchActorInfoFromBackend(film_slug),
+		getWatchedEpisodes(film_slug),
+		getStickers(),
+	])
 
 	const film = mainFilmInfoResponse?.data
 	const actors = actorInfoResponse?.data || []
 	const stickers = stickersResponse || []
+	const watchedData = watchedEpisodesResponse.data || {}
 
 	if (!film)
 		return (
@@ -90,6 +97,7 @@ export default async function InfoPage({ params }: Props) {
 
 	const { data: commentsData } = await getMainComments(film._id)
 	const initialComments = commentsData || []
+	const watchedSlugs = [...new Set(Object.values(watchedData).flat())]
 
 	return (
 		<main className="min-h-svh w-full pt-16">
@@ -98,6 +106,7 @@ export default async function InfoPage({ params }: Props) {
 				actors={actors}
 				initialComments={initialComments}
 				stickers={stickers}
+				watchedSlugs={watchedSlugs}
 			/>
 		</main>
 	)

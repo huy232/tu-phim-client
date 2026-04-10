@@ -4,6 +4,7 @@ import { getMainComments } from "@/services/binh-luan"
 import { getStickers } from "@/services/emoji"
 import { IMAGE_URL } from "@/constants"
 import { fetchFilmInfoFromBackend } from "@/services"
+import { getWatchedEpisodes } from "@/services/lich-su"
 
 interface Props {
 	params: Promise<{ film_slug: string }>
@@ -67,12 +68,15 @@ export default async function WatchPage({ params, searchParams }: Props) {
 	const { film_slug } = await params
 	const { ep, sid, svt } = await searchParams
 
-	const [watchFilmResponse, stickersResponse] = await Promise.all([
-		fetchFilmInfoFromBackend(film_slug),
-		getStickers(),
-	])
+	const [watchFilmResponse, watchedEpisodesResponse, stickersResponse] =
+		await Promise.all([
+			fetchFilmInfoFromBackend(film_slug),
+			getWatchedEpisodes(film_slug),
+			getStickers(),
+		])
 
 	const watchFilmData = watchFilmResponse?.data || null
+	const watchedData = watchedEpisodesResponse.data || {}
 
 	if (!watchFilmData) {
 		return (
@@ -95,6 +99,7 @@ export default async function WatchPage({ params, searchParams }: Props) {
 				svt={svt as string}
 				initialComments={initialComments}
 				stickers={stickers}
+				watchedData={watchedData}
 			/>
 		</main>
 	)

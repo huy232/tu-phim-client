@@ -14,6 +14,8 @@ interface WatchSectionProps {
 	onEnded: () => void
 	autoNext: boolean
 	film: FilmInfo
+	sid: string
+	svt: string
 }
 
 const WatchSection = ({
@@ -22,6 +24,8 @@ const WatchSection = ({
 	onEnded,
 	autoNext,
 	film,
+	sid,
+	svt,
 }: WatchSectionProps) => {
 	const { user } = useAuth()
 	const isAutoResume = useSearchParams().get("xem-tiep") === "true"
@@ -76,6 +80,8 @@ const WatchSection = ({
 		setPlayMode,
 		onCreated: handleArtCreated,
 		onDestroy: handleArtDestroy,
+		sid,
+		svt,
 	})
 
 	useEffect(() => {

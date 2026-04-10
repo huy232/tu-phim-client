@@ -84,7 +84,7 @@ export const postComment = async (payload: {
 
 		const internalFilmId = await ensureFilmExists(supabase, payload.film)
 		// B. Insert comment với film_id là UUID
-		const { data, error } = await supabase
+		const { data: insertedData, error: insertError } = await supabase
 			.from("comments")
 			.insert([
 				{
@@ -96,7 +96,14 @@ export const postComment = async (payload: {
 					is_spoiler: payload.is_spoiler,
 				},
 			])
-			.select(`*, profiles(full_name, avatar_url, username, exp)`)
+			.select("id") // Chỉ lấy ID
+			.single()
+
+		if (insertError) throw insertError
+		const { data, error } = await supabase
+			.from("comment_with_stats")
+			.select("*")
+			.eq("id", insertedData.id)
 			.single()
 
 		return { data, error }

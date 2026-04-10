@@ -11,6 +11,7 @@ interface GridModeProps {
 	isWatchPage: boolean
 	activeEpisodeSlug: string
 	playingServer: Episodes
+	watchedSlugs: string[]
 }
 
 const GridMode = ({
@@ -21,6 +22,7 @@ const GridMode = ({
 	isWatchPage,
 	activeEpisodeSlug,
 	playingServer,
+	watchedSlugs = [],
 }: GridModeProps) => {
 	const [displayLimit, setDisplayLimit] = useState(() => {
 		if (activeEpisodeIndex >= 0) {
@@ -74,6 +76,7 @@ const GridMode = ({
 						activeEpisodeIndex={activeEpisodeIndex}
 						index={idx}
 						playingServer={playingServer}
+						isWatched={watchedSlugs.includes(ep.slug)}
 					/>
 				</div>
 			))}
