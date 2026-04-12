@@ -146,7 +146,7 @@ export default function WatchFilm({
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.3, ease: "linear" }}
 					className={clsx(
-						"mx-auto w-full h-full px-2 sm:px-4 lg:px-6 pb-10",
+						"mx-auto w-full h-full sm:px-4 lg:px-6 pb-10 px-0 max-w-7xl md:px-4",
 						isDimmed ? "relative z-2000" : "",
 					)}
 				>

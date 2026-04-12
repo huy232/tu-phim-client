@@ -3,9 +3,9 @@ import { getFilmByCountry } from "@/services"
 
 export async function CountryHighlightWrapper() {
 	const [korean, chinese, us] = await Promise.all([
-		getFilmByCountry("han-quoc", { limit: 40, loc_trailer: 1 }),
-		getFilmByCountry("trung-quoc", { limit: 40, loc_trailer: 1 }),
-		getFilmByCountry("au-my", { limit: 40, page: 1, loc_trailer: 1 }),
+		getFilmByCountry("han-quoc", { limit: 20, loc_trailer: 1 }),
+		getFilmByCountry("trung-quoc", { limit: 20, loc_trailer: 1 }),
+		getFilmByCountry("au-my", { limit: 20, page: 1, loc_trailer: 1 }),
 	])
 
 	return (

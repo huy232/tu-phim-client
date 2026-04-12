@@ -8,11 +8,11 @@ import { fetchFilmListFromBackend } from "@/services"
 
 export async function DubbedWrapper() {
 	const dubbedTop = new URLSearchParams({
-		limit: "48",
+		limit: "24",
 		sort_field: "view",
 	}).toString()
 	const dubbedList = new URLSearchParams({
-		limit: "48",
+		limit: "24",
 	}).toString()
 
 	const [topRes, newestRes] = await Promise.all([

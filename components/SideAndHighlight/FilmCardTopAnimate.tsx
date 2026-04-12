@@ -58,21 +58,20 @@ const FilmCardTopAnimate = ({
 			>
 				<h4
 					className={clsx(
-						"font-semibold line-clamp-2 md:line-clamp-1 transition-colors",
+						"font-semibold line-clamp-2 leading-tight min-h-[2.5em]",
 						isActive
 							? "text-purple-400"
 							: "text-white group-hover:text-purple-300",
-						layout === "card" ? "text-sm" : "text-sm",
 					)}
 				>
 					{film.name}
 				</h4>
 
-				<p className="text-[11px] text-white/40 line-clamp-1 font-light">
+				<p className="text-[11px] text-white/40 line-clamp-1 font-light h-full">
 					{film.origin_name}
 				</p>
 
-				<div className="flex items-center gap-1.5 text-[10px] text-white/30">
+				<div className="flex flex-row h-full items-center gap-1.5 text-[10px] text-white/30">
 					<span>{film.year}</span>
 					<span>•</span>
 					<span className="line-clamp-1">

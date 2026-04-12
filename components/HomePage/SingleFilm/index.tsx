@@ -4,7 +4,7 @@ import TopFilm from "@/components/TopFilm"
 import { fetchFilmListFromBackend } from "@/services"
 
 export async function NewestSingleWrapper() {
-	const params = new URLSearchParams({ limit: "72" }).toString()
+	const params = new URLSearchParams({ limit: "30" }).toString()
 	const res = await fetchFilmListFromBackend("phim-le", params)
 	return (
 		<>

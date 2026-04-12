@@ -43,7 +43,7 @@ const SideInfo = ({ film, isDimmed }: SideInfoProps) => {
 						<SiteImage
 							src={`${IMAGE_URL}/${film.poster_url}`}
 							alt=""
-							className="w-full h-full object-cover blur-sm brightness-50 scale-105"
+							className="w-full h-full object-cover blur-xs brightness-50 scale-105"
 							width={400}
 							height={225}
 							containerClassName="w-full h-full"

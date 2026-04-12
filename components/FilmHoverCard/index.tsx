@@ -16,6 +16,7 @@ import Link from "next/link"
 import { swiperInteraction } from "@/utilities"
 import { FavoriteWrapper } from "../FavoriteWrapper"
 import { Heart } from "lucide-react"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 export const FilmHoverWrapper = ({
 	film,
@@ -24,6 +25,7 @@ export const FilmHoverWrapper = ({
 	film: FilmInfo
 	children: React.ReactNode
 }) => {
+	const canHover = useMediaQuery("(hover: hover) and (pointer: fine)")
 	const [isOpen, setIsOpen] = useState(false)
 	const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 })
 
@@ -38,6 +40,7 @@ export const FilmHoverWrapper = ({
 	const cardRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
+		if (!canHover) return
 		const handleMouseDown = (e: MouseEvent) => {
 			isMouseDown.current = true
 
@@ -88,6 +91,7 @@ export const FilmHoverWrapper = ({
 	}, [])
 
 	const updateCoords = () => {
+		if (!canHover) return
 		if (!triggerRef.current) return
 
 		const rect = triggerRef.current.getBoundingClientRect()
@@ -115,6 +119,7 @@ export const FilmHoverWrapper = ({
 	}
 
 	const open = () => {
+		if (!canHover) return
 		if (leaveTimeout.current) clearTimeout(leaveTimeout.current)
 
 		enterTimeout.current = setTimeout(() => {
@@ -126,6 +131,7 @@ export const FilmHoverWrapper = ({
 	}
 
 	const close = () => {
+		if (!canHover) return
 		if (enterTimeout.current) clearTimeout(enterTimeout.current)
 
 		leaveTimeout.current = setTimeout(() => {

@@ -6,6 +6,7 @@ import { movieQuotes } from "@/constants/movieQuotes"
 import { DiscordSVG, GoogleSVG } from "@/assets/icons"
 import CinematicSide from "@/components/LoginSection/CinemaSide"
 import { supabase } from "@/supabase/client"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 interface CyberParticle {
 	id: number
@@ -31,6 +32,19 @@ const funnyStatus = [
 const Login = () => {
 	const [currentQuote, setCurrentQuote] = useState(0)
 	const [statusIndex, setStatusIndex] = useState(0)
+
+	const isTablet = useMediaQuery("(max-width: 1024px)")
+
+	const disableMotion = isTablet
+
+	const motionProps = disableMotion
+		? {}
+		: {
+				initial: { opacity: 0, y: 10 },
+				animate: { opacity: 1, y: 0 },
+				exit: { opacity: 0, y: -10 },
+				transition: { duration: 0.3 },
+			}
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -96,101 +110,108 @@ const Login = () => {
 
 	return (
 		<div className="w-full h-svh grid grid-cols-1 lg:grid-cols-10 bg-[#0a0a0a] overflow-hidden font-rowdies">
-			<CinematicSide currentQuote={currentQuote} />
+			{!disableMotion && <CinematicSide currentQuote={currentQuote} />}
 
 			<div className="col-span-1 md:col-span-3 flex flex-col justify-center items-center p-8 lg:p-12 bg-[#0a0a0a] border-l border-white/5 shadow-[-20px_0px_50px_rgba(0,0,0,0.5)] z-20 relative">
 				<div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-					<motion.div
-						animate={{
-							x: [0, 15, -10, 0],
-							y: [0, -20, 10, 0],
-							scale: [1, 1.1, 0.9, 1],
-						}}
-						transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-						className="absolute -top-10 -right-10 w-44 h-44 bg-purple-600/20 blur-[60px] rounded-full"
-					/>
+					{!disableMotion && (
+						<>
+							<motion.div
+								animate={{
+									x: [0, 15, -10, 0],
+									y: [0, -20, 10, 0],
+									scale: [1, 1.1, 0.9, 1],
+								}}
+								transition={{
+									repeat: Infinity,
+									duration: 8,
+									ease: "easeInOut",
+								}}
+								className="absolute -top-10 -right-10 w-44 h-44 bg-purple-600/20 blur-[60px] rounded-full"
+							/>
 
-					<motion.div
-						animate={{
-							x: [0, -20, 20, 0],
-							y: [0, 15, -15, 0],
-							scale: [1, 0.9, 1.1, 1],
-						}}
-						transition={{
-							repeat: Infinity,
-							duration: 10,
-							ease: "easeInOut",
-							delay: 1,
-						}}
-						className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-600/20 blur-[50px] rounded-full"
-					/>
+							<motion.div
+								animate={{
+									x: [0, -20, 20, 0],
+									y: [0, 15, -15, 0],
+									scale: [1, 0.9, 1.1, 1],
+								}}
+								transition={{
+									repeat: Infinity,
+									duration: 10,
+									ease: "easeInOut",
+									delay: 1,
+								}}
+								className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-600/20 blur-[50px] rounded-full"
+							/>
+						</>
+					)}
 
-					{particles.map((particle) => (
-						<motion.div
-							key={particle.id}
-							className="absolute rounded-full"
-							style={{
-								width: particle.size,
-								height: particle.size,
-								left: particle.left,
-								bottom: particle.bottom,
-								background: particle.color,
-								boxShadow: particle.shadow,
-							}}
-							animate={{
-								y: ["0vh", particle.maxY],
-								x: [0, particle.shakeX],
-								opacity: [0, 0.8, 0],
-							}}
-							transition={{
-								duration: particle.duration,
-								repeat: Infinity,
-								delay: particle.delay,
-								ease: "easeOut",
-							}}
-						/>
-					))}
+					{!disableMotion &&
+						particles.map((particle) => (
+							<motion.div
+								key={particle.id}
+								className="absolute rounded-full"
+								style={{
+									width: particle.size,
+									height: particle.size,
+									left: particle.left,
+									bottom: particle.bottom,
+									background: particle.color,
+									boxShadow: particle.shadow,
+								}}
+								animate={{
+									y: ["0vh", particle.maxY],
+									x: [0, particle.shakeX],
+									opacity: [0, 0.8, 0],
+								}}
+								transition={{
+									duration: particle.duration,
+									repeat: Infinity,
+									delay: particle.delay,
+									ease: "easeOut",
+								}}
+							/>
+						))}
 				</div>
 
 				<div className="w-full max-w-sm space-y-8">
 					<div className="text-center md:text-left space-y-2">
 						<h1 className="text-2xl font-bold text-white tracking-tight flex items-center justify-center md:justify-start gap-2">
 							Chuyên mục đăng nhập
-							<motion.span
-								animate={{ rotate: [0, 15, -15, 0] }}
-								transition={{
-									repeat: Infinity,
-									duration: 2,
-									ease: "easeInOut",
-								}}
-							>
-								<Sparkles size={20} className="text-yellow-400" />
-							</motion.span>
+							{disableMotion ? (
+								<span>
+									<Sparkles size={20} className="text-yellow-400" />
+								</span>
+							) : (
+								<motion.span
+									animate={{ rotate: [0, 15, -15, 0] }}
+									transition={{ repeat: Infinity, duration: 2 }}
+								>
+									<Sparkles size={20} className="text-yellow-400" />
+								</motion.span>
+							)}
 						</h1>
 
 						<div className="h-5 overflow-hidden">
-							<AnimatePresence mode="wait">
-								<motion.p
-									key={statusIndex}
-									initial={{ opacity: 0, y: 10 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, y: -10 }}
-									transition={{ duration: 0.3 }}
-									className="text-sm text-gray-500"
-								>
+							{disableMotion ? (
+								<p className="text-sm text-gray-500">
 									{funnyStatus[statusIndex]}
-								</motion.p>
-							</AnimatePresence>
+								</p>
+							) : (
+								<AnimatePresence mode="wait">
+									<motion.p key={statusIndex} {...motionProps}>
+										{funnyStatus[statusIndex]}
+									</motion.p>
+								</AnimatePresence>
+							)}
 						</div>
 					</div>
 
 					<div className="space-y-3 pt-2">
 						<motion.button
-							whileHover={{
-								scale: 1.02,
-								boxShadow: "0 10px 15px -3px rgba(255, 255, 255, 0.05)",
-							}}
-							whileTap={{ scale: 0.98 }}
+							whileHover={disableMotion ? undefined : { scale: 1.02 }}
+							whileTap={disableMotion ? undefined : { scale: 0.98 }}
 							onClick={() => handleOAuthLogin("google")}
 							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
 		bg-white text-black font-semibold 
@@ -208,11 +229,8 @@ const Login = () => {
 						</motion.button>
 
 						<motion.button
-							whileHover={{
-								scale: 1.02,
-								boxShadow: "0 10px 15px -3px rgba(88, 101, 242, 0.2)",
-							}}
-							whileTap={{ scale: 0.98 }}
+							whileHover={disableMotion ? undefined : { scale: 1.02 }}
+							whileTap={disableMotion ? undefined : { scale: 0.98 }}
 							onClick={() => handleOAuthLogin("discord")}
 							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
 		bg-[#5865F2] text-white font-semibold 
@@ -231,28 +249,16 @@ const Login = () => {
 					</div>
 
 					<div className="flex items-center justify-around text-gray-700 py-4 border-t border-white/5 mt-4">
-						<motion.div
-							whileHover={{ scale: 1.2, textShadow: "0 0 8px rgb(168,85,247)" }}
-							className="cursor-pointer hover:text-purple-400 transition-colors"
-						>
+						<motion.div className="cursor-pointer hover:text-purple-400 transition-colors">
 							<Popcorn size={18} />
 						</motion.div>
-						<motion.div
-							whileHover={{ scale: 1.2 }}
-							className="cursor-pointer hover:text-pink-400 transition-colors"
-						>
+						<motion.div className="cursor-pointer hover:text-pink-400 transition-colors">
 							<Film size={18} />
 						</motion.div>
-						<motion.div
-							whileHover={{ scale: 1.2 }}
-							className="cursor-pointer hover:text-blue-400 transition-colors"
-						>
+						<motion.div className="cursor-pointer hover:text-blue-400 transition-colors">
 							<Ghost size={18} />
 						</motion.div>
-						<motion.div
-							whileHover={{ scale: 1.2 }}
-							className="cursor-pointer hover:text-yellow-400 transition-colors"
-						>
+						<motion.div className="cursor-pointer hover:text-yellow-400 transition-colors">
 							<Wand2 size={18} />
 						</motion.div>
 					</div>

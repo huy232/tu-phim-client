@@ -7,33 +7,52 @@ import HorizontalList from "./HorizontalList"
 const SideAndHighlight = ({ items }: { items: FilmInfo[] }) => {
 	const [activeId, setActiveId] = useState<string | null>(null)
 
+	if (!items.length) return null
+
 	const activeFilm = items.find((film) => film._id === activeId) || items[0]
 
 	const topItems = items.slice(0, 5)
 	const bottomItems = items.slice(5)
 
-	if (!items.length) return null
+	const allItems = items
 
 	return (
 		<div className="w-full space-y-6">
-			<div className="grid grid-cols-1 xl:grid-cols-12 gap-2 xl:items-stretch">
-				{/* BANNER */}
-				<div className="lg:col-span-9 order-1 lg:order-2 flex flex-col h-[660px] sm:h-full">
-					<div className="flex-1 h-full min-h-[400px] md:min-h-[550px] relative">
-						<Banner film={activeFilm} />
-					</div>
-				</div>
-
-				<div className="xl:col-span-3 order-2 xl:order-1 flex flex-col xl:justify-center">
+			{/* ================= DESKTOP ================= */}
+			<div className="hidden xl:grid grid-cols-12 gap-2 items-stretch">
+				{/* LEFT */}
+				<div className="col-span-3 flex flex-col justify-center">
 					<VerticalList
 						items={topItems}
 						activeId={activeId}
 						setActiveId={setActiveId}
 					/>
 				</div>
+
+				{/* RIGHT */}
+				<div className="col-span-9 flex flex-col h-[660px]">
+					<Banner film={activeFilm} />
+				</div>
 			</div>
 
-			<div className="w-full">
+			{/* ================= MOBILE / TABLET ================= */}
+			<div className="xl:hidden space-y-4">
+				{/* Banner */}
+				<div className="w-full h-[550px] relative">
+					<Banner film={activeFilm} />
+				</div>
+
+				{/* 👉 1 LIST DUY NHẤT */}
+				<HorizontalList
+					items={allItems}
+					activeId={activeId}
+					setActiveId={setActiveId}
+					mode="scroll"
+				/>
+			</div>
+
+			{/* ================= DESKTOP BOTTOM ================= */}
+			<div className="hidden xl:block">
 				<HorizontalList
 					items={bottomItems}
 					activeId={activeId}

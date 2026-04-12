@@ -4,7 +4,7 @@ import { fetchFilmListFromBackend } from "@/services"
 import FilmSection from "@/components/FilmCarousel/FilmSection"
 
 export async function TVShowFullWrapper() {
-	const TVShowsList = new URLSearchParams({ limit: "48" }).toString()
+	const TVShowsList = new URLSearchParams({ limit: "24" }).toString()
 	const TVShowsTopView = new URLSearchParams({
 		limit: "10",
 		sort_field: "view",

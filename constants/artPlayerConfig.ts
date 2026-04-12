@@ -28,7 +28,7 @@ export const ARTPLAYER_BASIC_SETTINGS = {
 	autoplay: true,
 	pip: true,
 	autoSize: false,
-	autoMini: true,
+	autoMini: false,
 	screenshot: true,
 	setting: true,
 	loop: false,

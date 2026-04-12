@@ -3,7 +3,7 @@ import { NewestSeriesHeading } from "@/components/Heading"
 import { fetchFilmListFromBackend } from "@/services"
 
 export async function NewestSeriesWrapper() {
-	const params = new URLSearchParams({ limit: "48" }).toString()
+	const params = new URLSearchParams({ limit: "24" }).toString()
 
 	const res = await fetchFilmListFromBackend("phim-bo", params)
 	const items = res?.data?.items || []

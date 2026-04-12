@@ -9,11 +9,11 @@ import { chinaVideos, japanVideos } from "@/constants"
 
 export async function AnimeWrapper() {
 	const china = new URLSearchParams({
-		limit: "48",
+		limit: "24",
 		country: "trung-quoc",
 	}).toString()
 	const japan = new URLSearchParams({
-		limit: "48",
+		limit: "24",
 		country: "nhat-ban",
 	}).toString()
 
