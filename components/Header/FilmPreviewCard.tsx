@@ -103,7 +103,6 @@ const FilmPreviewCard = ({ film }: { film: Film }) => {
 					</div>
 				</div>
 
-				{/* Thể loại (Category) */}
 				<div className="flex flex-wrap gap-1.5">
 					{film.category?.slice(0, 4).map((cat, index) => (
 						<span
@@ -116,7 +115,6 @@ const FilmPreviewCard = ({ film }: { film: Film }) => {
 				</div>
 			</div>
 
-			{/* 3. Footer thông tin cập nhật */}
 			<div className="mt-auto p-4 bg-white/3 border-t border-white/5 flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<div className="p-1.5 bg-purple-500/10 rounded-full text-purple-400">

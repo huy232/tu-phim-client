@@ -3,6 +3,7 @@ import { FilmHoverWrapper } from "../FilmHoverCard"
 import { FilmImage } from "./film-image"
 import clsx from "clsx"
 import { filmTypeMap } from "@/constants"
+import Link from "next/link"
 
 const FilmCard = ({
 	film,
@@ -14,9 +15,12 @@ const FilmCard = ({
 	const typeConfig = filmTypeMap[film.type]
 
 	return (
-		<div>
+		<>
 			<FilmHoverWrapper film={film}>
-				<div className="flex flex-col gap-2 group cursor-pointer">
+				<Link
+					href={`/thong-tin/${film.slug}`}
+					className="flex flex-col gap-2 group cursor-pointer"
+				>
 					<div className="w-full relative">
 						<div className="relative aspect-2/3 w-full bg-white/5 rounded-xl border border-white/10 group-hover:border-purple-500 transition-all overflow-hidden duration-300	">
 							<FilmImage
@@ -106,9 +110,9 @@ const FilmCard = ({
 							{film.origin_name}
 						</p>
 					</div>
-				</div>
+				</Link>
 			</FilmHoverWrapper>
-		</div>
+		</>
 	)
 }
 

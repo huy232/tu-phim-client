@@ -79,7 +79,7 @@ const CommentSection = ({
 
 	return (
 		<section
-			className="pt-20 w-full max-w-4xl mx-auto px-4"
+			className="pt-4 md:pt-10 lg:pt-16 xl:pt-20 w-full max-w-4xl mx-auto"
 			id="comment-section"
 		>
 			<CommentHeader />

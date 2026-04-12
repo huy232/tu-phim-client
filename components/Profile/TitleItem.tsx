@@ -31,7 +31,6 @@ export const TitleItem = ({
 			)}
 		>
 			<div className="relative z-10 w-full">
-				{/* TITLE: Luôn nằm trên cùng */}
 				<span
 					className={clsx(
 						"text-md uppercase tracking-tight block truncate transition-all duration-500",

@@ -59,7 +59,6 @@ export default async function ProfilePage() {
 	return (
 		<main className="min-h-screen bg-[#050505] pt-24 pb-20 px-4 md:px-6">
 			<div className="max-w-7xl mx-auto space-y-12">
-				{/* ProfileHeader giờ đây sẽ nhận được cả mảng danh hiệu để hiển thị */}
 				<ProfileHeader profile={cleanProfile} levels={data.levels} />
 
 				<ProfileTabs

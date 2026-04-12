@@ -122,7 +122,6 @@ export default function FavoriteFilms({
 				</div>
 			</div>
 
-			{/* GRID: Premium Card Style */}
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 min-h-[400px]">
 				{loading
 					? Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
@@ -131,7 +130,6 @@ export default function FavoriteFilms({
 					: favorites.map((fav) => <FilmCard key={fav.id} fav={fav} />)}
 			</div>
 
-			{/* PAGINATION: Modern Minimal */}
 			{totalPages > 1 && (
 				<div className="flex justify-center items-center gap-2 pt-8">
 					{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {

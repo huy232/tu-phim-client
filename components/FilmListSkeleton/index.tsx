@@ -3,7 +3,7 @@ export default function FilmListSkeleton() {
 		<div className="mx-auto my-8 px-4 flex items-center gap-4 w-full overflow-hidden">
 			<div className="w-10 h-10 rounded-full border border-white/5 shrink-0 hidden md:flex" />
 
-			{/* Container chính: Dùng flex-nowrap để ép 1 hàng */}
+			{/* Container chính */}
 			<div className="flex-1 flex gap-4 overflow-hidden items-start">
 				{[...Array(10)].map((_, i) => (
 					<div

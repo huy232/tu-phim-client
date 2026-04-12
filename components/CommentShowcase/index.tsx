@@ -1,15 +1,38 @@
 "use client"
+
 import { AnimatePresence, motion } from "framer-motion"
 import { Autoplay, FreeMode } from "swiper/modules"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { useEffect, useState } from "react"
 import CommentCard from "./CommentCard"
 import { supabase } from "@/supabase/client"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
 
 interface Props {
 	initialComments: CommentWithProfile[]
 	initialStickers: Sticker[]
 	limit: number
+}
+
+const CardWrapper = ({
+	children,
+	isMobile,
+}: {
+	children: React.ReactNode
+	isMobile: boolean
+}) => {
+	if (isMobile) return <>{children}</>
+
+	return (
+		<motion.div
+			layout
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, scale: 0.9 }}
+		>
+			{children}
+		</motion.div>
+	)
 }
 
 const CommentShowcaseClient = ({
@@ -18,6 +41,7 @@ const CommentShowcaseClient = ({
 	limit,
 }: Props) => {
 	const [comments, setComments] = useState(initialComments)
+	const isMobile = useMediaQuery("(max-width: 1023px)")
 
 	useEffect(() => {
 		const channelName = `showcase-${Math.random().toString(36).substring(7)}`
@@ -50,6 +74,8 @@ const CommentShowcaseClient = ({
 		}
 	}, [limit])
 
+	if (isMobile === null) return null
+
 	return (
 		<section className="w-full py-8 overflow-hidden bg-linear-to-b from-transparent via-purple-500/5 to-transparent">
 			<div className="mx-auto px-4 mb-6">
@@ -63,34 +89,29 @@ const CommentShowcaseClient = ({
 
 			<div className="w-full px-4 md:px-0">
 				<Swiper
-					modules={[Autoplay, FreeMode]}
-					spaceBetween={30}
+					modules={[FreeMode]}
+					spaceBetween={20}
 					slidesPerView={"auto"}
-					freeMode={true}
-					loop={comments.length > 5}
-					autoplay={{
-						delay: 4000,
-						disableOnInteraction: false,
-					}}
+					freeMode={!isMobile}
+					loop={!isMobile && comments.length > 5}
 					breakpoints={{
-						320: { slidesPerView: 1.2 },
-						640: { slidesPerView: 2.2 },
-						1024: { slidesPerView: 3 },
+						320: { slidesPerView: 1.1 },
+						640: { slidesPerView: 1.6 },
+						1024: { slidesPerView: 2 },
+						1280: { slidesPerView: 3 },
 						1440: { slidesPerView: 4 },
 					}}
-					className="comment-swiper"
 				>
 					<AnimatePresence initial={false}>
 						{comments.map((comment) => (
 							<SwiperSlide key={comment.id} className="h-auto py-4">
-								<motion.div
-									layout
-									initial={{ opacity: 0, y: 20 }}
-									animate={{ opacity: 1, y: 0 }}
-									exit={{ opacity: 0, scale: 0.9 }}
-								>
-									<CommentCard comment={comment} stickers={initialStickers} />
-								</motion.div>
+								<CardWrapper isMobile={isMobile}>
+									<CommentCard
+										comment={comment}
+										stickers={initialStickers}
+										isMobile={isMobile}
+									/>
+								</CardWrapper>
 							</SwiperSlide>
 						))}
 					</AnimatePresence>

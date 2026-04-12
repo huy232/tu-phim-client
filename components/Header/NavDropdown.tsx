@@ -1,8 +1,10 @@
 "use client"
 import { Dropdown } from "@/assets/icons"
+import { useMediaQuery } from "@/hooks/useMediaQuery"
+import clsx from "clsx"
 import { AnimatePresence, motion } from "framer-motion"
 import Link from "next/link"
-import React, { useEffect, useState } from "react"
+import React, { useRef } from "react"
 
 interface NavItem {
 	id: string
@@ -12,81 +14,114 @@ interface NavItem {
 
 interface NavDropdownProps {
 	title: string
+	menuKey: string
 	routePrefix: string
 	isOpen: boolean
-	onToggle: () => void
+	onOpen: (key: string) => void
+	onClose: (key: string) => void
+	onToggle: (key: string) => void
 	items: NavItem[]
 }
 
 const NavDropdown = ({
 	title,
+	menuKey,
 	routePrefix,
 	isOpen,
+	onOpen,
+	onClose,
 	onToggle,
 	items,
 }: NavDropdownProps) => {
+	const isDesktop = useMediaQuery("(min-width: 1024px)")
+	const closeTimeout = useRef<NodeJS.Timeout | null>(null)
+
+	const handleMouseEnter = () => {
+		if (!isDesktop) return
+		if (closeTimeout.current) clearTimeout(closeTimeout.current)
+		onOpen(menuKey)
+	}
+
+	const handleMouseLeave = () => {
+		if (!isDesktop) return
+		closeTimeout.current = setTimeout(() => {
+			onClose(menuKey)
+		}, 120)
+	}
+
+	const handleToggle = (e: React.MouseEvent) => {
+		e.stopPropagation()
+		onToggle(menuKey)
+	}
+
 	return (
 		<li
 			className="relative list-none"
-			onMouseEnter={() => window.innerWidth >= 1024 && onToggle()}
-			onMouseLeave={() => window.innerWidth >= 1024 && onToggle()}
-			onClick={(e) => {
-				if (window.innerWidth < 1024) {
-					e.stopPropagation()
-					onToggle()
-				}
-			}}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 		>
-			<div className="flex items-center justify-between lg:justify-start gap-1 cursor-pointer select-none py-2 lg:py-1 group">
-				<span className="group-hover:text-purple-400 transition-colors uppercase tracking-widest text-sm md:text-[9px] lg:text-[10px] xl:text-[11px]">
+			{/* TRIGGER */}
+			<div
+				className="flex items-center justify-between cursor-pointer select-none py-2 group"
+				onClick={handleToggle}
+			>
+				<span className="group-hover:text-purple-400 transition-colors uppercase tracking-widest text-sm lg:text-[11px]">
 					{title}
 				</span>
-				<motion.div
-					animate={{ rotate: isOpen ? 180 : 0 }}
-					transition={{ duration: 0.3 }}
-				>
-					<Dropdown className="w-3 h-3 lg:w-4 lg:h-4 fill-current opacity-50" />
+
+				<motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
+					<Dropdown className="w-4 h-4 opacity-50" />
 				</motion.div>
 			</div>
 
+			{/* DROPDOWN */}
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
 						initial={
-							window.innerWidth < 1024
-								? { height: 0, opacity: 0 }
-								: { opacity: 0, y: 10, scale: 0.95 }
+							isDesktop
+								? { opacity: 0, y: 10, scale: 0.95 }
+								: { height: 0, opacity: 0 }
 						}
 						animate={
-							window.innerWidth < 1024
-								? { height: "auto", opacity: 1 }
-								: { opacity: 1, y: 0, scale: 1 }
+							isDesktop
+								? { opacity: 1, y: 0, scale: 1 }
+								: { height: "auto", opacity: 1 }
 						}
 						exit={
-							window.innerWidth < 1024
-								? { height: 0, opacity: 0 }
-								: { opacity: 0, y: 10, scale: 0.95 }
+							isDesktop
+								? { opacity: 0, y: 10, scale: 0.95 }
+								: { height: 0, opacity: 0 }
 						}
-						transition={{ duration: 0.3, ease: "easeInOut" }}
-						className="relative lg:absolute lg:top-full lg:right-0 z-50 lg:pt-3 w-full lg:w-max min-w-full lg:min-w-112.5 overflow-hidden"
+						className={clsx(
+							"overflow-hidden",
+							isDesktop
+								? "absolute top-full right-0 z-50 pt-3 w-max min-w-72"
+								: "w-full mt-2",
+						)}
 					>
-						<div className="hidden lg:block absolute top-0 left-0 w-full h-3" />
+						{isDesktop && (
+							<div className="absolute -top-3 left-0 right-0 h-3" />
+						)}
 
-						<div className="p-1 bg-[#0a0a0a]/95 border border-purple-500/10 lg:border-purple-500/20 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-							<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1 p-2 lg:px-4 lg:py-2">
-								{items.map((item, index) => (
-									<Link
-										key={item.id || index}
-										href={`/${routePrefix}/${item.slug}`}
-										className="relative group/item px-3 py-2 rounded-lg hover:bg-purple-500/10 transition-all flex items-center"
-										onClick={(e) => e.stopPropagation()}
-									>
-										<span className="text-[10px] lg:text-[11px] text-gray-500 lg:text-gray-400 group-hover/item:text-purple-300 transition-colors whitespace-nowrap">
+						<div className="p-2 bg-[#0a0a0a]/95 border border-purple-500/10 rounded-xl w-full">
+							<div className="max-h-72 overflow-y-auto custom-scrollbar px-2">
+								<div
+									className={clsx(
+										"grid gap-1",
+										isDesktop ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-2",
+									)}
+								>
+									{items.map((item) => (
+										<Link
+											key={item.slug}
+											href={`/${routePrefix}/${item.slug}`}
+											className="px-3 py-2 rounded-lg hover:bg-purple-500/10 text-[11px] wrap-break-word"
+										>
 											{item.name}
-										</span>
-										<div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-0 bg-purple-500 group-hover/item:h-1/2 transition-all duration-300" />
-									</Link>
-								))}
+										</Link>
+									))}
+								</div>
 							</div>
 						</div>
 					</motion.div>

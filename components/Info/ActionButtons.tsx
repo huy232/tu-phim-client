@@ -56,15 +56,15 @@ const ActionButtons = ({
 			variants={containerVariants}
 			initial="hidden"
 			animate="visible"
-			className="flex flex-wrap items-center gap-3 mt-4"
+			className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4"
 		>
 			{/* Nút Xem Ngay */}
-			<Link href={firstEpisode} className="block">
+			<Link href={firstEpisode} className="block w-full md:w-auto">
 				<motion.div
 					variants={buttonVariants}
 					whileHover="hover"
 					whileTap="tap"
-					className="relative group bg-purple-600 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest flex items-center gap-2 overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.4)] cursor-pointer"
+					className="relative group bg-purple-600 text-white font-black text-xs uppercase tracking-widest flex items-center gap-2 overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.4)] cursor-pointer w-full md:w-auto justify-center px-4 md:px-8 py-3.5 rounded-xl"
 				>
 					<PlayIcon size={16} fill="currentColor" />
 					<span className="relative z-10">Xem Ngay</span>
@@ -72,13 +72,13 @@ const ActionButtons = ({
 				</motion.div>
 			</Link>
 
-			{/* Nút Bình Luận - Thêm onClick scrollToComments */}
+			{/* Nút Bình Luận */}
 			<motion.button
 				onClick={scrollToComments}
 				variants={buttonVariants}
 				whileHover="hover"
 				whileTap="tap"
-				className="bg-white/5 hover:bg-white/10 text-white border border-white/10 px-6 py-3.5 rounded-xl font-bold text-xs uppercase flex items-center gap-2 transition-colors cursor-pointer"
+				className="bg-white/5 hover:bg-white/10 text-white border border-white/10 font-bold text-xs uppercase flex items-center gap-2 transition-colors cursor-pointer w-full md:w-auto justify-center px-4 md:px-6 py-3.5 rounded-xl"
 			>
 				<MessageSquare size={16} />
 				Bình Luận
@@ -94,7 +94,7 @@ const ActionButtons = ({
 						onClick={handleToggle}
 						disabled={loading}
 						className={clsx(
-							"p-3.5 rounded-xl border transition-all duration-300 cursor-pointer",
+							"p-3.5 rounded-xl border transition-all duration-300 cursor-pointer flex-1 md:flex-none flex items-center justify-center",
 							isFavorited
 								? "bg-pink-500 border-pink-500 text-white shadow-[0_0_15px_rgba(236,72,153,0.4)]"
 								: "bg-pink-500/10 border-pink-500/20 text-pink-500 hover:bg-pink-500 hover:text-white",
@@ -111,17 +111,18 @@ const ActionButtons = ({
 				)}
 			</FavoriteWrapper>
 
-			{/* Nút Chia Sẻ - Thêm onClick handleShare */}
+			{/* Nút Chia Sẻ */}
 			<motion.button
 				onClick={handleShare}
 				variants={buttonVariants}
 				whileHover="hover"
 				whileTap="tap"
-				className={`p-3.5 rounded-xl border transition-all duration-300 cursor-pointer ${
+				className={clsx(
+					`p-3.5 rounded-xl border transition-all duration-300 cursor-pointer flex-1 md:flex-none flex items-center justify-center`,
 					copied
 						? "bg-green-500/20 border-green-500/50 text-green-500"
-						: "bg-blue-500/10 border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white"
-				}`}
+						: "bg-blue-500/10 border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white",
+				)}
 			>
 				<motion.div whileHover={!copied ? { rotate: 15 } : {}}>
 					{copied ? <Check size={18} /> : <Share2 size={18} />}

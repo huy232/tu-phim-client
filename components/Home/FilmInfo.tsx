@@ -123,14 +123,14 @@ const FilmInfo = ({ film }: FilmProps) => {
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, delay: 0.6 }}
-				className="mt-auto mb-2 flex items-center gap-3 sm:gap-4 flex-wrap"
+				className="mt-auto mb-2 flex items-center gap-3 flex-wrap"
 			>
 				<PlayButtonAnimated filmSlug={film.slug} />
 
 				<Link
 					href={`/thong-tin/${film.slug}`}
 					className={clsx(
-						"h-12.5 px-6 flex items-center gap-2.5",
+						"h-12.5 lg:px-3 xl:px-4 flex items-center gap-2",
 						"bg-white/5 hover:bg-white/10",
 						"border border-white/10 hover:border-white/20",
 						"rounded-full backdrop-blur-md",
@@ -138,7 +138,6 @@ const FilmInfo = ({ film }: FilmProps) => {
 						"active:scale-95",
 					)}
 				>
-					{/* Icon Info đơn giản, thanh thoát */}
 					<Info className="w-4.5 h-4.5 text-white/70 group-hover:text-white transition-colors" />
 
 					<span className="font-medium text-sm sm:text-base text-white/70 group-hover:text-white transition-colors">

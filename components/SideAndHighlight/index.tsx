@@ -18,13 +18,12 @@ const SideAndHighlight = ({ items }: { items: FilmInfo[] }) => {
 		<div className="w-full space-y-6">
 			<div className="grid grid-cols-1 xl:grid-cols-12 gap-2 xl:items-stretch">
 				{/* BANNER */}
-				<div className="lg:col-span-9 order-1 lg:order-2 flex flex-col">
-					<div className="flex-1 min-h-[400px] md:min-h-[550px] relative">
+				<div className="lg:col-span-9 order-1 lg:order-2 flex flex-col h-[660px] sm:h-full">
+					<div className="flex-1 h-full min-h-[400px] md:min-h-[550px] relative">
 						<Banner film={activeFilm} />
 					</div>
 				</div>
 
-				{/* VERTICAL LIST - PHẦN CẦN SỬA */}
 				<div className="xl:col-span-3 order-2 xl:order-1 flex flex-col xl:justify-center">
 					<VerticalList
 						items={topItems}

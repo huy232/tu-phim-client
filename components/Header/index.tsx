@@ -1,12 +1,14 @@
 "use client"
+
 import Link from "next/link"
 import FilmSearch from "./FilmSearch"
 import NavDropdown from "./NavDropdown"
 import { useEffect, useState } from "react"
-import { HEADER_CATALOG, LIST_CATALOG, ROUTE } from "@/constants"
+import { LIST_CATALOG, ROUTE } from "@/constants"
 import User from "./User"
 import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
+import { Menu, X } from "lucide-react"
 
 interface HeaderProps {
 	initialData: {
@@ -20,178 +22,193 @@ const Header = ({ initialData }: HeaderProps) => {
 	const [isScrolled, setIsScrolled] = useState(false)
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-	const toggleMenu = (menuName: string) => {
-		setActiveMenu((prev) => (prev === menuName ? null : menuName))
+	const openMenu = (menu: string) => setActiveMenu(menu)
+	const closeMenu = (menu: string) => {
+		setActiveMenu((prev) => (prev === menu ? null : prev))
+	}
+	const toggleMenu = (menu: string) => {
+		setActiveMenu((prev) => (prev === menu ? null : menu))
 	}
 
 	useEffect(() => {
-		const handleScroll = () => {
-			setIsScrolled(window.scrollY > 20)
-		}
+		const handleScroll = () => setIsScrolled(window.scrollY > 20)
+
 		handleScroll()
 		window.addEventListener("scroll", handleScroll)
 		return () => window.removeEventListener("scroll", handleScroll)
 	}, [])
 
+	useEffect(() => {
+		const body = document.body
+		const scrollY = window.scrollY
+
+		if (isMobileMenuOpen) {
+			body.style.position = "fixed"
+			body.style.top = `-${scrollY}px`
+			body.style.width = "100%"
+		} else {
+			const top = body.style.top
+			body.style.position = ""
+			body.style.top = ""
+			body.style.width = ""
+
+			window.scrollTo(0, parseInt(top || "0") * -1)
+		}
+	}, [isMobileMenuOpen])
+
+	useEffect(() => {
+		if (isMobileMenuOpen) {
+			window.dispatchEvent(new Event("closeSearch"))
+		}
+	}, [isMobileMenuOpen])
+
 	return (
 		<nav
 			className={clsx(
-				"fixed top-0 w-full z-100 transition-all duration-500 px-2 md:px-6 py-1",
+				"fixed top-0 w-full z-50 transition-all duration-500 px-2 md:px-6 py-1",
 				isScrolled || isMobileMenuOpen
 					? "bg-black shadow-2xl"
 					: "bg-transparent",
 			)}
 		>
 			<div className="mx-auto flex items-center justify-between">
+				{/* MENU BUTTON */}
 				<button
-					onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-					className="lg:hidden relative z-110 px-2 py-1 group"
+					onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+					className="lg:hidden relative z-60 p-2 text-white"
 				>
-					<div className="flex flex-col justify-between">
-						<motion.span
-							animate={
-								isMobileMenuOpen
-									? { rotate: 45, y: 9, backgroundColor: "#a855f7" }
-									: { rotate: 0, y: 0, backgroundColor: "#fff" }
-							}
-							className="w-full h-0.5 rounded-full block origin-center transition-colors"
-						/>
-						<motion.span
-							animate={
-								isMobileMenuOpen ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }
-							}
-							className="w-full h-0.5 bg-white rounded-full block"
-						/>
-						<motion.span
-							animate={
-								isMobileMenuOpen
-									? { rotate: -45, y: -9, backgroundColor: "#a855f7" }
-									: { rotate: 0, y: 0, backgroundColor: "#fff" }
-							}
-							className="w-full h-0.5 rounded-full block origin-center transition-colors"
-						/>
-					</div>
+					{isMobileMenuOpen ? (
+						<X className="w-6 h-6" />
+					) : (
+						<Menu className="w-6 h-6" />
+					)}
 				</button>
 
 				{/* LOGO */}
 				<Link href="/" className="relative group flex items-center gap-2">
 					<div className="flex flex-col -space-y-1">
 						<h2 className="text-xl font-black tracking-tighter flex italic">
-							<span className="text-white group-hover:text-purple-400 transition-colors duration-300">
+							<span className="text-white group-hover:text-purple-400 transition-colors">
 								TU
 							</span>
-							<span className="text-purple-500 group-hover:text-white transition-colors duration-300">
+							<span className="text-purple-500 group-hover:text-white transition-colors">
 								PHIM
 							</span>
 						</h2>
-						<span className="text-[7px] tracking-[0.3em] text-purple-400/60 font-mono font-bold uppercase group-hover:text-white transition-colors">
+						<span className="text-[7px] tracking-[0.3em] text-purple-400/60 font-mono uppercase">
 							Cùng xem phim
 						</span>
 					</div>
 				</Link>
 
+				{/* SEARCH */}
 				<div className="hidden sm:flex items-center gap-2">
 					<FilmSearch />
 				</div>
-				<ul className="hidden lg:flex items-center gap-2 md:gap-3 lg:gap-4 xl:gap-8 text-sm md:text-[9px] lg:text-[10px] xl:text-[11px] font-medium uppercase tracking-widest text-gray-400">
-					{/* {HEADER_CATALOG.map((catalog) => (
-						<li key={catalog.slug} className="relative group">
-							<Link
-								href={catalog.slug}
-								className="hover:text-white transition-colors"
-							>
-								{catalog.title}
-							</Link>
-							<span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 transition-all group-hover:w-full" />
-						</li>
-					))} */}
+
+				{/* DESKTOP MENU */}
+				<ul className="hidden lg:flex items-center gap-4 text-sm uppercase tracking-widest text-gray-400">
 					<NavDropdown
 						title="Danh sách"
 						items={LIST_CATALOG}
 						routePrefix={ROUTE.DANH_SACH}
 						isOpen={activeMenu === "danh-sach"}
+						onOpen={() => openMenu("danh-sach")}
+						onClose={closeMenu}
 						onToggle={() => toggleMenu("danh-sach")}
+						menuKey="danh-sach"
 					/>
 					<NavDropdown
 						title="Thể loại"
 						items={initialData.genres}
 						routePrefix={ROUTE.THE_LOAI}
 						isOpen={activeMenu === "the-loai"}
+						onOpen={() => openMenu("the-loai")}
+						onClose={closeMenu}
 						onToggle={() => toggleMenu("the-loai")}
+						menuKey="the-loai"
 					/>
 					<NavDropdown
 						title="Quốc gia"
 						items={initialData.countries}
 						routePrefix={ROUTE.QUOC_GIA}
 						isOpen={activeMenu === "quoc-gia"}
+						onOpen={() => openMenu("quoc-gia")}
+						onClose={closeMenu}
 						onToggle={() => toggleMenu("quoc-gia")}
+						menuKey="quoc-gia"
 					/>
 				</ul>
 
 				<div className="hidden lg:flex items-center gap-2">
-					<User />
+					<User mode="desktop" />
 				</div>
 			</div>
 
-			{/* MOBILE */}
-
+			{/* ================= MOBILE ================= */}
 			<AnimatePresence>
 				{isMobileMenuOpen && (
-					<motion.div
-						initial={{ x: "-100%" }}
-						animate={{ x: 0 }}
-						exit={{ x: "-100%" }}
-						transition={{ type: "spring", damping: 25, stiffness: 200 }}
-						className="lg:hidden fixed inset-0 top-0 left-0 w-full h-screen bg-[#050505] border-r border-purple-500/20 z-105 shadow-2xl p-6 pt-24 overflow-y-auto"
-					>
-						<div className="space-y-4 pb-10">
-							<User />
+					<>
+						<motion.div
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							onClick={() => setIsMobileMenuOpen(false)}
+							className="fixed inset-0 bg-black/60 z-40"
+						/>
 
-							<div className="space-y-6">
-								<FilmSearch />
-								<ul className="flex flex-col gap-3 text-sm md:text-[9px] lg:text-[10px] xl:text-[11px] font-medium uppercase tracking-[0.2em] text-gray-400">
-									{/* {HEADER_CATALOG.map((catalog) => (
-										<li
-											key={catalog.slug}
-											className="border-b border-white/5 pb-2"
-										>
-											<Link
-												href={catalog.slug}
-												onClick={() => setIsMobileMenuOpen(false)}
-											>
-												{catalog.title}
-											</Link>
-										</li>
-									))} */}
-									<NavDropdown
-										title="Thể loại"
-										items={initialData.genres}
-										routePrefix={ROUTE.THE_LOAI}
-										isOpen={activeMenu === "the-loai"}
-										onToggle={() => toggleMenu("the-loai")}
-									/>
-									<NavDropdown
-										title="Quốc gia"
-										items={initialData.countries}
-										routePrefix={ROUTE.QUOC_GIA}
-										isOpen={activeMenu === "quoc-gia"}
-										onToggle={() => toggleMenu("quoc-gia")}
-									/>
-								</ul>
+						<motion.aside
+							initial={{ x: "-100%" }}
+							animate={{ x: 0 }}
+							exit={{ x: "-100%" }}
+							transition={{ type: "spring", damping: 25, stiffness: 200 }}
+							onClick={(e) => e.stopPropagation()}
+							className="fixed top-0 left-0 h-full w-full max-w-sm bg-[#050505] z-50 shadow-2xl overflow-y-auto overscroll-contain"
+						>
+							<div className="p-6 pt-24">
+								<User mode="mobile" />
+
+								<div className="mt-6 space-y-6">
+									<FilmSearch />
+
+									<ul className="flex flex-col gap-3 uppercase tracking-[0.2em] text-gray-400">
+										<NavDropdown
+											title="Danh sách"
+											items={LIST_CATALOG}
+											routePrefix={ROUTE.DANH_SACH}
+											isOpen={activeMenu === "danh-sach"}
+											onOpen={() => openMenu("danh-sach")}
+											onClose={closeMenu}
+											onToggle={() => toggleMenu("danh-sach")}
+											menuKey="danh-sach"
+										/>
+										<NavDropdown
+											title="Thể loại"
+											items={initialData.genres}
+											routePrefix={ROUTE.THE_LOAI}
+											isOpen={activeMenu === "the-loai"}
+											onOpen={() => openMenu("the-loai")}
+											onClose={closeMenu}
+											onToggle={() => toggleMenu("the-loai")}
+											menuKey="the-loai"
+										/>
+										<NavDropdown
+											title="Quốc gia"
+											items={initialData.countries}
+											routePrefix={ROUTE.QUOC_GIA}
+											isOpen={activeMenu === "quoc-gia"}
+											onOpen={() => openMenu("quoc-gia")}
+											onClose={closeMenu}
+											onToggle={() => toggleMenu("quoc-gia")}
+											menuKey="quoc-gia"
+										/>
+									</ul>
+								</div>
 							</div>
-						</div>
-					</motion.div>
+						</motion.aside>
+					</>
 				)}
 			</AnimatePresence>
-			{isMobileMenuOpen && (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					onClick={() => setIsMobileMenuOpen(false)}
-					className="lg:hidden fixed inset-0 bg-black/60 z-101"
-				/>
-			)}
 		</nav>
 	)
 }

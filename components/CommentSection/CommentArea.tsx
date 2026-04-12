@@ -70,17 +70,8 @@ const CommentArea = ({
 			}
 
 			if (data) {
-				onCommentPosted({
-					...data,
-					film_title: film.name,
-					film_slug: film.slug,
-					// Thông tin Profile
-					full_name: data.profiles?.full_name,
-					avatar_url: data.profiles?.avatar_url,
-					username: data.profiles?.username,
-				})
+				onCommentPosted(data)
 
-				// Reset form
 				if (textareaRef.current) {
 					textareaRef.current.value = ""
 					textareaRef.current.style.height = "auto"
@@ -119,41 +110,46 @@ const CommentArea = ({
 
 	return (
 		<CommentAuthGuard loading={authLoading} user={user}>
-			<div className="flex gap-4 group items-start">
-				<CommentAvatar profile={profile} />
+			<div className="flex flex-col md:flex-row gap-3 md:gap-4 items-start">
+				{/* AVATAR */}
+				<div className="shrink-0 self-center sm:self-auto">
+					<CommentAvatar profile={profile} size="md" />
+				</div>
 
-				<div className="flex-1 relative">
+				{/* INPUT AREA */}
+				<div className="flex-1 w-full min-w-0">
+					{/* PREVIEW */}
 					{previewContent && (
-						<div className="mb-3 p-4 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] animate-in fade-in slide-in-from-top-1">
+						<div className="mb-3 p-3 sm:p-4 rounded-2xl border border-dashed border-white/10 bg-white/[0.02] animate-in fade-in slide-in-from-top-1 text-[12px]">
 							<div className="text-[9px] text-purple-400 uppercase font-black mb-2 tracking-widest opacity-50">
 								Xem trước bình luận của bạn:
 							</div>
 
-							<div className="flex-1 overflow-hidden relative mb-4">
-								<div className="text-white/80 wrap-break-word flex flex-wrap items-center">
-									{renderCommentWithStickers(previewContent, stickers)}
-								</div>
+							<div className="text-white/80 break-words flex flex-wrap">
+								{renderCommentWithStickers(previewContent, stickers)}
 							</div>
 						</div>
 					)}
 
-					<div className="rounded-2xl border border-white/10 bg-white/[0.03] focus-within:border-purple-500/50 focus-within:bg-white/[0.05] transition-all">
+					{/* TEXTAREA BOX */}
+					<div className="rounded-2xl border border-white/10 bg-white/[0.03] focus-within:border-purple-500/50 focus-within:bg-white/[0.05] transition-all w-full">
 						<textarea
 							ref={textareaRef}
 							value={previewContent}
 							onChange={(e) => {
-								setPreviewContent(e.target.value) // Cập nhật preview
+								setPreviewContent(e.target.value)
 								adjustHeight()
 							}}
 							onKeyDown={(e) =>
 								e.key === "Enter" && (e.ctrlKey || e.metaKey) && handleSubmit()
 							}
 							placeholder={placeholder}
-							className="w-full p-4 text-sm text-gray-200 outline-none min-h-[100px] max-h-[400px] resize-none bg-transparent scrollbar-hide"
+							className="w-full p-3 sm:p-4 text-sm text-gray-200 outline-none min-h-[90px] sm:min-h-[100px] max-h-[400px] resize-none bg-transparent scrollbar-hide text-[12px]"
 						/>
 
-						<div className="flex items-center justify-between px-4 py-3 border-t border-white/[0.05] bg-white/[0.01]">
-							<div className="flex items-center gap-2">
+						{/* ACTION BAR */}
+						<div className="flex items-center justify-between px-3 sm:px-4 py-3 border-t border-white/[0.05] bg-white/[0.01] gap-2">
+							<div className="flex items-center gap-2 flex-wrap">
 								<CommentSpoilerButton
 									isActive={isSpoiler}
 									onClick={() => setIsSpoiler(!isSpoiler)}
@@ -167,7 +163,7 @@ const CommentArea = ({
 							<button
 								onClick={handleSubmit}
 								disabled={isSubmitting}
-								className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 disabled:bg-white/5 disabled:text-white/20 rounded-xl transition-all shadow-xl text-[11px] font-black uppercase tracking-widest"
+								className="flex items-center gap-2 px-3 sm:px-5 py-2.5  bg-purple-600 hover:bg-purple-500 disabled:bg-white/5 disabled:text-white/20 rounded-xl transition-all shadow-xl text-[11px] font-black uppercase tracking-widest shrink-0"
 							>
 								{isSubmitting ? (
 									<Loader2 size={16} className="animate-spin" />

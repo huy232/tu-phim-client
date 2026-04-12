@@ -91,7 +91,7 @@ export default async function WatchPage({ params, searchParams }: Props) {
 	const stickers = stickersResponse || []
 
 	return (
-		<main className="min-h-screen bg-[#0a0a0a] pb-12 px-4 md:px-6 pt-16">
+		<main className="min-h-screen bg-[#0a0a0a] pb-12 px-0 md:px-4 lg:px-6 pt-16">
 			<WatchFilm
 				film={watchFilmData}
 				ep={ep as string}

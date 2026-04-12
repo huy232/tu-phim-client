@@ -47,7 +47,6 @@ export default async function GenrePage({ params }: Props) {
 				color="purple"
 			/>
 
-			{/* Dữ liệu sạch, không còn bóng dáng 'any' */}
 			<AdvanceFilter
 				genres={genres}
 				countries={countries}

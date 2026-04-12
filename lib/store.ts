@@ -10,7 +10,7 @@ interface PlayerSettingsState {
 	autoNextOffset: number
 	skipIntroOffset: number
 
-	hasHydrated: boolean // 👈 thêm cái này
+	hasHydrated: boolean
 
 	setIsTheaterMode: (v: SetState<boolean>) => void
 	setIsDimmed: (v: SetState<boolean>) => void
@@ -64,7 +64,7 @@ export const usePlayerSettings = create<PlayerSettingsState>()(
 			storage: createJSONStorage(() => localStorage),
 
 			onRehydrateStorage: () => (state) => {
-				state?.setHasHydrated(true) // 👈 đây là key fix
+				state?.setHasHydrated(true)
 			},
 		},
 	),

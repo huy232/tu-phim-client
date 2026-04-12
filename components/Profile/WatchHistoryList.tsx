@@ -28,7 +28,6 @@ export default function WatchHistoryList() {
 			setIsLoading(true)
 			const response = await getGlobalWatchHistory(page, limit)
 
-			// Ép kiểu dữ liệu từ Server Action trả về
 			const data = (response.data as unknown as HistoryItem[]) || []
 
 			setHistory(data)
@@ -75,7 +74,6 @@ export default function WatchHistoryList() {
 										layout
 										className="group relative bg-[#0a0a0a] rounded-2xl transition-all duration-500 flex flex-col h-full"
 									>
-										{/* 1. Thumbnail Ngang - Giữ tỉ lệ chuẩn 16:9 */}
 										<div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/5 shadow-2xl">
 											<Image
 												src={`${IMAGE_URL}/${item.films.thumb_url}`}
@@ -95,9 +93,7 @@ export default function WatchHistoryList() {
 											</Link>
 										</div>
 
-										{/* 2. Poster Dọc & Nội dung */}
 										<div className="relative px-4 -mt-10 flex gap-4 flex-1">
-											{/* Poster nhỏ nổi lên - Cố định kích thước */}
 											<div className="relative w-20 sm:w-24 aspect-2/3 shrink-0 rounded-lg overflow-hidden border-2 border-[#0a0a0a] shadow-[0_8px_20px_rgba(0,0,0,0.8)] z-10 bg-[#121212]">
 												<Image
 													src={`${IMAGE_URL}/${item.films.poster_url}`}
@@ -107,7 +103,6 @@ export default function WatchHistoryList() {
 												/>
 											</div>
 
-											{/* Thông tin chữ - Căn chỉnh linh hoạt */}
 											<div className="flex-1 min-w-0 pt-12 pb-4 flex flex-col justify-between">
 												<div>
 													<div className="flex justify-between items-start gap-2">
@@ -154,7 +149,6 @@ export default function WatchHistoryList() {
 											</div>
 										</div>
 
-										{/* Viền Neon Glow mờ */}
 										<div className="absolute -inset-px rounded-2xl border border-white/5 group-hover:border-purple-500/20 transition-all -z-10" />
 									</motion.div>
 								)

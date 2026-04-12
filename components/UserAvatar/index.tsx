@@ -7,7 +7,7 @@ interface UserAvatarProps {
 		equippedFrame?: string | null
 		equippedFrameMask?: string | null
 	}
-	size?: "sm" | "md" | "lg" | "xl" | number
+	size?: "xs" | "sm" | "md" | "lg" | "xl" | number
 	className?: string
 }
 
@@ -17,6 +17,7 @@ export default function UserAvatar({
 	className,
 }: UserAvatarProps) {
 	const sizeMap = {
+		xs: "w-6 h-6",
 		sm: "w-10 h-10",
 		md: "w-16 h-16",
 		lg: "w-32 h-32",
@@ -39,7 +40,7 @@ export default function UserAvatar({
 				className,
 			)}
 		>
-			{/* AVATAR với MASK */}
+			{/* AVATAR / MASK */}
 			<div
 				className="absolute inset-0 z-10 w-full h-full flex items-center justify-center"
 				style={{

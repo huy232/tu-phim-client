@@ -146,7 +146,7 @@ export default function WatchFilm({
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.3, ease: "linear" }}
 					className={clsx(
-						"mx-auto w-full h-full max-w-7xl px-4 md:px-6 pb-10",
+						"mx-auto w-full h-full px-2 sm:px-4 lg:px-6 pb-10",
 						isDimmed ? "relative z-2000" : "",
 					)}
 				>
@@ -230,7 +230,6 @@ export default function WatchFilm({
 									isDimmed ? "opacity-0 pointer-events-none" : "opacity-100",
 								)}
 							>
-								{/* HEADER (🔥 bạn bị mất đoạn này trước đó) */}
 								<div className="relative border-b border-white/5 pb-6 mb-6 grid grid-cols-1 lg:grid-cols-10 gap-6 items-center mt-4">
 									<div className="space-y-3 lg:col-span-6 min-w-0">
 										<div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">
@@ -285,7 +284,7 @@ export default function WatchFilm({
 							<SideInfo film={film} isDimmed={isDimmed} />
 							<NeonRankingHeader filmType={filmTypeMap[film.type].label} />
 
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-col gap-12 pt-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-col gap-12 pt-8 px-8">
 								{film.top_type.map((top, index) => (
 									<TopCard
 										key={top._id}

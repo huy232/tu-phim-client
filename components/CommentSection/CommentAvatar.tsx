@@ -8,9 +8,10 @@ interface CommentAvatarProps {
 		equippedFrame?: string | null
 		equippedFrameMask?: string | null
 	} | null
+	size: "xs" | "sm" | "md" | "lg" | "xl"
 }
 
-const CommentAvatar = ({ profile }: CommentAvatarProps) => {
+const CommentAvatar = ({ profile, size }: CommentAvatarProps) => {
 	return (
 		<UserAvatar
 			profile={{
@@ -18,7 +19,7 @@ const CommentAvatar = ({ profile }: CommentAvatarProps) => {
 				equippedFrame: profile?.equippedFrame,
 				equippedFrameMask: profile?.equippedFrameMask,
 			}}
-			size="md"
+			size={size}
 			className="shadow-lg"
 		/>
 	)

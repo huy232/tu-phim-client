@@ -76,7 +76,6 @@ export default async function RootLayout({
 		>
 			<body className="bg-foreground text-white flex flex-col min-h-screen">
 				<AuthProvider>
-					{/* Header giờ đây sẽ nhận navData một cách danh chính ngôn thuận */}
 					<Header initialData={navData} />
 					{children}
 					<Footer />

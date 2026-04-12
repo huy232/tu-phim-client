@@ -55,7 +55,6 @@ export default function AssetInventory({
 
 	return (
 		<div className="space-y-16">
-			{/* Khung Hình */}
 			<section className="space-y-4">
 				<h3 className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">
 					Khung Hình
@@ -74,7 +73,6 @@ export default function AssetInventory({
 				</div>
 			</section>
 
-			{/* Huy Hiệu */}
 			<section className="space-y-4">
 				<h3 className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">
 					Huy Hiệu
@@ -93,7 +91,6 @@ export default function AssetInventory({
 				</div>
 			</section>
 
-			{/* Danh Hiệu (Title) */}
 			<section className="space-y-4">
 				<h3 className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-bold">
 					Danh Hiệu

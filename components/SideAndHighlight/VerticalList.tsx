@@ -12,7 +12,7 @@ const VerticalList = ({ items, activeId, setActiveId }: Props) => {
 			{items.map((film) => (
 				<div
 					key={film._id}
-					className="w-[75vw] md:w-[320px] xl:w-full shrink-0 snap-start"
+					className="w-[35vw] md:w-[320px] xl:w-full shrink-0 snap-start"
 				>
 					<FilmCardTopAnimate
 						film={film}

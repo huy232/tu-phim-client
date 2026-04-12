@@ -6,14 +6,20 @@ import clsx from "clsx"
 
 interface FilmHeaderProps {
 	comment: CommentWithProfile
+	isMobile?: boolean
 }
 
-const FilmHeader = ({ comment }: FilmHeaderProps) => {
+const FilmHeader = ({ comment, isMobile }: FilmHeaderProps) => {
 	const countries = comment.film_country || []
 	const categories = comment.film_category || []
 
 	return (
-		<div className="relative h-[280px] px-6 pt-6 flex flex-col overflow-hidden border-b border-white/5">
+		<div
+			className={clsx(
+				"relative px-6 pt-6 flex flex-col overflow-hidden border-b border-white/5",
+				"h-[280px]",
+			)}
+		>
 			<div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-110">
 				<SiteImage
 					src={`${IMAGE_URL}/${comment.film_poster || comment.film_thumbnail}`}
@@ -45,7 +51,7 @@ const FilmHeader = ({ comment }: FilmHeaderProps) => {
 
 					{/* Titles */}
 					<Link href={`/thong-tin/${comment.film_slug}`}>
-						<h3 className="text-xl font-black text-white leading-10 uppercase italic tracking-tighter group-hover:text-purple-400 transition-colors line-clamp-1">
+						<h3 className="text-base lg:text-lg xl:text-xl font-black text-white leading-10 uppercase italic tracking-tighter group-hover:text-purple-400 transition-colors line-clamp-1">
 							{comment.film_title}
 						</h3>
 						<p className="text-[10px] text-white/40 font-bold truncate uppercase mt-1">

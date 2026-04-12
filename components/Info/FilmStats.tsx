@@ -28,9 +28,9 @@ const FilmStats = ({ data }: FilmStatsProps) => {
 			initial="hidden"
 			animate="visible"
 			transition={{ staggerChildren: 0.1 }}
-			className="flex flex-col gap-4 w-full"
+			className="flex flex-col gap-3 md:gap-4 w-full"
 		>
-			<div className="grid grid-cols-2 gap-4">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 				{data.last_episode_to_air && (
 					<motion.div variants={itemVariants}>
 						<EpisodeAiringCard

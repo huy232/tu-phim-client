@@ -4,6 +4,7 @@ import { Navigation } from "swiper/modules"
 import { FilmImage } from "../ui/film-image"
 import { FilmHoverWrapper } from "../FilmHoverCard"
 import { swiperInteraction } from "@/utilities"
+import Link from "next/link"
 
 interface FilmCarouselProps {
 	items: FilmInfo[]
@@ -19,17 +20,19 @@ export default function FilmCarousel({
 	return (
 		<Swiper
 			modules={[Navigation]}
-			spaceBetween={16}
-			slidesPerView={2}
+			spaceBetween={12}
+			slidesPerView={1.2}
+			breakpoints={{
+				640: { slidesPerView: 2.2 },
+				768: { slidesPerView: 3 },
+				1024: { slidesPerView: 4 },
+				1280: { slidesPerView: 5 },
+			}}
 			navigation={{
 				nextEl: `.${nextClass}`,
 				prevEl: `.${prevClass}`,
 			}}
-			breakpoints={{
-				640: { slidesPerView: 3 },
-				1280: { slidesPerView: 5 },
-			}}
-			className="overflow-hidden py-3 w-full"
+			className="w-full"
 			onTouchStart={() => (swiperInteraction.isInteracting = true)}
 			onSliderMove={() => (swiperInteraction.isInteracting = true)}
 			onTouchEnd={() => (swiperInteraction.isInteracting = false)}
@@ -38,7 +41,10 @@ export default function FilmCarousel({
 			{items.map((film) => (
 				<SwiperSlide key={film._id}>
 					<FilmHoverWrapper film={film}>
-						<div className="flex flex-col gap-2 group cursor-pointer">
+						<Link
+							href={`/thong-tin/${film.slug}`}
+							className="flex flex-col gap-2 group cursor-pointer"
+						>
 							<div className="relative aspect-video w-full bg-white/5 rounded-xl overflow-hidden border border-white/10 group-hover:border-purple-500 transition-all">
 								<FilmImage
 									name={film.name}
@@ -59,7 +65,7 @@ export default function FilmCarousel({
 									{film.origin_name}
 								</p>
 							</div>
-						</div>
+						</Link>
 					</FilmHoverWrapper>
 				</SwiperSlide>
 			))}

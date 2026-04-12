@@ -74,7 +74,7 @@ export const ResumeToast = ({
 
 				{/* Right: Actions */}
 				<div className="flex items-center gap-1">
-					{/* Nút Close (Bỏ qua) */}
+					{/* Nút Close */}
 					<button
 						onClick={handleStartExit}
 						className="p-2 text-zinc-500 hover:text-white transition-colors rounded-full hover:bg-white/5"

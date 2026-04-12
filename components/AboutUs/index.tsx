@@ -42,7 +42,6 @@ export default function AboutPage() {
 
 	return (
 		<div className="min-h-screen bg-[#050505] text-zinc-300 py-24 px-4 overflow-hidden relative selection:bg-purple-500/30">
-			{/* 1. Spotlight Background - Linh lực theo bước chân */}
 			<motion.div
 				className="pointer-events-none fixed inset-0 z-30 opacity-50"
 				style={{
@@ -90,7 +89,6 @@ export default function AboutPage() {
 				animate="visible"
 				className="max-w-4xl mx-auto relative z-10"
 			>
-				{/* Header múa may hơn */}
 				<div className="relative mb-20">
 					<motion.div
 						variants={itemVariants}
@@ -103,11 +101,11 @@ export default function AboutPage() {
 
 					<motion.h1
 						variants={itemVariants}
-						className="text-5xl md:text-7xl font-black text-white text-center mb-8 tracking-tighter"
+						className="text-5xl md:text-7xl font-black text-white text-center mb-8 tracking-tighter leading-relaxed"
 					>
 						KHỞI NGUYÊN <br />
 						<span className="text-transparent bg-clip-text bg-linear-to-b from-purple-400 to-purple-800">
-							LINH ĐÀI
+							LINH ĐÀI TU PHIM
 						</span>
 					</motion.h1>
 
@@ -123,7 +121,6 @@ export default function AboutPage() {
 					</motion.div>
 				</div>
 
-				{/* Grid Features với hiệu ứng xịn hơn */}
 				<div className="grid md:grid-cols-2 gap-6 relative">
 					{[
 						{
@@ -157,7 +154,6 @@ export default function AboutPage() {
 							whileHover={{ y: -5 }}
 							className="group relative p-8 rounded-[2rem] bg-zinc-900/30 border border-white/5 backdrop-blur-md overflow-hidden"
 						>
-							{/* Hiệu ứng tia sáng chạy quanh border khi hover */}
 							<div className="absolute inset-0 bg-linear-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
 							<div className="relative z-10">
@@ -178,25 +174,12 @@ export default function AboutPage() {
 								</p>
 							</div>
 
-							{/* Góc decor kiểu cổ trang */}
 							<div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
 								<div className="w-8 h-8 border-t-2 border-r-2 border-white rounded-tr-lg" />
 							</div>
 						</motion.div>
 					))}
 				</div>
-			</motion.div>
-
-			{/* Footer mờ ảo */}
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 2 }}
-				className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40"
-			>
-				<p className="text-[10px] tracking-[0.5em] text-zinc-600 uppercase font-bold">
-					Thiên giới hữu hạn • Linh đài vô biên
-				</p>
 			</motion.div>
 		</div>
 	)

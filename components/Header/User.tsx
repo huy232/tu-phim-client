@@ -11,7 +11,11 @@ import Link from "next/link"
 import { calculateLevelProgress } from "@/utilities"
 import UserAvatar from "../UserAvatar"
 
-const User = () => {
+interface Props {
+	mode?: "desktop" | "mobile"
+}
+
+const User = ({ mode = "desktop" }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const { user, profile, loading, logout, allLevels } = useAuth()
 	const isMobile = useIsMobile()
@@ -50,42 +54,113 @@ const User = () => {
 
 	if (!user) return <LoginButton />
 
+	/* ================= MOBILE MODE ================= */
+	if (mode === "mobile") {
+		return (
+			<div className="w-full bg-white/5 rounded-2xl p-4 border border-white/10">
+				{/* HEADER */}
+				<div className="flex items-center gap-3 mb-4">
+					<UserAvatar
+						profile={{
+							avatar_url: user.user_metadata?.avatar_url || profile?.avatar_url,
+							equippedFrame: profile?.equippedFrame,
+							equippedFrameMask: profile?.equippedFrameMask,
+						}}
+						size="md"
+					/>
+
+					<div className="min-w-0">
+						<div
+							className="text-sm font-black truncate"
+							style={{ color: stats.color }}
+						>
+							Lv.{profile?.level || 1}
+						</div>
+						<div className="text-xs text-zinc-400 truncate">
+							{profile?.rank_title || "Phàm Nhân"}
+						</div>
+					</div>
+				</div>
+
+				{/* EXP */}
+				<div className="mb-4">
+					<div className="h-1.5 bg-white/10 rounded-full overflow-hidden border border-white/5">
+						<motion.div
+							initial={{ width: 0 }}
+							animate={{ width: `${stats.percentage}%` }}
+							className="h-full bg-linear-to-r from-purple-600 to-fuchsia-500"
+						/>
+					</div>
+					<div className="flex justify-between text-[10px] text-zinc-500 mt-1">
+						<span>
+							{stats.currentProgress} / {stats.nextLevelRequired}
+						</span>
+						<span>{Math.round(stats.percentage)}%</span>
+					</div>
+				</div>
+
+				{/* MENU */}
+				<div className="flex flex-col gap-1">
+					{menuItems.map((item, idx) => {
+						const content = (
+							<div
+								onClick={item.onClick}
+								className={clsx(
+									"flex items-center gap-3 px-3 py-2 rounded-xl text-sm transition-all cursor-pointer",
+									item.logout
+										? "text-red-400 hover:bg-red-500/10"
+										: "text-zinc-300 hover:bg-white/5",
+								)}
+							>
+								<span className="opacity-70">{item.icon}</span>
+								<span>{item.label}</span>
+							</div>
+						)
+
+						return item.logout ? (
+							<div key={idx}>{content}</div>
+						) : (
+							<Link key={idx} href={item.href || "#"}>
+								{content}
+							</Link>
+						)
+					})}
+				</div>
+			</div>
+		)
+	}
+
+	/* ================= DESKTOP MODE ================= */
 	return (
 		<div
 			className="relative py-1 mx-4"
 			onMouseEnter={() => !isMobile && setIsOpen(true)}
 			onMouseLeave={() => !isMobile && setIsOpen(false)}
 		>
-			{/* AVATAR SECTION */}
+			{/* AVATAR */}
 			<div
 				className="flex items-center gap-2 cursor-pointer group"
 				onClick={() => isMobile && setIsOpen(!isOpen)}
 			>
-				{/* SỬ DỤNG COMPONENT DÙNG CHUNG Ở ĐÂY */}
 				<UserAvatar
 					profile={{
 						avatar_url: user.user_metadata?.avatar_url || profile?.avatar_url,
 						equippedFrame: profile?.equippedFrame,
 						equippedFrameMask: profile?.equippedFrameMask,
 					}}
-					size={"sm"}
+					size="sm"
 					className="group-hover:scale-105 transition-transform duration-300"
 				/>
 
 				{!isMobile && (
-					<div
-						className={clsx(
-							"flex-col items-start leading-none",
-							"hidden xl:flex",
-						)}
-					>
+					<div className="hidden xl:flex flex-col leading-none">
 						<span
-							className="text-[11px] font-black transition-colors"
+							className="text-[11px] font-black"
 							style={{ color: stats.color }}
 						>
 							Lv.{profile?.level || 1}
 						</span>
-						<span className="text-[9px] text-zinc-500 font-medium uppercase tracking-tighter">
+						<span className="text-[9px] text-zinc-500 uppercase">
 							{profile?.rank_title || "Phàm Nhân"}
 						</span>
 					</div>
@@ -96,65 +171,49 @@ const User = () => {
 				</motion.div>
 			</div>
 
+			{/* DROPDOWN */}
 			<AnimatePresence>
 				{isOpen && (
 					<motion.div
 						initial={{ opacity: 0, y: 10, scale: 0.95 }}
 						animate={{ opacity: 1, y: 0, scale: 1 }}
 						exit={{ opacity: 0, y: 10, scale: 0.95 }}
-						className={clsx(
-							"absolute right-0 mt-2 rounded-2xl shadow-2xl p-3 z-50 border border-purple-500/20 backdrop-blur-xl bg-zinc-950/95",
-							isMobile ? "w-[200px]" : "w-56",
-						)}
+						className="absolute right-0 mt-2 w-56 rounded-2xl p-3 z-50 bg-zinc-950/95 border border-purple-500/20 backdrop-blur-xl shadow-2xl"
 					>
-						{/* TU TIÊN STATS CARD */}
+						{/* STATS */}
 						<div className="px-1 py-2 mb-2 border-b border-white/5">
 							<div className="flex items-center justify-between mb-2">
 								<div className="flex items-center gap-1.5">
 									<ShieldCheck size={14} className="text-purple-400" />
-									<span className="text-[10px] font-black text-purple-100 uppercase tracking-widest">
-										{profile?.rank_title || "Phàm Nhân"}
+									<span className="text-[10px] font-black text-purple-100 uppercase">
+										{profile?.rank_title}
 									</span>
 								</div>
-								<span className="text-[10px] font-mono text-zinc-500">
+								<span className="text-[10px] text-zinc-500">
 									Lv.{profile?.level}
 								</span>
 							</div>
 
-							{/* EXP BAR (ĐÃ CẬP NHẬT LOGIC %) */}
-							<div className="space-y-1">
-								<div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
-									<motion.div
-										initial={{ width: 0 }}
-										animate={{ width: `${stats.percentage}%` }}
-										transition={{ type: "spring", stiffness: 50 }}
-										className="h-full bg-linear-to-r from-purple-600 to-fuchsia-500"
-									/>
-								</div>
-								<div className="flex justify-between items-center text-[9px] font-medium text-zinc-500">
-									<div className="flex items-center gap-0.5">
-										<Zap size={8} className="fill-purple-500 text-purple-500" />
-										<span>
-											{/* Hiển thị số EXP thực tế trong level này: ví dụ 0 / 300 */}
-											{stats.currentProgress} / {stats.nextLevelRequired}
-										</span>
-									</div>
-									<span>{Math.round(stats.percentage)}%</span>
-								</div>
+							<div className="h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/5">
+								<motion.div
+									initial={{ width: 0 }}
+									animate={{ width: `${stats.percentage}%` }}
+									className="h-full bg-linear-to-r from-purple-600 to-fuchsia-500"
+								/>
 							</div>
 						</div>
 
+						{/* MENU */}
 						<ul className="flex flex-col gap-1">
 							{menuItems.map((item, idx) => {
-								const isLogout = item.logout
 								const content = (
 									<li
 										onClick={item.onClick}
 										className={clsx(
-											`flex items-center gap-3 px-3 py-2 text-xs transition-all cursor-pointer rounded-xl font-medium`,
-											isLogout
-												? "hover:bg-red-500/10 text-red-400 hover:text-red-500"
-												: "hover:bg-purple-500/10 text-zinc-400 hover:text-purple-400",
+											"flex items-center gap-3 px-3 py-2 text-xs rounded-xl cursor-pointer transition-all",
+											item.logout
+												? "text-red-400 hover:bg-red-500/10"
+												: "text-zinc-400 hover:bg-purple-500/10 hover:text-purple-400",
 										)}
 									>
 										<span className="opacity-70">{item.icon}</span>
@@ -162,14 +221,12 @@ const User = () => {
 									</li>
 								)
 
-								return (
-									<div key={idx}>
-										{isLogout ? (
-											content
-										) : (
-											<Link href={item.href || "#"}>{content}</Link>
-										)}
-									</div>
+								return item.logout ? (
+									<div key={idx}>{content}</div>
+								) : (
+									<Link key={idx} href={item.href || "#"}>
+										{content}
+									</Link>
 								)
 							})}
 						</ul>
@@ -179,4 +236,5 @@ const User = () => {
 		</div>
 	)
 }
+
 export default User

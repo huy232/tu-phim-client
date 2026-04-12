@@ -10,7 +10,10 @@ interface CinematicSideProps {
 
 const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 	return (
-		<div className="hidden md:flex md:col-span-7 relative h-full bg-[#0a0a0a] items-center justify-center p-12 overflow-hidden">
+		<div
+			className="hidden lg:flex lg:col-span-7 xl:col-span-7 relative h-full bg-[#0a0a0a] items-center justify-center 
+px-8 lg:px-10 xl:px-14 py-10 overflow-hidden"
+		>
 			<div className="absolute inset-0 z-0">
 				<AnimatePresence mode="wait">
 					<motion.img
@@ -33,11 +36,11 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 				<div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] z-20" />
 			</div>
 
-			<div className="relative z-30 w-full max-w-2xl">
+			<div className="relative z-30 w-full max-w-xl xl:max-w-2xl 2xl:max-w-3xl">
 				<motion.div
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
-					className="mb-8 inline-flex items-center gap-2 bg-purple-500/10 px-4 py-1.5 rounded-full border border-purple-500/20 backdrop-blur-md"
+					className="mb-6 lg:mb-8 inline-flex items-center gap-2 bg-purple-500/10 px-3 lg:px-4 py-1 rounded-full border border-purple-500/20 backdrop-blur-md"
 				>
 					<Clapperboard size={14} className="text-purple-400 animate-pulse" />
 					<span className="text-[10px] font-bold text-purple-300 uppercase tracking-[0.2em]">
@@ -45,7 +48,7 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 					</span>
 				</motion.div>
 
-				<div className="relative w-full min-h-75 flex flex-col justify-center">
+				<div className="relative w-full min-h-[280px] lg:min-h-[320px] flex flex-col justify-center">
 					<AnimatePresence mode="popLayout">
 						<motion.div
 							key={currentQuote}
@@ -56,13 +59,13 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 							className="w-full px-8 md:px-12"
 						>
 							<div className="space-y-8 relative z-10">
-								<p className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-normal font-arima italic drop-shadow-2xl">
+								<p className="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl font-bold text-white leading-relaxed font-arima italic drop-shadow-2xl">
 									<span className="inline-block bg-clip-text text-transparent bg-linear-to-br from-white via-white to-white/50">
 										{movieQuotes[currentQuote].vi}
 									</span>
 								</p>
 
-								<div className="flex items-center gap-5">
+								<div className="flex items-center gap-3 lg:gap-4">
 									<motion.div
 										initial={{ width: 0 }}
 										animate={{ width: 60 }}
@@ -70,7 +73,7 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 										className="h-px bg-linear-to-r from-purple-500 to-transparent"
 									/>
 									<div className="flex flex-col">
-										<p className="text-sm text-gray-300 font-medium tracking-[0.2em] uppercase">
+										<p className="text-xs lg:text-sm text-gray-300 font-medium tracking-[0.15em] uppercase">
 											— {movieQuotes[currentQuote].author}
 										</p>
 										<span className="text-[9px] text-gray-500 font-mono tracking-widest mt-1 opacity-50 uppercase">
@@ -83,7 +86,7 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 					</AnimatePresence>
 				</div>
 
-				<div className="mt-12 flex gap-3">
+				<div className="mt-10 flex gap-2 lg:gap-3">
 					{movieQuotes.map((_, index) => (
 						<div
 							key={index}
@@ -98,11 +101,14 @@ const CinematicSide = ({ currentQuote }: CinematicSideProps) => {
 				</div>
 			</div>
 
-			{/* Trang trí bên lề trái (Vertical Text) */}
-			<div className="absolute -left-14 top-1/2 -translate-y-1/2 vertical-text opacity-10 pointer-events-none hidden lg:block">
-				<span className="text-[10px] text-white tracking-[1.5em] uppercase -rotate-90 block whitespace-nowrap">
-					Cùng xem phim với Tu Phim
-				</span>
+			<div className="absolute left-0 lg:-left-6 xl:-left-10 2xl:-left-14 top-1/2 -translate-y-1/2 hidden lg:block pointer-events-none">
+				<div className="relative">
+					<span className="origin-center -rotate-90 block whitespace-nowrap text-[10px] lg:text-[11px] text-white/10 uppercase tracking-[0.6em]">
+						Cùng xem phim với Tu Phim
+					</span>
+
+					<div className="absolute inset-0 bg-linear-to-r from-[#0a0a0a] via-transparent to-transparent" />
+				</div>
 			</div>
 		</div>
 	)

@@ -34,7 +34,6 @@ const PaginationHeader = ({
 
 	return (
 		<div className="flex flex-col items-center gap-6 py-10 w-full border-t border-white/5 mt-10">
-			{/* Dòng 1: Điều hướng chính */}
 			<div className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
 				{/* NHÓM NÚT ĐẦU / TRƯỚC */}
 				<div className="flex items-center gap-1">
@@ -94,7 +93,6 @@ const PaginationHeader = ({
 				</div>
 			</div>
 
-			{/* Dòng 2: Thông tin & Nhập số trang */}
 			<div className="flex flex-col sm:flex-row items-center gap-6 group">
 				<p className="text-[9px] uppercase tracking-[0.3em] text-gray-500 font-medium">
 					Trang{" "}

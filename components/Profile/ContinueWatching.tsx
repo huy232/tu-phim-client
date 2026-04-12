@@ -37,7 +37,7 @@ export default function ContinueWatching({
 			</div>
 
 			{/* GRID LIST */}
-			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
 				{initialContinueWatching.map((item) => (
 					<Link
 						href={`/xem-phim/${item.film.slug}${item.episode_slug ? `?ep=${item.episode_slug}` : ""}`}
@@ -49,9 +49,10 @@ export default function ContinueWatching({
 							<SiteImage
 								src={`${IMAGE_URL}/${item.film.poster_url || item.film.thumb_url}`}
 								alt={item.film.name}
-								className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+								className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100 w-full h-full"
 								height={450}
 								width={300}
+								containerClassName="w-full h-full"
 							/>
 
 							{/* Progress Bar */}
@@ -67,7 +68,7 @@ export default function ContinueWatching({
 								<span className="bg-purple-600 text-[9px] text-white px-2 py-0.5 rounded-md font-bold shadow-lg w-fit uppercase">
 									{item.film.quality}
 								</span>
-								{/* Hiển thị thời gian cập nhật nhỏ trên Poster */}
+								{/* Hiển thị thời gian cập nhật trên Poster */}
 								<span className="bg-black/60 backdrop-blur-md text-[9px] text-zinc-300 px-2 py-0.5 rounded-md border border-white/10 w-fit flex items-center gap-1">
 									<Clock size={8} />
 									{formatDistanceToNow(new Date(item.updated_at), {
@@ -107,7 +108,7 @@ export default function ContinueWatching({
 										{formatFullTime(item.duration_seconds)}
 									</span>
 								</div>
-								{/* Dòng hiển thị ngày cụ thể bên dưới số tập */}
+								{/* Hiển thị ngày cụ thể bên dưới số tập */}
 								<div className="flex items-center gap-1 text-[9px] text-zinc-500 border-t border-white/5 pt-1.5">
 									<Calendar size={10} />
 									<span>
@@ -117,7 +118,7 @@ export default function ContinueWatching({
 								</div>
 							</div>
 
-							{/* TAGS SECTION - Tách biệt Category và Country */}
+							{/* TAGS SECTION */}
 							<div className="space-y-2">
 								{/* Categories */}
 								<div className="flex flex-wrap gap-1">

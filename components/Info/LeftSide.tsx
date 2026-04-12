@@ -6,6 +6,7 @@ import { filmStatusMap, filmTypeMap } from "@/constants"
 import AlternativeNames from "./AlternativeName"
 import TmdbExtraInfo from "./ExtraTMDBInfo"
 import TopCard from "../TopCard"
+import { CollapsibleCard } from "../ui/collapsible-card"
 
 const LeftSide = ({
 	film,
@@ -15,18 +16,20 @@ const LeftSide = ({
 	tmdbData: TMDBData | null
 }) => {
 	return (
-		<section className="col-span-12 md:col-span-4 lg:col-span-3 space-y-4">
-			<div className="relative">
-				<div className="relative aspect-2/3 w-full rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)] border-2 border-white/5 group">
+		<section className="col-span-12 lg:col-span-3 space-y-4">
+			{/* POSTER */}
+			<div className="relative max-w-[320px] mx-auto lg:max-w-none">
+				<div className="aspect-2/3 w-full rounded-2xl overflow-hidden shadow-xl border border-white/5">
 					<FilmImage
 						image_slug={film.thumb_url || film.poster_url}
 						name={film.name}
-						className="object-cover transition-transform duration-700 w-full h-full"
+						className="object-cover w-full h-full"
 						height={450}
 						width={300}
 						containerClassName="w-full h-full"
 					/>
 				</div>
+
 				<div
 					className={clsx(
 						"absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 text-md font-bold tracking-widest rounded border backdrop-blur whitespace-nowrap",
@@ -34,86 +37,98 @@ const LeftSide = ({
 						"drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]",
 						filmTypeMap[film.type].color,
 					)}
-					style={{
-						WebkitTextStroke: "0.3px rgba(0,0,0,0.5)",
-					}}
+					style={{ WebkitTextStroke: "0.3px rgba(0,0,0,0.5)" }}
 				>
-					{filmTypeMap[film.type].label}
+					{filmTypeMap[film.type].label}{" "}
 				</div>
 			</div>
 
-			<div className="mt-2 flex flex-wrap gap-2 opacity-60 mx-auto flex-center">
-				<span className="text-[10px] border border-white/10 px-3 py-1 rounded-full bg-white/5 uppercase tracking-widest">
-					{film.lang}
-				</span>
-				<span className="text-[10px] border border-white/10 px-3 py-1 rounded-full bg-white/5 uppercase tracking-widest">
+			{/* QUICK INFO */}
+			<div
+				className="flex items-center justify-center gap-2 md:gap-3 text-[10px] md:text-sm opacity-70 flex-wrap
+"
+			>
+				<span className="px-2 py-1.5 bg-purple-600 text-white text-[10px] rounded-full font-bold uppercase">
 					{film.quality}
 				</span>
+
+				<span className="px-2 py-1.5 border border-purple-500 text-white text-[10px] rounded-full font-bold uppercase">
+					{film.lang}
+				</span>
+
 				<span
 					className={clsx(
-						"text-[10px] border border-white/10 px-3 py-1 rounded-full uppercase tracking-widest",
+						"text-[10px] border border-white/10 px-3 py-1 rounded-full uppercase tracking-wide",
 						`${filmStatusMap[film.status].color}/5`,
 					)}
 				>
 					{filmStatusMap[film.status].label}
 				</span>
 			</div>
-			<InfoCard>
-				<div className="space-y-2 text-sm">
-					<div className="flex justify-between">
-						<span className="text-gray-400">Tập</span>
-						<span>{film.episode_current}</span>
-					</div>
-					<div className="flex justify-between">
-						<span className="text-gray-400">Tổng số tập</span>
-						<span>{film.episode_total}</span>
-					</div>
-					<div className="flex justify-between">
-						<span className="text-gray-400">Thời lượng</span>
-						<span>
-							{film.time ||
-								`${tmdbData?.episode_run_time.length ? tmdbData?.episode_run_time[0] : "???"} Phút`}
-						</span>
-					</div>
-					<div className="flex justify-between">
-						<span className="text-gray-400">Năm</span>
-						<span>{film.year}</span>
-					</div>
-				</div>
-			</InfoCard>
 
-			<InfoCard>
-				<div className="space-y-3">
-					<div>
-						<p className="text-xs text-gray-400 mb-1">Quốc gia</p>
-						<p className="text-sm">
-							{film.country.map((c) => c.name).join(", ")}
-						</p>
-					</div>
-
-					<div>
-						<p className="text-xs text-gray-400 mb-1">Thể loại</p>
-						<div className="flex flex-wrap gap-1">
-							{film.category.map((cat, index) => (
-								<span
-									key={`${cat.id}-${index}`}
-									className="text-[10px] px-2 py-1 bg-purple-500/10 text-purple-400 rounded"
-								>
-									{cat.name}
-								</span>
-							))}
+			{/* INFO CARD */}
+			<div className="lg:block">
+				<CollapsibleCard title="Thông tin tập phim">
+					<InfoCard>
+						<div className="space-y-2 text-sm">
+							<div className="flex justify-between">
+								<span className="text-gray-400">Tập</span>
+								<span>{film.episode_current}</span>
+							</div>
+							<div className="flex justify-between">
+								<span className="text-gray-400">Tổng</span>
+								<span>{film.episode_total}</span>
+							</div>
 						</div>
-					</div>
-				</div>
-			</InfoCard>
-			<InfoCard>
-				<TmdbExtraInfo tmdbData={tmdbData} />
-			</InfoCard>
-			<AlternativeNames names={film.alternative_names} />
+					</InfoCard>
+				</CollapsibleCard>
+			</div>
+
+			{/* EXTRA INFO */}
+			<div className="lg:block">
+				<CollapsibleCard title="Quốc gia & thể loại">
+					<InfoCard>
+						<div className="space-y-3">
+							<div>
+								<p className="text-xs text-gray-400">Quốc gia</p>
+								<p className="text-sm">
+									{film.country.map((c) => c.name).join(", ")}
+								</p>
+							</div>
+
+							<div>
+								<p className="text-xs text-gray-400">Thể loại</p>
+								<div className="flex flex-wrap gap-1">
+									{film.category.map((cat) => (
+										<span
+											key={cat.id}
+											className="text-[10px] px-2 py-1 bg-purple-500/10 text-purple-400 rounded"
+										>
+											{cat.name}
+										</span>
+									))}
+								</div>
+							</div>
+						</div>
+					</InfoCard>
+				</CollapsibleCard>
+			</div>
+
+			<div className="lg:block">
+				<CollapsibleCard title="Thông tin TMDB">
+					<TmdbExtraInfo tmdbData={tmdbData} />
+				</CollapsibleCard>
+			</div>
+
+			<div className="lg:block">
+				<CollapsibleCard title="Các tên khác">
+					<AlternativeNames names={film.alternative_names} />
+				</CollapsibleCard>
+			</div>
 
 			{film?.top_type?.length > 0 && (
-				<div>
-					<div className="relative pl-7 mb-12 group">
+				<CollapsibleCard title="Top 10 đề xuất">
+					<div className="relative pl-7 mb-10 lg:mb-12 group">
 						<div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-amber-400 via-orange-500 to-transparent shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-amberFlicker" />
 
 						<div className="absolute -left-8.5 top-1/2 -translate-y-1/2 -rotate-90 origin-center text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 whitespace-nowrap">
@@ -136,12 +151,17 @@ const LeftSide = ({
 							#10
 						</span>
 					</div>
-					<div className="flex flex-col gap-12 pt-6">
+					<div className="flex flex-col lg:flex-col max-lg:flex-row max-lg:overflow-x-auto max-lg:gap-4 max-lg:snap-x max-lg:snap-mandatory gap-5 overflow-x-auto snap-x snap-mandatory px-8 py-12 -mx-2">
 						{film.top_type.map((top, index) => (
-							<TopCard key={top._id} filmCard={top} ranking={index + 1} />
+							<div
+								key={top._id}
+								className="max-lg:min-w-[220px] max-lg:snap-start py-4"
+							>
+								<TopCard filmCard={top} ranking={index + 1} />
+							</div>
 						))}
 					</div>
-				</div>
+				</CollapsibleCard>
 			)}
 		</section>
 	)

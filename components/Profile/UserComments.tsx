@@ -15,7 +15,8 @@ import { format } from "date-fns"
 import { vi } from "date-fns/locale"
 import { getUserCommentHistory } from "@/services/binh-luan"
 import SiteImage from "../ui/site-image"
-import { IMAGE_URL } from "../../constants/index"
+import { filmTypeMap, IMAGE_URL } from "../../constants/index"
+import clsx from "clsx"
 
 export default function UserComments({ userId }: { userId: string }) {
 	const [comments, setComments] = useState<CommentWithProfile[]>([])
@@ -42,7 +43,7 @@ export default function UserComments({ userId }: { userId: string }) {
 		)
 
 	return (
-		<div className="max-w-4xl mx-auto space-y-8 py-6 px-4 md:px-0">
+		<div className="max-w-4xl mx-auto space-y-8 py-6 px-0 lg:px-4 md:px-0">
 			{/* Header */}
 			<div className="flex items-center justify-between border-b border-white/5 pb-4 px-2">
 				<div className="flex items-center gap-3">
@@ -92,9 +93,17 @@ export default function UserComments({ userId }: { userId: string }) {
 										containerClassName="w-full h-full"
 									/>
 									<div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent" />
-									<div className="absolute bottom-2 left-0 right-0 flex justify-center">
+									<div className="absolute bottom-2 left-0 right-0 flex justify-center gap-2">
 										<span className="text-[8px] font-black bg-white text-black px-2 py-0.5 rounded-sm uppercase tracking-tighter">
 											{comment.film_quality}
+										</span>
+										<span
+											className={clsx(
+												"text-[8px] font-black border px-2 py-0.5 rounded-sm uppercase tracking-tighter",
+												filmTypeMap[comment.film_type!].color,
+											)}
+										>
+											{filmTypeMap[comment.film_type!].label}
 										</span>
 									</div>
 								</div>
@@ -102,26 +111,29 @@ export default function UserComments({ userId }: { userId: string }) {
 
 							{/* Nội dung chính */}
 							<div className="flex-1 flex flex-col min-w-0">
-								<div className="flex justify-between items-start gap-4 mb-3">
-									<div className="min-w-0">
-										<h4 className="font-black text-white text-xl md:text-2xl leading-tight truncate tracking-tight group-hover:text-purple-400 transition-colors">
+								<div className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 mb-3">
+									<div className="min-w-0 flex-1">
+										<h4 className="font-black text-white text-lg md:text-2xl leading-tight wrap-break-word md:truncate tracking-tight group-hover:text-purple-400 transition-colors">
 											{comment.film_title}
 										</h4>
+
 										<div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
-											<p className="text-xs text-purple-400/80 font-bold line-clamp-1">
+											<p className="text-xs text-purple-400/80 font-bold wrap-break-word">
 												{comment.film_origin_name}
 											</p>
-											<div className="flex items-center gap-1 text-[11px] text-zinc-500 font-medium">
+
+											<div className="flex items-center gap-1 text-[11px] text-zinc-500">
 												<Calendar size={12} /> {comment.film_year}
 											</div>
+
 											{comment.film_time && (
-												<div className="flex items-center gap-1 text-[11px] text-zinc-500 font-medium">
+												<div className="flex items-center gap-1 text-[11px] text-zinc-500">
 													<Clock size={12} /> {comment.film_time}
 												</div>
 											)}
 										</div>
 									</div>
-									<div className="shrink-0 text-[10px] text-zinc-500 font-mono bg-black/40 px-3 py-1.5 rounded-full border border-white/5 shadow-xl">
+									<div className="shrink-0 self-start md:self-auto text-[10px] text-zinc-500 font-mono bg-black/40 px-2 py-1 rounded-full border border-white/5">
 										{format(new Date(comment.created_at), "HH:mm • dd/MM", {
 											locale: vi,
 										})}
@@ -148,13 +160,11 @@ export default function UserComments({ userId }: { userId: string }) {
 									))}
 								</div>
 
-								{/* Tóm tắt nội dung phim (film_content) */}
+								{/* Tóm tắt nội dung phim */}
 								<div className="relative mb-5 group/desc">
-									{/* Lớp nền "Kính mờ" (Glassmorphism) để tách biệt chữ với Poster nền */}
 									<div className="absolute inset-0 bg-black/40 backdrop-blur-md -mx-3 -my-2 rounded-xl border border-white/10 shadow-inner pointer-events-none" />
 
 									<div className="relative z-10 p-1">
-										{/* Label nhỏ để người dùng biết đây là gì */}
 										<div className="flex items-center gap-1.5 mb-1 opacity-50">
 											<div className="w-1 h-3 bg-purple-500 rounded-full" />
 											<span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">
@@ -176,7 +186,6 @@ export default function UserComments({ userId }: { userId: string }) {
 									</div>
 								</div>
 
-								{/* Bong bóng nội dung bình luận của USER */}
 								<div className="relative bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors rounded-2xl p-4 mb-6 border border-purple-500/10 shadow-inner">
 									<p className="text-sm md:text-base text-zinc-200 font-medium leading-relaxed">
 										{comment.content}
@@ -189,48 +198,46 @@ export default function UserComments({ userId }: { userId: string }) {
 								</div>
 
 								{/* Footer Actions */}
-								<div className="mt-auto flex items-center justify-between pt-2 border-t border-white/5">
-									<div className="flex items-center gap-6">
-										<div className="flex items-center gap-1.5 text-zinc-500 group/like">
+								<div className="mt-auto flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-3 border-t border-white/5">
+									<div className="flex items-center gap-4 text-xs">
+										<div className="flex items-center gap-1.5 text-zinc-500">
 											<ThumbsUp
 												size={14}
 												className={
 													comment.likes_count > 0
 														? "text-orange-500"
-														: "group-hover/like:text-zinc-300"
+														: "text-zinc-500"
 												}
 											/>
-											<span className="text-xs font-bold">
-												{comment.likes_count}
-											</span>
+											<span className="font-bold">{comment.likes_count}</span>
 										</div>
-										<div className="flex items-center gap-1.5 text-zinc-500 group/reply">
+
+										<div className="flex items-center gap-1.5 text-zinc-500">
 											<MessageCircle
 												size={14}
 												className={
 													comment.replies_count > 0
 														? "text-purple-500"
-														: "group-hover/reply:text-zinc-300"
+														: "text-zinc-500"
 												}
 											/>
-											<span className="text-xs font-bold">
-												{comment.replies_count}
-											</span>
+											<span className="font-bold">{comment.replies_count}</span>
 										</div>
 									</div>
-
-									<div className="flex gap-3">
+									<div className="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto">
 										<Link
 											href={`/thong-tin/${comment.film_slug}`}
-											className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 text-xs font-bold transition-all border border-white/5 active:scale-95"
+											className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-zinc-300 text-[11px] font-bold border border-white/5 active:scale-95"
 										>
-											<Info size={14} /> Chi tiết
+											<Info size={14} />
+											<span className="hidden sm:inline">Chi tiết</span>
 										</Link>
 										<Link
 											href={`/xem-phim/${comment.film_slug}`}
-											className="flex items-center gap-2 px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black transition-all shadow-[0_10px_20px_rgba(147,51,234,0.3)] active:scale-95"
+											className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-[11px] font-black active:scale-95"
 										>
-											<Play size={14} fill="currentColor" /> XEM NGAY
+											<Play size={14} fill="currentColor" />
+											<span className="hidden sm:inline">XEM</span>
 										</Link>
 									</div>
 								</div>

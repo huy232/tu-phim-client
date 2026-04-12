@@ -29,11 +29,11 @@ export default function FilmList({
 		"p-2 rounded-full border border-white/10 hover:bg-white/10 transition-all disabled:opacity-20 cursor-pointer shrink-0 hidden md:flex"
 
 	const normalBreakpoints = {
-		640: { slidesPerView: 3 },
-		768: { slidesPerView: 4 },
-		1024: { slidesPerView: 5 },
-		1280: { slidesPerView: 6 },
-		1536: { slidesPerView: 8 },
+		640: { slidesPerView: 2 },
+		768: { slidesPerView: 3 },
+		1024: { slidesPerView: 4 },
+		1280: { slidesPerView: 5 },
+		1536: { slidesPerView: 7 },
 	}
 
 	const sidebarBreakpoints = {

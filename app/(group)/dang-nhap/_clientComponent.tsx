@@ -95,7 +95,7 @@ const Login = () => {
 	}
 
 	return (
-		<div className="w-full h-svh grid grid-cols-1 md:grid-cols-10 bg-[#0a0a0a] overflow-hidden font-rowdies">
+		<div className="w-full h-svh grid grid-cols-1 lg:grid-cols-10 bg-[#0a0a0a] overflow-hidden font-rowdies">
 			<CinematicSide currentQuote={currentQuote} />
 
 			<div className="col-span-1 md:col-span-3 flex flex-col justify-center items-center p-8 lg:p-12 bg-[#0a0a0a] border-l border-white/5 shadow-[-20px_0px_50px_rgba(0,0,0,0.5)] z-20 relative">
@@ -184,7 +184,7 @@ const Login = () => {
 						</div>
 					</div>
 
-					<div className="space-y-4 pt-2">
+					<div className="space-y-3 pt-2">
 						<motion.button
 							whileHover={{
 								scale: 1.02,
@@ -192,12 +192,19 @@ const Login = () => {
 							}}
 							whileTap={{ scale: 0.98 }}
 							onClick={() => handleOAuthLogin("google")}
-							className="w-full flex items-center justify-start gap-4 bg-white text-black font-semibold py-3 pl-12 pr-4 rounded-xl hover:bg-neutral-100 transition-colors cursor-pointer shadow-lg font-phudu"
+							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
+		bg-white text-black font-semibold 
+		py-3 px-4 sm:pl-8 sm:pr-4 
+		rounded-xl hover:bg-neutral-100 
+		transition-colors cursor-pointer shadow-lg font-phudu"
 						>
-							<div className="w-7 flex justify-center items-center shrink-0">
-								<GoogleSVG size={26} />
+							<div className="w-6 sm:w-7 flex justify-center items-center shrink-0">
+								<GoogleSVG size={24} />
 							</div>
-							<span>Đăng nhập bằng Google</span>
+
+							<span className="text-sm sm:text-base leading-tight text-center sm:text-left">
+								Đăng nhập bằng Google
+							</span>
 						</motion.button>
 
 						<motion.button
@@ -207,12 +214,19 @@ const Login = () => {
 							}}
 							whileTap={{ scale: 0.98 }}
 							onClick={() => handleOAuthLogin("discord")}
-							className="w-full flex items-center justify-start gap-4 bg-[#5865F2] text-white font-semibold py-3 pl-12 pr-4 rounded-xl hover:bg-[#4752C4] transition-colors cursor-pointer shadow-lg font-phudu"
+							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
+		bg-[#5865F2] text-white font-semibold 
+		py-3 px-4 sm:pl-8 sm:pr-4 
+		rounded-xl hover:bg-[#4752C4] 
+		transition-colors cursor-pointer shadow-lg font-phudu"
 						>
-							<div className="w-7 flex justify-center items-center shrink-0">
-								<DiscordSVG size={26} className="fill-white" />
+							<div className="w-6 sm:w-7 flex justify-center items-center shrink-0">
+								<DiscordSVG size={24} className="fill-white" />
 							</div>
-							<span>Đăng nhập bằng Discord</span>
+
+							<span className="text-sm sm:text-base leading-tight text-center sm:text-left">
+								Đăng nhập bằng Discord
+							</span>
 						</motion.button>
 					</div>
 

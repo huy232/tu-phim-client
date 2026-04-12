@@ -27,7 +27,6 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 
 	return (
 		<div className="relative w-full rounded-3xl overflow-hidden border border-white/5 bg-zinc-900/50 backdrop-blur-xl p-8 md:p-12">
-			{/* Background Decor: Hào quang mờ ảo phía sau */}
 			<div
 				className="absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[120px] opacity-20 animate-pulse"
 				style={{ backgroundColor: stats.color }}
@@ -35,13 +34,11 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 
 			<div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-12">
 				<div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center">
-					{/* 1. Hào quang (Aura) */}
 					<div
 						className="absolute inset-2 rounded-full blur-[25px] opacity-30 animate-pulse"
 						style={{ backgroundColor: stats.color }}
 					/>
 
-					{/* 2. AVATAR - Điều chỉnh kích thước hiển thị bên trong Mask */}
 					<div
 						className="absolute inset-0 z-10 w-full h-full flex items-center justify-center"
 						style={{
@@ -65,7 +62,6 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 						/>
 					</div>
 
-					{/* 3. FRAME */}
 					{profile.equippedFrame && (
 						<div className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center">
 							<Image
@@ -80,7 +76,6 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 					)}
 				</div>
 
-				{/* KHU VỰC THÔNG TIN NHÂN VẬT */}
 				<div className="flex-1 text-center md:text-left space-y-4">
 					<div>
 						<div className="flex items-center justify-center md:justify-start gap-3 mb-1">
@@ -100,7 +95,6 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 						</div>
 					</div>
 
-					{/* THANH KINH NGHIỆM (EXP BAR) */}
 					<div className="max-w-md mx-auto md:mx-0 space-y-2">
 						<div className="flex justify-between items-end">
 							<span className="text-[11px] font-bold text-zinc-400 flex items-center gap-1">
@@ -127,7 +121,6 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 						</div>
 					</div>
 
-					{/* THỐNG KÊ NHANH */}
 					<div className="flex items-center justify-center md:justify-start gap-6 pt-2">
 						<div className="flex items-center gap-2">
 							<div className="p-2 rounded-lg bg-white/5 text-yellow-500">

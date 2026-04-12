@@ -18,24 +18,24 @@ const FilmSearch = () => {
 	const [showResults, setShowResults] = useState(false)
 	const [hoveredFilm, setHoveredFilm] = useState<Film | null>(null)
 	const [total, setTotal] = useState(0)
-	const searchRef = useRef<HTMLDivElement>(null)
 
+	const [isFocused, setIsFocused] = useState(false)
+	const [readyToShow, setReadyToShow] = useState(false)
+
+	const searchRef = useRef<HTMLDivElement>(null)
 	const debouncedKeyword = useDebounce(keyword, 1000)
 
 	useEffect(() => {
 		const handleClickOutside = (e: PointerEvent) => {
 			const path = e.composedPath()
-
 			if (!path.includes(searchRef.current!)) {
 				setShowResults(false)
+				setIsFocused(false)
 			}
 		}
 
 		document.addEventListener("pointerdown", handleClickOutside)
-
-		return () => {
-			document.removeEventListener("pointerdown", handleClickOutside)
-		}
+		return () => document.removeEventListener("pointerdown", handleClickOutside)
 	}, [])
 
 	useEffect(() => {
@@ -54,9 +54,12 @@ const FilmSearch = () => {
 
 			try {
 				const res = await fetch(
-					`/api/tim-kiem?keyword=${encodeURIComponent(debouncedKeyword)}&limit=10`,
+					`/api/tim-kiem?keyword=${encodeURIComponent(
+						debouncedKeyword,
+					)}&limit=10`,
 					{ signal: controller.signal },
 				)
+
 				const searchResult = await res.json()
 				const pagination = searchResult.data.params?.pagination
 
@@ -66,7 +69,6 @@ const FilmSearch = () => {
 				if (error instanceof Error && error.name !== "AbortError") {
 					console.error("Fetch error:", error.message)
 				}
-				return null
 			} finally {
 				setIsLoading(false)
 			}
@@ -76,18 +78,33 @@ const FilmSearch = () => {
 		return () => controller.abort()
 	}, [debouncedKeyword])
 
+	useEffect(() => {
+		if (!isTyping && results.length > 0) {
+			const t = setTimeout(() => setReadyToShow(true), 200)
+			return () => clearTimeout(t)
+		}
+		setReadyToShow(false)
+	}, [isTyping, results])
+
 	const handleSearch = (e?: React.FormEvent) => {
 		e?.preventDefault()
 		if (keyword.trim()) {
 			router.push(`${WEB_URL}/tim-kiem?keyword=${encodeURIComponent(keyword)}`)
 			setShowResults(false)
+			setIsFocused(false)
 		}
 	}
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setKeyword(e.target.value)
+		const value = e.target.value
+		setKeyword(value)
 		setIsTyping(true)
-		setShowResults(true)
+
+		if (value.trim().length >= 2) {
+			setShowResults(true)
+		} else {
+			setShowResults(false)
+		}
 	}
 
 	const isProcessing = isTyping || isLoading || keyword !== debouncedKeyword
@@ -98,20 +115,33 @@ const FilmSearch = () => {
 		!isProcessing && keyword.trim() !== "" && results.length === 0
 
 	const showViewAll = total > results.length
+
+	const shouldShowDropdown =
+		showResults &&
+		isFocused &&
+		keyword.trim().length >= 2 &&
+		(readyToShow || isProcessing || showNotFound)
+
 	return (
 		<div ref={searchRef} className="w-full lg:mx-4 relative">
 			<form onSubmit={handleSearch} className="relative z-60">
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 p-1 text-gray-400">
 					<SearchIcon size={16} />
 				</div>
+
 				<input
 					value={keyword}
 					onChange={handleInputChange}
-					onFocus={() => setShowResults(true)}
+					onFocus={() => {
+						setIsFocused(true)
+						if (keyword.length >= 2) setShowResults(true)
+					}}
+					onBlur={() => setIsFocused(false)}
 					className="w-full text-xs font-light rounded-md bg-white/10 px-10 h-9 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all"
 					type="text"
 					placeholder="Tìm phim..."
 				/>
+
 				{isProcessing && keyword && (
 					<motion.div
 						initial={{ opacity: 0 }}
@@ -124,7 +154,7 @@ const FilmSearch = () => {
 			</form>
 
 			<AnimatePresence>
-				{showResults && keyword.trim() !== "" && (
+				{shouldShowDropdown && (
 					<motion.div
 						initial={{ opacity: 0, y: -10, scale: 0.95 }}
 						animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -155,6 +185,7 @@ const FilmSearch = () => {
 												<div className="relative h-px w-full my-2 bg-linear-to-r from-transparent via-white/10 to-transparent">
 													<div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-500/20 to-transparent blur-sm"></div>
 												</div>
+
 												<motion.button
 													whileHover={{
 														backgroundColor: "rgba(168, 85, 247, 0.1)",

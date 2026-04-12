@@ -62,7 +62,7 @@ export const getReplies = async (parentId: string, page = 1, limit = 5) => {
 		.from("comment_with_stats")
 		.select("*")
 		.eq("parent_id", parentId)
-		.order("created_at", { ascending: true }) // Phản hồi nên để ascending để đọc theo luồng
+		.order("created_at", { ascending: true })
 		.range(from, to)
 }
 
@@ -78,12 +78,12 @@ export const postComment = async (payload: {
 	is_spoiler?: boolean
 }) => {
 	try {
-		// A. Đảm bảo phim đã có trong DB
-
 		const supabase = await createClient()
 
+		// 1. Đảm bảo phim đã tồn tại
 		const internalFilmId = await ensureFilmExists(supabase, payload.film)
-		// B. Insert comment với film_id là UUID
+
+		// 2. Insert và Select kèm Relation
 		const { data: insertedData, error: insertError } = await supabase
 			.from("comments")
 			.insert([
@@ -96,19 +96,52 @@ export const postComment = async (payload: {
 					is_spoiler: payload.is_spoiler,
 				},
 			])
-			.select("id") // Chỉ lấy ID
+			.select(
+				`
+    *,
+    profiles (
+      full_name,
+      avatar_url,
+      username,
+      exp,
+      level
+    )
+  `,
+			)
 			.single()
 
 		if (insertError) throw insertError
-		const { data, error } = await supabase
-			.from("comment_with_stats")
-			.select("*")
-			.eq("id", insertedData.id)
-			.single()
 
-		return { data, error }
+		if (!insertedData.profiles) {
+			console.error("Không tìm thấy profile cho user_id:", payload.user_id)
+		}
+
+		const { profiles, ...commentData } = insertedData
+
+		const formattedData = {
+			...commentData,
+			full_name: profiles?.full_name || "Thành viên mới",
+			avatar_url: profiles?.avatar_url || null,
+			username: profiles?.username || "user",
+			exp: profiles?.exp || 0,
+			level: profiles?.level || 1,
+
+			// Các trường khác...
+			film_title: payload.film.name,
+			film_slug: payload.film.slug,
+			film_poster: payload.film.poster_url,
+			film_thumbnail: payload.film.thumb_url,
+
+			replies_count: 0,
+			likes_count: 0,
+			dislikes_count: 0,
+			user_interaction_type: null,
+		}
+
+		return { data: formattedData, error: null }
 	} catch (error: unknown) {
 		const message = error instanceof Error ? error.message : String(error)
+		console.error("Lỗi đăng bình luận:", message)
 		return { data: null, error: message }
 	}
 }

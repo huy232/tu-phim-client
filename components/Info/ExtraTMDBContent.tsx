@@ -45,11 +45,6 @@ const ExtraTMDBContent = ({
 }) => {
 	if (!tmdbData) return null
 
-	const itemVariants = {
-		hidden: { opacity: 0, y: 20 },
-		visible: { opacity: 1, y: 0 },
-	}
-
 	return (
 		<motion.div
 			initial="hidden"
@@ -57,7 +52,6 @@ const ExtraTMDBContent = ({
 			transition={{ staggerChildren: 0.05 }}
 			className="mt-8 space-y-6"
 		>
-			{/* Header tiêu đề */}
 			<div className="flex items-center justify-between px-1">
 				<h2 className="text-sm font-black uppercase text-white/50 tracking-[0.2em] flex items-center gap-2">
 					<span className="w-8 h-px bg-purple-500/50" />
@@ -164,10 +158,8 @@ const ExtraTMDBContent = ({
 					</StatCard>
 				</div>
 
-				{/* CỘT 2: Trạng thái Đặc quyền (Hightlight) */}
 				<div className="space-y-4">
 					<StatCard className="h-full flex flex-col justify-between relative overflow-hidden group">
-						{/* Background Decoration */}
 						<Gem className="absolute -right-4 -bottom-4 w-24 h-24 text-purple-500/10 rotate-12 group-hover:scale-110 transition-transform" />
 
 						<div>

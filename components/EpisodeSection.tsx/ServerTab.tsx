@@ -16,7 +16,7 @@ const ServerTab = ({
 	activeServer,
 }: ServerTabProps) => {
 	return (
-		<div className="flex flex-wrap gap-2 mt-6 mb-2">
+		<div className="flex gap-2 mt-6 mb-2 flex-nowrap overflow-x-auto md:flex-wrap md:overflow-visible py-4 md:pb-0 scrollbar-hide">
 			{episodes.map((server) => {
 				const uniqueKey = `${server.server_source}-${server.server_type}-${server.server_name}`
 
@@ -33,7 +33,11 @@ const ServerTab = ({
 							setActiveChunk(0)
 						}}
 						className={clsx(
-							"px-4 py-2 rounded-lg text-xs font-bold border transition-all flex items-center gap-2",
+							`
+					flex items-center gap-2 whitespace-nowrap
+					px-4 py-2 rounded-full text-xs font-bold border
+					transition-all shrink-0
+					`,
 							isActive
 								? "bg-white/10 border-purple text-purple shadow-[0_0_15px_rgba(168,85,247,0.2)]"
 								: "bg-white/5 border-white/10 text-gray-500 hover:text-white",

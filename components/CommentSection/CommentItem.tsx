@@ -105,7 +105,7 @@ const CommentItem = ({
 		<div className={clsx("group/item", isReply ? "mt-6" : "pt-2")}>
 			<div className="flex gap-4">
 				<div className="flex flex-col items-center">
-					<CommentAvatar profile={authorProfile} />
+					<CommentAvatar profile={authorProfile} size="xs" />
 					{!isReply && comment.replies_count > 0 && (
 						<div className="w-[2px] flex-1 bg-gradient-to-b from-white/10 to-transparent mt-2 mb-1" />
 					)}

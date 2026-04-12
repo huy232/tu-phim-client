@@ -4,6 +4,7 @@ import { FilmHoverWrapper } from "../FilmHoverCard"
 import { FilmImage } from "../ui/film-image"
 import { getRankStyle } from "@/constants/rankStyle"
 import clsx from "clsx"
+import Link from "next/link"
 
 const TopCard = ({
 	filmCard,
@@ -21,7 +22,10 @@ const TopCard = ({
 	return (
 		<div className="w-full relative group isolate">
 			<FilmHoverWrapper film={filmCard}>
-				<div className="flex flex-col gap-3 cursor-pointer relative">
+				<Link
+					href={`/thong-tin/${filmCard.slug}`}
+					className="flex flex-col gap-3 cursor-pointer relative"
+				>
 					<motion.div
 						initial={{ x: isRight ? 20 : -20, opacity: 0, scale: 0.9 }}
 						whileInView={{ x: 0, opacity: 1, scale: 1 }}
@@ -32,8 +36,9 @@ const TopCard = ({
 						}}
 						className={clsx(
 							"absolute -top-12 select-none pointer-events-none z-0",
-							isRight ? "-right-10" : "-left-16",
+							isRight ? "-right-10" : "-left-10",
 							style.glow,
+							"hidden lg:block",
 						)}
 					>
 						<span
@@ -87,7 +92,7 @@ const TopCard = ({
 							{filmCard.origin_name}
 						</p>
 					</div>
-				</div>
+				</Link>
 			</FilmHoverWrapper>
 		</div>
 	)

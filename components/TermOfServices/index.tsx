@@ -50,7 +50,6 @@ const TERMS = [
 export default function TermsOfService() {
 	return (
 		<div className="min-h-screen bg-[#050505] text-zinc-400 py-20 px-4 relative overflow-hidden">
-			{/* Background Decor - Vệt sáng thanh tao */}
 			<div className="absolute top-0 right-0 w-[300px] h-[600px] bg-purple-600/5 blur-[120px] rounded-full pointer-events-none" />
 
 			<motion.div
@@ -82,7 +81,6 @@ export default function TermsOfService() {
 							whileHover={{ x: 10 }}
 							className="group relative p-1 rounded-2xl transition-all duration-500"
 						>
-							{/* Hiệu ứng viền phát sáng khi hover */}
 							<div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl blur-xl transition-opacity" />
 
 							<div className="relative bg-zinc-900/40 backdrop-blur-md border border-white/5 p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-start">

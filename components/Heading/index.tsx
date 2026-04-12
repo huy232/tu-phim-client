@@ -25,7 +25,7 @@ function NewestSeriesHeading() {
 
 function AddictionSeriesHeading() {
 	return (
-		<div className="relative group cursor-default py-8 flex flex-col items-center justify-center overflow-hidden w-full">
+		<div className="relative group cursor-default py-4 flex flex-col items-center justify-center overflow-hidden w-full">
 			<div
 				className="absolute inset-0 opacity-40"
 				style={{
@@ -87,7 +87,6 @@ function NewestSingleHeading() {
 				</p>
 			</div>
 
-			{/* Thanh Bar đổ từ trên xuống với hiệu ứng Gradient gắt hơn */}
 			<div className="h-12 w-1.5 bg-linear-to-t from-red-600 via-orange-500 to-yellow-400 rounded-full shadow-[0_0_15px_rgba(234,88,12,0.4)] group-hover:rotate-12 transition-all duration-500" />
 		</div>
 	)
@@ -98,7 +97,7 @@ function TopPeakSingleHeading() {
 
 	return (
 		<div
-			className="group cursor-default pb-2 flex flex-col items-end mr-4 md:mr-10 relative"
+			className="group cursor-default pb-2 flex flex-col items-end md:mr-10 relative"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
@@ -250,7 +249,9 @@ const AnimatedSectionHeader = ({
 			)}
 		>
 			{/* ===== VIDEO BACKGROUND ===== */}
-			<FadeVideo videoArray={videos} />
+			<div className="hidden lg:block">
+				<FadeVideo videoArray={videos} />
+			</div>
 
 			{/* ===== GRADIENT OVERLAY ===== */}
 			<div
@@ -345,7 +346,7 @@ function DubbedHeading() {
 
 				<div className="absolute inset-0 backdrop-blur-[2px] mask-[radial-gradient(ellipse_at_center,transparent_50%,black_100%)] pointer-events-none" />
 
-				<div className="absolute inset-0 flex items-center justify-center gap-1 opacity-15">
+				<div className="hidden lg:flex absolute inset-0 items-center justify-center gap-1 opacity-15">
 					{bars.map((bar, i) => (
 						<span
 							key={i}

@@ -28,7 +28,7 @@ const CompanyLogo = ({
 									width={80}
 									height={20}
 									loading="lazy"
-									// containerClassName="w-full h-full"
+									containerClassName="w-full h-full"
 								/>
 							) : (
 								<span className="text-[10px] text-gray-500 font-medium leading-none text-center max-w-25 block">

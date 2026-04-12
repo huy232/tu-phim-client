@@ -27,7 +27,6 @@ const FilmCardTopAnimate = ({
 					: "bg-white/5 border-transparent hover:bg-white/10 hover:border-white/20",
 			)}
 		>
-			{/* 1. KHỐI ẢNH */}
 			<div
 				className={clsx(
 					"relative shrink-0 overflow-hidden",
@@ -59,7 +58,7 @@ const FilmCardTopAnimate = ({
 			>
 				<h4
 					className={clsx(
-						"font-semibold line-clamp-1 transition-colors",
+						"font-semibold line-clamp-2 md:line-clamp-1 transition-colors",
 						isActive
 							? "text-purple-400"
 							: "text-white group-hover:text-purple-300",

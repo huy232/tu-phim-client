@@ -29,6 +29,7 @@ const MediaGallery = ({
 
 	const nextClass = "next-gallery-btn"
 	const prevClass = "prev-gallery-btn"
+
 	const btnStyles =
 		"p-2 rounded-full border border-white/10 hover:bg-white/10 transition-all disabled:opacity-20 cursor-pointer shrink-0 hidden md:flex"
 
@@ -36,7 +37,7 @@ const MediaGallery = ({
 		(e?: React.MouseEvent) => {
 			e?.stopPropagation()
 			setSelectedIndex((prev) =>
-				prev !== null && prev < allMedia.length - 1 ? prev + 1 : 0,
+				prev !== null ? (prev + 1) % allMedia.length : 0,
 			)
 		},
 		[allMedia.length],
@@ -46,53 +47,43 @@ const MediaGallery = ({
 		(e?: React.MouseEvent) => {
 			e?.stopPropagation()
 			setSelectedIndex((prev) =>
-				prev !== null && prev > 0 ? prev - 1 : allMedia.length - 1,
+				prev !== null ? (prev - 1 + allMedia.length) % allMedia.length : 0,
 			)
 		},
 		[allMedia.length],
 	)
 
+	const close = useCallback(() => setSelectedIndex(null), [])
+
+	/* lock scroll */
 	useEffect(() => {
 		if (selectedIndex === null) return
 
-		const scrollBarWidth =
-			window.innerWidth - document.documentElement.clientWidth
-		const body = document.body
-		const html = document.documentElement
-
-		body.classList.add("lock-scroll", "no-scrollbar")
-		html.classList.add("no-scrollbar")
-		body.style.paddingRight = `${scrollBarWidth}px`
-
-		const preventDefault = (e: Event) => e.preventDefault()
-		window.addEventListener("wheel", preventDefault, { passive: false })
-		window.addEventListener("touchmove", preventDefault, { passive: false })
+		document.body.style.overflow = "hidden"
 
 		return () => {
-			body.classList.remove("lock-scroll", "no-scrollbar")
-			html.classList.remove("no-scrollbar")
-			body.style.paddingRight = ""
-
-			window.removeEventListener("wheel", preventDefault)
-			window.removeEventListener("touchmove", preventDefault)
+			document.body.style.overflow = ""
 		}
 	}, [selectedIndex])
 
+	/* keyboard */
 	useEffect(() => {
 		const handleKey = (e: KeyboardEvent) => {
 			if (selectedIndex === null) return
-			if (e.key === "Escape") setSelectedIndex(null)
+			if (e.key === "Escape") close()
 			if (e.key === "ArrowRight") handleNext()
 			if (e.key === "ArrowLeft") handlePrev()
 		}
+
 		window.addEventListener("keydown", handleKey)
 		return () => window.removeEventListener("keydown", handleKey)
-	}, [handleNext, handlePrev, selectedIndex])
+	}, [selectedIndex, handleNext, handlePrev, close])
 
 	if (!allMedia.length) return null
 
 	return (
-		<div className="space-y-6 mt-10 overflow-visible">
+		<div className="space-y-6 mt-10">
+			{/* HEADER */}
 			<div className="flex items-center justify-between px-1">
 				<h2 className="text-xl font-black uppercase text-white italic flex items-center gap-3">
 					<span className="bg-purple-600 w-1.5 h-6 shadow-[0_0_15px_#a855f7]" />
@@ -101,16 +92,14 @@ const MediaGallery = ({
 				<span className="text-xs text-gray-400">{allMedia.length} ảnh</span>
 			</div>
 
-			<div className="flex items-center gap-3 relative group/container">
-				<button className={clsx(prevClass, btnStyles, "z-30")}>
+			{/* GRID */}
+			<div className="flex items-center gap-3 relative">
+				<button className={clsx(prevClass, btnStyles)}>
 					<BackNavigateIcon size={20} />
 				</button>
 
 				<Swiper
-					grid={{
-						rows: 3,
-						fill: "row",
-					}}
+					grid={{ rows: 3, fill: "row" }}
 					slidesPerView={3}
 					breakpoints={{
 						640: { slidesPerView: 2 },
@@ -120,19 +109,12 @@ const MediaGallery = ({
 					spaceBetween={15}
 					modules={[Grid, Navigation, FreeMode]}
 					navigation={{ nextEl: `.${nextClass}`, prevEl: `.${prevClass}` }}
-					className="w-full py-4 px-1 overflow-hidden"
+					className="w-full py-4 px-1"
 				>
 					{allMedia.map((img, idx) => (
-						<SwiperSlide
-							key={idx}
-							style={{
-								width: `calc(${180 * (img.aspect_ratio || 1.5)}px)`,
-								height: "180px",
-							}}
-						>
+						<SwiperSlide key={idx}>
 							<motion.div
-								transition={{ type: "spring", stiffness: 300, damping: 20 }}
-								className="cursor-pointer relative aspect-video w-full group overflow-hidden hover:border-purple/70 hover:brightness-110 border-2 rounded border-white/10 hover:shadow-md duration-300 linear"
+								className="cursor-pointer aspect-video rounded border border-white/10 overflow-hidden hover:border-purple-500/60 transition"
 								onClick={() => setSelectedIndex(idx)}
 							>
 								<WebImage
@@ -140,81 +122,77 @@ const MediaGallery = ({
 									name={img.file_path}
 									height={img.height}
 									width={img.width}
-									className="h-full object-cover group-hover:scale-125 duration-300 linear"
+									className="h-full w-full object-cover hover:scale-110 transition"
 								/>
 							</motion.div>
 						</SwiperSlide>
 					))}
 				</Swiper>
 
-				<button className={clsx(nextClass, btnStyles, "z-30")}>
+				<button className={clsx(nextClass, btnStyles)}>
 					<NextNavigateIcon size={20} />
 				</button>
 			</div>
 
+			{/* MODAL */}
 			<AnimatePresence>
 				{selectedIndex !== null && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className="fixed inset-0 z-[999] bg-black/95 backdrop-blur-xl flex items-center justify-center select-none"
-						onClick={() => setSelectedIndex(null)}
-						style={{ touchAction: "none" }}
+						className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center"
+						onClick={close}
 					>
+						{/* LEFT */}
 						<button
 							onClick={handlePrev}
-							className="cursor-pointer absolute left-4 md:left-10 p-4 z-50 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all group"
+							className="absolute left-4 md:left-10 p-3 text-white/60 hover:text-white"
 						>
-							<BackNavigateIcon size={40} />
+							<BackNavigateIcon size={36} />
 						</button>
 
+						{/* IMAGE */}
 						<motion.div
 							key={selectedIndex}
-							initial={{ x: 50, opacity: 0 }}
-							animate={{ x: 0, opacity: 1 }}
-							exit={{ x: -50, opacity: 0 }}
-							className="relative max-w-[90vw] max-h-[85vh] flex items-center justify-center"
+							initial={{ scale: 0.9, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.95, opacity: 0 }}
+							className="relative max-w-[92vw] max-h-[85vh]"
 							onClick={(e) => e.stopPropagation()}
 						>
 							<SiteImage
 								src={`${TMDB_IMAGE_URL}/original${allMedia[selectedIndex].file_path}`}
-								alt={"Media"}
+								alt="media"
 								width={allMedia[selectedIndex].width}
 								height={allMedia[selectedIndex].height}
-								className="max-w-[90vw] max-h-[80vh] object-contain rounded-lg shadow-2xl"
-								containerClassName="w-full h-full"
+								className="max-h-[85vh] object-contain rounded-xl"
 							/>
+
+							{/* COUNTER */}
+							<div className="absolute top-3 left-1/2 -translate-x-1/2 text-xs px-3 py-1 rounded-full bg-black/40 border border-white/10 text-white/80 backdrop-blur">
+								{selectedIndex + 1} / {allMedia.length}
+							</div>
+
+							{/* CLOSE */}
+							<button
+								onClick={close}
+								className="absolute top-3 right-3 text-white/60 hover:text-white text-lg"
+							>
+								✕
+							</button>
 						</motion.div>
 
+						{/* RIGHT */}
 						<button
 							onClick={handleNext}
-							className="cursor-pointer absolute right-4 md:right-10 p-4 z-50 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all"
+							className="absolute right-4 md:right-10 p-3 text-white/60 hover:text-white"
 						>
-							<NextNavigateIcon size={40} />
+							<NextNavigateIcon size={36} />
 						</button>
-
-						<div className="absolute mt-20 top-0 w-full p-6 flex justify-between items-center bg-linear-to-b from-black/50 to-transparent">
-							<div className="text-white/80 font-medium bg-black/20 px-4 py-2 rounded backdrop-blur-md border border-white/30">
-								Ảnh {selectedIndex + 1}{" "}
-								<span className="text-white/40 mx-1">/</span> {allMedia.length}
-							</div>
-							<button
-								onClick={() => setSelectedIndex(null)}
-								className="cursor-pointer py-1 px-2 rounded bg-white/10 hover:bg-red-500/50 text-white transition-all backdrop-blur-md border border-white/10"
-							>
-								✕ Đóng
-							</button>
-						</div>
 					</motion.div>
 				)}
 			</AnimatePresence>
-
-			<style jsx global>{`
-				.swiper-slide {
-					height: auto !important;
-				}
-			`}</style>
 		</div>
 	)
 }

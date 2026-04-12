@@ -28,61 +28,64 @@ const CommentActions = ({
 	onDeleteClick,
 	isDeleting,
 }: Props) => (
-	<div className="flex items-center gap-6 mt-3 px-1">
-		{/* NÚT LIKE */}
-		<button
-			onClick={onLikeClick}
-			className={clsx(
-				"flex items-center gap-2 text-[10px] font-black transition-colors uppercase tracking-widest group",
-				isLiked ? "text-red-500" : "text-white/20 hover:text-red-500",
-			)}
-		>
-			<span>Ưng</span>
-			<Heart
-				size={13}
-				fill={isLiked ? "currentColor" : "none"}
-				className="group-hover:scale-110 transition-transform"
-			/>
-			{likes || 0}
-		</button>
+	<div className="mt-3 px-1 flex flex-wrap items-center gap-x-4 gap-y-2">
+		{/* LEFT ACTIONS */}
+		<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+			{/* LIKE */}
+			<button
+				onClick={onLikeClick}
+				className={clsx(
+					"flex items-center gap-1 text-[10px] font-black uppercase tracking-widest",
+					isLiked ? "text-red-500" : "text-white/30 hover:text-red-500",
+				)}
+			>
+				<span className="hidden sm:inline">Ưng</span>
+				<Heart
+					size={13}
+					fill={isLiked ? "currentColor" : "none"}
+					className="transition-transform"
+				/>
+				{likes || 0}
+			</button>
 
-		{/* NÚT DISLIKE */}
-		<button
-			onClick={onDislikeClick}
-			className={clsx(
-				"flex items-center gap-2 text-[10px] font-black transition-colors uppercase tracking-widest group",
-				isDisliked ? "text-orange-500" : "text-white/20 hover:text-orange-500",
-			)}
-		>
-			<span>Chê</span>
-			<ThumbsDown
-				size={13}
-				fill={isDisliked ? "currentColor" : "none"}
-				className="group-hover:scale-110 transition-transform"
-			/>
-			{dislikes || 0}
-		</button>
+			{/* DISLIKE */}
+			<button
+				onClick={onDislikeClick}
+				className={clsx(
+					"flex items-center gap-1 text-[10px] font-black uppercase tracking-widest",
+					isDisliked
+						? "text-orange-500"
+						: "text-white/30 hover:text-orange-500",
+				)}
+			>
+				<span className="hidden sm:inline">Chê</span>
+				<ThumbsDown size={13} />
+				{dislikes || 0}
+			</button>
 
-		{/* NÚT PHẢN HỒI */}
-		<button
-			onClick={onReplyClick}
-			className={clsx(
-				"flex items-center gap-2 text-[10px] font-black transition-colors uppercase tracking-widest",
-				isReplyActive
-					? "text-purple-400"
-					: "text-white/20 hover:text-purple-400",
-			)}
-		>
-			<MessageCircle size={13} /> Phản hồi
-		</button>
+			{/* REPLY */}
+			<button
+				onClick={onReplyClick}
+				className={clsx(
+					"flex items-center gap-1 text-[10px] font-black uppercase tracking-widest",
+					isReplyActive
+						? "text-purple-400"
+						: "text-white/30 hover:text-purple-400",
+				)}
+			>
+				<MessageCircle size={13} />
+				<span className="hidden sm:inline">Phản hồi</span>
+			</button>
+		</div>
 
+		{/* DELETE */}
 		{canDelete && (
 			<button
 				onClick={onDeleteClick}
 				disabled={isDeleting}
 				className={clsx(
-					"flex items-center gap-2 text-[10px] font-black uppercase tracking-widest ml-auto transition-colors",
-					isDeleting ? "text-white/5" : "text-white/10 hover:text-red-500",
+					"ml-auto sm:ml-0 flex items-center gap-1 text-[10px] font-black uppercase tracking-widest",
+					isDeleting ? "text-white/10" : "text-white/20 hover:text-red-500",
 				)}
 			>
 				{isDeleting ? (
@@ -90,7 +93,9 @@ const CommentActions = ({
 				) : (
 					<Trash2 size={13} />
 				)}
-				<span>{isDeleting ? "Đang xóa..." : "Xóa"}</span>
+				<span className="hidden sm:inline">
+					{isDeleting ? "Đang xóa..." : "Xóa"}
+				</span>
 			</button>
 		)}
 	</div>

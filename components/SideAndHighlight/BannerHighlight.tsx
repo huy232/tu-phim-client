@@ -39,11 +39,9 @@ type YTPlayer = {
 
 const BannerHighlight = ({
 	film,
-	isDesktop,
 	youtubeId,
 }: {
 	film: FilmInfo
-	isDesktop: boolean
 	youtubeId: string | null
 }) => {
 	const playerRef = useRef<YTPlayer | null>(null)
@@ -116,11 +114,11 @@ const BannerHighlight = ({
 			/>
 
 			{/* ===== VIDEO ===== */}
-			{isDesktop && youtubeId && !hasError && (
+			{youtubeId && !hasError && (
 				<motion.div
 					animate={{ opacity: videoReady ? 1 : 0 }}
 					transition={{ duration: 0.6 }}
-					className="absolute inset-0 pointer-events-none"
+					className="absolute inset-0 pointer-events-none hidden lg:block"
 				>
 					<YouTube
 						videoId={youtubeId}
@@ -156,14 +154,15 @@ const BannerHighlight = ({
 					animate={{ opacity: 1, x: 0 }}
 					exit={{ opacity: 0, x: 40 }}
 					transition={{ duration: 0.5 }}
-					className="absolute bottom-6 left-1/2 -translate-x-1/2 xl:translate-x-40 xl:bottom-auto xl:top-1/2 xl:-translate-y-1/2 z-30 w-[80%] xl:w-75"
+					className="absolute bottom-4 left-1/2 -translate-x-1/2 lg:top-1/2 lg:left-auto lg:-right-28 lg:bottom-auto lg:-translate-y-1/2 w-[92%] sm:w-[85%] md:w-[70%] lg:w-80 z-20"
 				>
 					<motion.div
 						variants={containerVariants}
 						initial="hidden"
 						animate="show"
 						className={clsx(
-							"relative p-5 rounded-2xl overflow-hidden",
+							"relative overflow-hidden rounded-2xl",
+							"p-3 sm:p-4 lg:p-5",
 							"bg-white/8 backdrop-blur-[20px]",
 							"border border-white/20",
 							"shadow-[0_8px_32px_rgba(0,0,0,0.5)]",
@@ -174,16 +173,19 @@ const BannerHighlight = ({
 							"after:bg-purple-500/10 after:blur-2xl",
 							"after:opacity-0 after:transition-opacity after:duration-500",
 							"hover:after:opacity-100",
+							// MOBILE
+							"text-[11px] sm:text-xs lg:text-sm",
+							"leading-snug sm:leading-relaxed",
 						)}
 					>
 						<div className="absolute inset-0 bg-linear-to-l from-black/80 via-black/40 to-transparent rounded-2xl pointer-events-none" />
 						<div className="absolute inset-0 bg-linear-to-br from-white/25 via-white/5 to-transparent opacity-40 pointer-events-none" />
 						<div className="absolute inset-0 backdrop-blur-[2px] opacity-20 pointer-events-none" />
-						<div className="relative z-10 space-y-4 text-white">
+						<div className="relative z-10 space-y-2 md:space-y-3 lg:space-y-4 text-[11px] md:text-xs lg:text-sm text-white">
 							{/* ===== TOP META ===== */}
 							<motion.div
 								variants={itemVariants}
-								className="flex flex-wrap gap-2 text-[11px]"
+								className="hidden sm:flex mt-3 flex-wrap gap-1 sm:gap-2 text-[10px] sm:text-[11px]"
 							>
 								{/* IMDB */}
 								{film.imdb?.vote_average > 0 && (
@@ -240,7 +242,7 @@ const BannerHighlight = ({
 								className="text-xs leading-relaxed font-extralight text-white/90 mt-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
 							>
 								<div
-									className="line-clamp-2 md:line-clamp-3 lg:line-clamp-4 xl:line-clamp-5"
+									className="line-clamp-2 sm:line-clamp-3 lg:line-clamp-4 xl:line-clamp-5"
 									dangerouslySetInnerHTML={{ __html: film.content }}
 								/>
 							</motion.div>
@@ -312,14 +314,14 @@ const BannerHighlight = ({
 							>
 								<Link
 									href={`/xem-phim/${film.slug}`}
-									className="cursor-pointer items-center justify-center flex-2 py-2 bg-purple text-white text-[13px] font-bold rounded-md hover:bg-purple-600 transition shadow-[0_0_12px_rgba(168,85,247,0.5)] uppercase tracking-wider text-center"
+									className="cursor-pointer items-center justify-center flex-2 py-1.5 sm:py-2 text-[11px] sm:text-[13px] bg-purple text-white font-bold rounded-md hover:bg-purple-600 transition shadow-[0_0_12px_rgba(168,85,247,0.5)] uppercase tracking-wider text-center"
 								>
 									Xem ngay
 								</Link>
 
 								<Link
 									href={`/thong-tin/${film.slug}`}
-									className="flex-1 flex items-center justify-center py-2 text-[13px] bg-white/10 text-white font-medium rounded-md border border-white/10 hover:bg-white/20 transition whitespace-nowrap text-center"
+									className="flex-1 flex items-center justify-center py-1.5 sm:py-2 text-[11px] sm:text-[13px] bg-white/10 text-white font-medium rounded-md border border-white/10 hover:bg-white/20 transition whitespace-nowrap text-center"
 								>
 									Chi tiết
 								</Link>
@@ -330,7 +332,7 @@ const BannerHighlight = ({
 											onClick={handleToggle}
 											disabled={loading}
 											className={clsx(
-												"cursor-pointer flex-1 py-2 text-[13px] rounded-md border transition flex items-center justify-center gap-2",
+												"cursor-pointer flex-1 py-1.5 sm:py-2 text-[11px] sm:text-[13px] rounded-md border transition flex items-center justify-center gap-2",
 												isFavorited
 													? "bg-purple-500/20 text-purple-400 border-purple-500/50"
 													: "bg-white/5 text-white/80 border-white/10 hover:bg-white/20",
@@ -340,7 +342,7 @@ const BannerHighlight = ({
 											{loading ? (
 												<span className="w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
 											) : (
-												<span>{isFavorited ? "✓ Đã lưu" : "+ Lưu"}</span>
+												<span className="">{isFavorited ? "✓" : "+ Lưu"}</span>
 											)}
 										</button>
 									)}

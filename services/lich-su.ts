@@ -4,35 +4,6 @@ import { createClient } from "@/supabase/server"
 /**
  * Lấy danh sách các slug tập phim đã từng xem của 1 bộ phim
  */
-// export async function getWatchedEpisodes(filmSlug: string) {
-// 	const supabase = await createClient()
-// 	const {
-// 		data: { user },
-// 	} = await supabase.auth.getUser()
-// 	if (!user) return { data: [] }
-
-// 	const { data } = await supabase
-// 		.from("user_watched_history")
-// 		.select(`watched_slugs`)
-// 		.eq("user_id", user.id)
-// 		.eq("films.slug", filmSlug) // Giả sử đã có join films!inner(slug) như trước
-// 		.maybeSingle()
-
-// 	if (!data || !data.watched_slugs) return { data: [] }
-
-// 	const watchedData = data.watched_slugs
-
-// 	// Nếu là Object (Cấu trúc mới: { "A_vietsub": [...], "B_tm": [...] })
-// 	if (typeof watchedData === "object" && !Array.isArray(watchedData)) {
-// 		// Gộp tất cả các mảng của các server lại thành 1 mảng duy nhất
-// 		const allSlugs = Object.values(watchedData).flat() as string[]
-// 		// Loại bỏ slug trùng lặp bằng Set
-// 		return { data: [...new Set(allSlugs)] }
-// 	}
-
-// 	// Nếu lỡ là mảng (Cấu trúc cũ hoặc fallback)
-// 	return { data: Array.isArray(watchedData) ? watchedData : [] }
-// }
 export async function getWatchedEpisodes(filmSlug: string) {
 	const supabase = await createClient()
 	const {

@@ -54,14 +54,14 @@ const FilmSection = ({
 	)
 
 	const sectionPosition = clsx(
-		position === "left" && "flex-row",
-		position === "right" && "flex-row-reverse",
-		"flex items-center gap-3",
+		position === "left" && "lg:flex-row",
+		position === "right" && "lg:flex-row-reverse",
+		"flex flex-col lg:flex-row items-start lg:items-center gap-4",
 	)
 
 	return (
 		<section className={sectionPosition}>
-			<div className="w-1/6 flex flex-col">
+			<div className="w-full lg:w-1/6 flex flex-col">
 				<h2 className={clsx(h2Class)}>{title}</h2>
 				<Link href={slug} className="group self-start mt-2">
 					<motion.div
@@ -83,7 +83,7 @@ const FilmSection = ({
 				</Link>
 			</div>
 
-			<div className="w-5/6 relative overflow-hidden flex items-center gap-2">
+			<div className="w-full lg:w-5/6 relative overflow-hidden flex items-center gap-2">
 				<button className={clsx(prevClass, btnStyles)}>
 					<BackNavigateIcon size={20} />
 				</button>

@@ -46,7 +46,6 @@ const PRIVACY_ITEMS = [
 export default function Privacy() {
 	return (
 		<div className="min-h-screen bg-[#020617] text-slate-300 py-24 px-4 relative overflow-hidden">
-			{/* Hiệu ứng tia sáng quét ngang (Scanning light) */}
 			<motion.div
 				animate={{ x: ["-100%", "200%"] }}
 				transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
@@ -69,7 +68,7 @@ export default function Privacy() {
 					</motion.div>
 					<motion.h1
 						variants={cardVariants}
-						className="text-5xl md:text-7xl font-black text-white mb-6"
+						className="text-5xl md:text-7xl font-black text-white mb-6 leading-relaxed"
 					>
 						THẦN THỨC <span className="text-emerald-500">ẤN KÝ</span>
 					</motion.h1>
@@ -91,7 +90,6 @@ export default function Privacy() {
 							whileHover={{ y: -8, transition: { duration: 0.3 } }}
 							className="relative p-8 rounded-[2rem] bg-slate-900/40 border border-white/5 backdrop-blur-2xl overflow-hidden group"
 						>
-							{/* Lớp phủ sáng xanh khi hover */}
 							<div className="absolute inset-0 bg-emerald-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
 
 							<div className="relative z-10">
@@ -106,7 +104,6 @@ export default function Privacy() {
 								</p>
 							</div>
 
-							{/* Họa tiết trang trí kiểu vi mạch (Circuit) mờ */}
 							<div className="absolute -bottom-6 -right-6 text-emerald-500/5 rotate-12">
 								<ShieldCheck size={120} />
 							</div>
@@ -114,7 +111,6 @@ export default function Privacy() {
 					))}
 				</div>
 
-				{/* Thông báo cuối */}
 				<motion.p
 					variants={cardVariants}
 					className="text-center mt-20 text-xs text-slate-600 uppercase tracking-[0.3em]"

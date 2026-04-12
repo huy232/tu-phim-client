@@ -91,53 +91,68 @@ const InfoHero = ({
 		<div className="relative w-full bg-[#0a0a0a]">
 			<Banner poster_url={film.poster_url} />
 
-			<div className="relative z-20 px-6 -mt-24 md:-mt-32 lg:-mt-40 mb-20">
-				<div className="max-w-7xl mx-auto w-full">
-					<div className="grid grid-cols-12 gap-8">
-						<LeftSide film={film} tmdbData={film.tmdb} />
-						<section className="col-span-12 md:col-span-8 lg:col-span-9 pb-4 lg:pb-8 mt-22">
-							<div className="space-y-4">
-								<div className="space-y-2">
-									<h1 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter italic leading-snug drop-shadow-2xl">
-										{film.name}
-									</h1>
-									<div className="flex items-center gap-3">
-										<p className="text-purple-500 text-sm font-bold tracking-widest uppercase">
-											{film.origin_name}
-										</p>
-									</div>
-								</div>
+			<div className="relative z-20 px-2 md:px-4 lg:px-6 -mt-24 md:-mt-32 lg:-mt-40 mb-20">
+				<div className="mx-auto w-full">
+					<div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+						{/* LEFT */}
+						<div className="lg:col-span-3">
+							<LeftSide film={film} tmdbData={film.tmdb} />
+						</div>
+
+						{/* RIGHT */}
+						<section className="lg:col-span-9 pb-4 lg:pb-8 space-y-6">
+							{/* HERO TITLE BLOCK*/}
+							<div className="space-y-3 text-center md:text-left">
+								<h1 className="text-2xl md:text-4xl font-black text-white uppercase italic">
+									{film.name}
+								</h1>
+
+								<p className="text-purple-500 text-xs md:text-sm uppercase tracking-widest">
+									{film.origin_name}
+								</p>
+
 								<ActionButtons
 									firstEpisode={`/xem-phim/${film.slug}`}
 									film={film}
 								/>
 								<Score film={film} />
-								<ContentSection content={film.content} />
+							</div>
+
+							<ContentSection content={film.content} />
+
+							{/* EPISODE */}
+							<div className="lg:mt-0 mt-2">
 								<EpisodeSection
 									episodes={film.episodes}
 									film_slug={film.slug}
 									watchedSlugs={watchedSlugs}
 								/>
-								<YoutubePlayer url={film.trailer_url} />
-								<FilmStats
-									data={{
-										first_air_date: film.tmdb?.first_air_date,
-										last_air_date: film.tmdb?.last_air_date,
-										popularity: film.tmdb?.popularity,
-										homepage: film.tmdb?.homepage,
-										next_episode_to_air: film.tmdb?.next_episode_to_air,
-										last_episode_to_air: film.tmdb?.last_episode_to_air,
-									}}
-								/>
-								<ExtraTMDBContent tmdbData={film.tmdb} film={film} />
-								<PeopleSection cast={cast} groupCrew={groupCrew} />
 							</div>
+
+							<YoutubePlayer url={film.trailer_url} />
+
+							<FilmStats
+								data={{
+									first_air_date: film.tmdb?.first_air_date,
+									last_air_date: film.tmdb?.last_air_date,
+									popularity: film.tmdb?.popularity,
+									homepage: film.tmdb?.homepage,
+									next_episode_to_air: film.tmdb?.next_episode_to_air,
+									last_episode_to_air: film.tmdb?.last_episode_to_air,
+								}}
+							/>
+
+							<ExtraTMDBContent tmdbData={film.tmdb} film={film} />
+							<PeopleSection cast={cast} groupCrew={groupCrew} />
+
 							<MediaGallery
 								backdrops={film.tmdb?.images?.backdrops || []}
 								posters={film.tmdb?.images?.posters || []}
 							/>
+
 							<RelatedFilm relatedFilm={film.related} />
 							<SuggestedFilm suggestedFilm={film.suggest} />
+
 							<CommentSection
 								initialComments={initialComments}
 								stickers={stickers}
