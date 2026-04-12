@@ -9,7 +9,9 @@ interface FilmCardItemProps {
 	film: Film
 	index: number
 	setShowResults: (value: SetStateAction<boolean>) => void
-	onHover: (film: Film | null) => void
+	onHover: React.Dispatch<React.SetStateAction<Film | null>>
+
+	onClick?: () => void // ✅ thêm dòng này
 }
 
 const FilmCardItem = ({
@@ -29,7 +31,9 @@ const FilmCardItem = ({
 		>
 			<Link
 				href={`/thong-tin/${film.slug}`}
-				onClick={() => setShowResults(false)}
+				onClick={() => {
+					setShowResults(false)
+				}}
 				className="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-md transition-all group"
 			>
 				<div className="relative w-12 h-16 shrink-0 overflow-hidden rounded shadow-lg">

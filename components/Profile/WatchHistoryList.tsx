@@ -14,7 +14,7 @@ import {
 import { formatDistanceToNow } from "date-fns"
 import { vi } from "date-fns/locale"
 import { getGlobalWatchHistory } from "@/services/lich-su"
-import { IMAGE_URL } from "@/constants"
+import { filmVoiceType, IMAGE_URL } from "@/constants"
 
 export default function WatchHistoryList() {
 	const [history, setHistory] = useState<HistoryItem[]>([])
@@ -59,6 +59,17 @@ export default function WatchHistoryList() {
 						/>
 					))}
 				</div>
+			) : history.length === 0 ? (
+				<div className="w-full py-20 flex flex-col items-center justify-center text-center">
+					<span className="text-4xl mb-4">📭</span>
+					<h3 className="text-lg text-zinc-300 font-semibold">
+						Chưa có lịch sử xem
+					</h3>
+					<p className="text-sm text-zinc-500 mt-2 max-w-sm">
+						Bạn chưa xem phim nào cả. Bắt đầu cày ngay để tụi mình lưu lại hành
+						trình tu phim nhé 👀
+					</p>
+				</div>
 			) : (
 				<>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -77,7 +88,7 @@ export default function WatchHistoryList() {
 										<div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/5 shadow-2xl">
 											<Image
 												src={`${IMAGE_URL}/${item.films.thumb_url}`}
-												alt=""
+												alt={item.last_episode_name}
 												fill
 												className="object-cover transition-transform duration-700 group-hover:scale-110"
 											/>
@@ -122,7 +133,7 @@ export default function WatchHistoryList() {
 													<p className="mt-1 text-xs text-purple-300 font-medium truncate">
 														Tập {item.last_episode_name} •{" "}
 														<span className="uppercase text-[10px] opacity-70">
-															{svt}
+															{filmVoiceType[svt].label}
 														</span>
 													</p>
 												</div>

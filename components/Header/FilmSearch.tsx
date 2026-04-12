@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { SearchIcon } from "@/assets/icons"
@@ -11,6 +12,7 @@ import { WEB_URL } from "@/constants"
 
 const FilmSearch = () => {
 	const router = useRouter()
+
 	const [keyword, setKeyword] = useState("")
 	const [results, setResults] = useState<Film[]>([])
 	const [isLoading, setIsLoading] = useState(false)
@@ -18,19 +20,18 @@ const FilmSearch = () => {
 	const [showResults, setShowResults] = useState(false)
 	const [hoveredFilm, setHoveredFilm] = useState<Film | null>(null)
 	const [total, setTotal] = useState(0)
-
-	const [isFocused, setIsFocused] = useState(false)
 	const [readyToShow, setReadyToShow] = useState(false)
 
 	const searchRef = useRef<HTMLDivElement>(null)
 	const debouncedKeyword = useDebounce(keyword, 1000)
 
+	// ================= CLICK OUTSIDE =================
 	useEffect(() => {
 		const handleClickOutside = (e: PointerEvent) => {
-			const path = e.composedPath()
-			if (!path.includes(searchRef.current!)) {
+			if (!searchRef.current) return
+
+			if (!searchRef.current.contains(e.target as Node)) {
 				setShowResults(false)
-				setIsFocused(false)
 			}
 		}
 
@@ -38,6 +39,7 @@ const FilmSearch = () => {
 		return () => document.removeEventListener("pointerdown", handleClickOutside)
 	}, [])
 
+	// ================= FETCH =================
 	useEffect(() => {
 		const controller = new AbortController()
 
@@ -78,6 +80,7 @@ const FilmSearch = () => {
 		return () => controller.abort()
 	}, [debouncedKeyword])
 
+	// ================= READY STATE =================
 	useEffect(() => {
 		if (!isTyping && results.length > 0) {
 			const t = setTimeout(() => setReadyToShow(true), 200)
@@ -86,12 +89,20 @@ const FilmSearch = () => {
 		setReadyToShow(false)
 	}, [isTyping, results])
 
+	// ================= RESET =================
+	const resetSearch = () => {
+		setKeyword("")
+		setResults([])
+		setHoveredFilm(null)
+		setShowResults(false)
+	}
+
+	// ================= HANDLERS =================
 	const handleSearch = (e?: React.FormEvent) => {
 		e?.preventDefault()
 		if (keyword.trim()) {
+			resetSearch()
 			router.push(`${WEB_URL}/tim-kiem?keyword=${encodeURIComponent(keyword)}`)
-			setShowResults(false)
-			setIsFocused(false)
 		}
 	}
 
@@ -107,6 +118,7 @@ const FilmSearch = () => {
 		}
 	}
 
+	// ================= STATE =================
 	const isProcessing = isTyping || isLoading || keyword !== debouncedKeyword
 
 	const showList = !isProcessing && results.length > 0
@@ -118,12 +130,13 @@ const FilmSearch = () => {
 
 	const shouldShowDropdown =
 		showResults &&
-		isFocused &&
 		keyword.trim().length >= 2 &&
 		(readyToShow || isProcessing || showNotFound)
 
+	// ================= RENDER =================
 	return (
 		<div ref={searchRef} className="w-full lg:mx-4 relative">
+			{/* INPUT */}
 			<form onSubmit={handleSearch} className="relative z-60">
 				<div className="absolute left-3 top-1/2 -translate-y-1/2 p-1 text-gray-400">
 					<SearchIcon size={16} />
@@ -133,13 +146,13 @@ const FilmSearch = () => {
 					value={keyword}
 					onChange={handleInputChange}
 					onFocus={() => {
-						setIsFocused(true)
 						if (keyword.length >= 2) setShowResults(true)
 					}}
-					onBlur={() => setIsFocused(false)}
 					className="w-full text-xs font-light rounded-md bg-white/10 px-10 h-9 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all"
 					type="text"
 					placeholder="Tìm phim..."
+					autoComplete="off"
+					inputMode="search"
 				/>
 
 				{isProcessing && keyword && (
@@ -153,6 +166,7 @@ const FilmSearch = () => {
 				)}
 			</form>
 
+			{/* DROPDOWN */}
 			<AnimatePresence>
 				{shouldShowDropdown && (
 					<motion.div
@@ -160,7 +174,7 @@ const FilmSearch = () => {
 						animate={{ opacity: 1, y: 0, scale: 1 }}
 						exit={{ opacity: 0, y: -10, scale: 0.95 }}
 						transition={{ duration: 0.2, ease: "easeOut" }}
-						className="absolute top-full mt-2 w-75 md:w-full z-50 max-h-110 right-0 md:left-0"
+						className="mt-2 w-full sm:absolute sm:top-full sm:z-50 max-h-110"
 					>
 						<div className="relative">
 							<div className="bg-[#1a1a1a]/95 backdrop-blur-xl border border-white/10 overflow-hidden rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
@@ -176,6 +190,7 @@ const FilmSearch = () => {
 													index={index}
 													setShowResults={setShowResults}
 													onHover={setHoveredFilm}
+													onClick={() => resetSearch()}
 												/>
 											))}
 										</div>
@@ -190,7 +205,7 @@ const FilmSearch = () => {
 													whileHover={{
 														backgroundColor: "rgba(168, 85, 247, 0.1)",
 													}}
-													onClick={() => handleSearch()}
+													onClick={handleSearch}
 													className="w-full py-2 text-center text-xs text-white font-light tracking-widest uppercase mt-2 px-2 rounded-md"
 													whileTap={{ scale: 0.95 }}
 												>
@@ -217,6 +232,7 @@ const FilmSearch = () => {
 								) : null}
 							</div>
 
+							{/* PREVIEW (desktop only) */}
 							<AnimatePresence mode="wait">
 								{hoveredFilm && !isProcessing && (
 									<motion.div

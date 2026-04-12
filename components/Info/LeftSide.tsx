@@ -58,7 +58,7 @@ const LeftSide = ({
 
 				<span
 					className={clsx(
-						"text-[10px] border border-white/10 px-3 py-1 rounded-full uppercase tracking-wide",
+						"text-[10px] border border-white/10 px-2 py-1.5 rounded-full uppercase tracking-wide",
 						`${filmStatusMap[film.status].color}/5`,
 					)}
 				>

@@ -116,11 +116,11 @@ const ProfileTabs = ({ initialData }: ProfileTabsProps) => {
 						<ContinueWatching
 							initialContinueWatching={initialData.continueWatching}
 						/>
+						<WatchHistoryList />
 						<FavoriteFilms
 							initialFavorites={initialData.favorites}
 							initialTotal={initialData.favoritesCount}
 						/>
-						<WatchHistoryList />
 					</div>
 				)}
 

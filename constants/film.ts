@@ -24,6 +24,18 @@ export const filmTypeMap: Record<
 	},
 }
 
+export const filmVoiceType: Record<string, { label: string }> = {
+	"thuyet-minh": {
+		label: "Thuyết minh",
+	},
+	vietsub: {
+		label: "Vietsub",
+	},
+	"long-tieng": {
+		label: "Lồng tiếng",
+	},
+}
+
 export const filmStatusMap: Record<
 	string,
 	{ label: string; color: string; textColor: string }
