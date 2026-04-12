@@ -3,7 +3,7 @@ import { API } from "@/constants"
 export async function fetchFilmInfoFromBackend(film_slug: string) {
 	try {
 		const res = await fetch(`${API}/thong-tin/${film_slug}`, {
-			next: { revalidate: 3600 },
+			next: { revalidate: 10800 },
 		})
 		if (!res.ok) return null
 		return await res.json()
@@ -16,7 +16,7 @@ export async function fetchFilmInfoFromBackend(film_slug: string) {
 export async function fetchActorInfoFromBackend(film_slug: string) {
 	try {
 		const res = await fetch(`${API}/dien-vien/${film_slug}`, {
-			next: { revalidate: 3600 },
+			next: { revalidate: 10800 },
 		})
 		if (!res.ok) return null
 		return await res.json()

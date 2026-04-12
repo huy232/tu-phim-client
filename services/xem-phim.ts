@@ -3,7 +3,7 @@ import { API } from "@/constants"
 export async function fetchWatchInfoFromBackend(film_slug: string) {
 	try {
 		const res = await fetch(`${API}/xem-phim/${film_slug}`, {
-			next: { revalidate: 3600 },
+			next: { revalidate: 10800 },
 		})
 
 		if (!res.ok) return null
