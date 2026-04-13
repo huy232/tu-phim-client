@@ -9,6 +9,7 @@ import User from "./User"
 import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import { useSidebar } from "@/context/SidebarContext"
 
 interface HeaderProps {
 	initialData: {
@@ -20,7 +21,7 @@ interface HeaderProps {
 const Header = ({ initialData }: HeaderProps) => {
 	const [activeMenu, setActiveMenu] = useState<string | null>(null)
 	const [isScrolled, setIsScrolled] = useState(false)
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+	const { isOpen: isMobileMenuOpen, toggle, close } = useSidebar()
 
 	const openMenu = (menu: string) => setActiveMenu(menu)
 	const closeMenu = (menu: string) => {
@@ -56,12 +57,6 @@ const Header = ({ initialData }: HeaderProps) => {
 		}
 	}, [isMobileMenuOpen])
 
-	useEffect(() => {
-		if (isMobileMenuOpen) {
-			window.dispatchEvent(new Event("closeSearch"))
-		}
-	}, [isMobileMenuOpen])
-
 	return (
 		<nav
 			className={clsx(
@@ -74,7 +69,7 @@ const Header = ({ initialData }: HeaderProps) => {
 			<div className="mx-auto flex items-center justify-between">
 				{/* MENU BUTTON */}
 				<button
-					onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+					onClick={() => toggle()}
 					className="lg:hidden relative z-60 p-2 text-white"
 				>
 					{isMobileMenuOpen ? (
@@ -153,7 +148,7 @@ const Header = ({ initialData }: HeaderProps) => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							onClick={() => setIsMobileMenuOpen(false)}
+							onClick={() => close()}
 							className="fixed inset-0 bg-black/60 z-40"
 						/>
 

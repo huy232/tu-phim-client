@@ -36,7 +36,7 @@ const FilmCardItem = ({
 				}}
 				className="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-md transition-all group"
 			>
-				<div className="relative w-12 h-16 shrink-0 overflow-hidden rounded shadow-lg">
+				<div className="relative w-12 h-16 shrink-0 overflow-hidden rounded shadow-lg self-start">
 					<FilmImage
 						image_slug={film.thumb_url}
 						name={film.name}
@@ -48,7 +48,7 @@ const FilmCardItem = ({
 				</div>
 				<div className="flex flex-col gap-1 min-w-0">
 					<div className="">
-						<span className="block text-sm font-bold text-gray-100 truncate group-hover:text-purple-400 transition-colors">
+						<span className="block text-xs md:text-sm font-bold text-gray-100 line-clamp-2 md:line-clamp-1 group-hover:text-purple-400 transition-colors">
 							{film.name}
 						</span>
 						<span className="block text-[10px] text-gray-500 truncate italic">

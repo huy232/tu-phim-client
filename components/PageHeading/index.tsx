@@ -86,7 +86,7 @@ const PageHeading = ({
 					transition={{ delay: 0.6 }}
 					className="flex items-center gap-5"
 				>
-					<div className="relative h-1 w-20 bg-white/5 overflow-hidden rounded-full">
+					<div className="hidden md:inline-block relative h-1 w-20 bg-white/5 overflow-hidden rounded-full">
 						<motion.div
 							initial={{ scaleX: 0 }}
 							animate={{ scaleX: 1 }}

@@ -1,35 +1,45 @@
 "use client"
-import { useState, useEffect } from "react"
 import { useSyncExternalStore } from "react"
 
-export const useIsMobile = () => {
-	const [isMobile, setIsMobile] = useState<boolean | null>(null)
+// export function useMediaQuery(query: string) {
+// 	const subscribe = (callback: () => void) => {
+// 		const media = window.matchMedia(query)
+// 		media.addEventListener("change", callback)
+// 		return () => media.removeEventListener("change", callback)
+// 	}
 
-	useEffect(() => {
-		const check = () => setIsMobile(window.innerWidth < 1024)
-		check()
+// 	const getSnapshot = () => {
+// 		return window.matchMedia(query).matches
+// 	}
 
-		window.addEventListener("resize", check)
-		return () => window.removeEventListener("resize", check)
-	}, [])
+// 	const getServerSnapshot = () => null
 
-	return isMobile
-}
+// 	return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+// }
 
 export function useMediaQuery(query: string) {
+	const getSnapshot = () => {
+		if (typeof window === "undefined") return false
+		return window.matchMedia(query).matches
+	}
+
 	const subscribe = (callback: () => void) => {
+		if (typeof window === "undefined") return () => {}
+
 		const media = window.matchMedia(query)
 		media.addEventListener("change", callback)
 		return () => media.removeEventListener("change", callback)
 	}
 
-	const getSnapshot = () => {
-		return window.matchMedia(query).matches
-	}
+	return useSyncExternalStore(
+		subscribe,
+		getSnapshot,
+		() => false, // 👈 SSR fallback
+	)
+}
 
-	const getServerSnapshot = () => null
-
-	return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+export const useIsMobile = () => {
+	return useMediaQuery("(max-width: 1023px)")
 }
 
 export function useMounted() {

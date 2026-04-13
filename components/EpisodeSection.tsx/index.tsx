@@ -6,7 +6,7 @@ import ViewMode from "./ViewMode"
 import ServerTab from "./ServerTab"
 import ChunkMode from "./ChunkMode"
 import GridMode from "./GridMode"
-import { useSearchParams, useRouter, usePathname } from "next/navigation"
+import { useSearchParams, usePathname } from "next/navigation"
 
 const EpisodeSection = ({
 	episodes,

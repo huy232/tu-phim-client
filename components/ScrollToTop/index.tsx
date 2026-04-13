@@ -36,7 +36,7 @@ const ScrollToTop = () => {
 					whileHover={{ scale: 1.1 }}
 					whileTap={{ scale: 0.9 }}
 					onClick={scrollToTop}
-					className="fixed bottom-8 right-8 z-100 p-3 rounded-full bg-purple text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] border border-white/10 group overflow-hidden"
+					className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-100 p-3 rounded-full bg-purple text-white shadow-[0_0_20px_rgba(168,85,247,0.4)] border border-white/10 group overflow-hidden"
 				>
 					<div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
 

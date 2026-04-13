@@ -1,5 +1,6 @@
 "use client"
 import { Dropdown } from "@/assets/icons"
+import { useSidebar } from "@/context/SidebarContext"
 import { useMediaQuery } from "@/hooks/useMediaQuery"
 import clsx from "clsx"
 import { AnimatePresence, motion } from "framer-motion"
@@ -33,6 +34,7 @@ const NavDropdown = ({
 	onToggle,
 	items,
 }: NavDropdownProps) => {
+	const { close } = useSidebar()
 	const isDesktop = useMediaQuery("(min-width: 1024px)")
 	const closeTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -104,7 +106,7 @@ const NavDropdown = ({
 							<div className="absolute -top-3 left-0 right-0 h-3" />
 						)}
 
-						<div className="p-2 bg-[#0a0a0a]/95 border border-purple-500/10 rounded-xl w-full">
+						<div className="p-2 bg-[#0a0a0a] border border-purple-500/10 rounded-xl w-full">
 							<div className="max-h-72 overflow-y-auto custom-scrollbar px-2">
 								<div
 									className={clsx(
@@ -117,6 +119,7 @@ const NavDropdown = ({
 											key={item.slug}
 											href={`/${routePrefix}/${item.slug}`}
 											className="px-3 py-2 rounded-lg hover:bg-purple-500/10 text-[11px] wrap-break-word"
+											onClickCapture={() => close()}
 										>
 											{item.name}
 										</Link>

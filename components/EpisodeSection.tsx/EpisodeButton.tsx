@@ -40,7 +40,7 @@ const EpisodeButton = ({
 		serverSupply.server_source === playingServer.server_source
 
 	return (
-		<Link href={href} scroll={true} className="block relative">
+		<Link href={href} className="block relative">
 			<motion.div
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}

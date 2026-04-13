@@ -8,6 +8,7 @@ import ScrollToTop from "@/components/ScrollToTop"
 import { getNavigationData } from "@/constants"
 import { AuthProvider } from "@/context/AuthContext"
 import ScrollToTheTop from "@/components/ScrollToTheTop"
+import { SidebarProvider } from "@/context/SidebarContext"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -76,13 +77,15 @@ export default async function RootLayout({
 			)}
 		>
 			<body className="bg-foreground text-white flex flex-col min-h-screen">
-				<AuthProvider>
-					<Header initialData={navData} />
-					<ScrollToTheTop />
-					{children}
-					<Footer />
-					<ScrollToTop />
-				</AuthProvider>
+				<SidebarProvider>
+					<AuthProvider>
+						<Header initialData={navData} />
+						<ScrollToTheTop />
+						{children}
+						<Footer />
+						<ScrollToTop />
+					</AuthProvider>
+				</SidebarProvider>
 			</body>
 		</html>
 	)
