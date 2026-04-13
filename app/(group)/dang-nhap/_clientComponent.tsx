@@ -213,11 +213,7 @@ const Login = () => {
 							whileHover={disableMotion ? undefined : { scale: 1.02 }}
 							whileTap={disableMotion ? undefined : { scale: 0.98 }}
 							onClick={() => handleOAuthLogin("google")}
-							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
-		bg-white text-black font-semibold 
-		py-3 px-4 sm:pl-8 sm:pr-4 
-		rounded-xl hover:bg-neutral-100 
-		transition-colors cursor-pointer shadow-lg font-phudu"
+							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 bg-white text-black font-semibold py-3 px-4 sm:pl-8 sm:pr-4 rounded-xl hover:bg-neutral-100 transition-colors cursor-pointer shadow-lg font-phudu"
 						>
 							<div className="w-6 sm:w-7 flex justify-center items-center shrink-0">
 								<GoogleSVG size={24} />
@@ -232,11 +228,7 @@ const Login = () => {
 							whileHover={disableMotion ? undefined : { scale: 1.02 }}
 							whileTap={disableMotion ? undefined : { scale: 0.98 }}
 							onClick={() => handleOAuthLogin("discord")}
-							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 
-		bg-[#5865F2] text-white font-semibold 
-		py-3 px-4 sm:pl-8 sm:pr-4 
-		rounded-xl hover:bg-[#4752C4] 
-		transition-colors cursor-pointer shadow-lg font-phudu"
+							className="w-full flex items-center justify-center sm:justify-start gap-3 sm:gap-4 bg-[#5865F2] text-white font-semibold py-3 px-4 sm:pl-8 sm:pr-4 rounded-xl hover:bg-[#4752C4] transition-colors cursor-pointer shadow-lg font-phudu"
 						>
 							<div className="w-6 sm:w-7 flex justify-center items-center shrink-0">
 								<DiscordSVG size={24} className="fill-white" />

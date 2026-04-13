@@ -43,6 +43,7 @@ const FilmCardItem = ({
 						className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
 						width={120}
 						height={180}
+						containerClassName="w-full h-full"
 					/>
 				</div>
 				<div className="flex flex-col gap-1 min-w-0">

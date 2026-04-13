@@ -27,7 +27,7 @@ const FilmSearch = () => {
 
 	// ================= CLICK OUTSIDE =================
 	useEffect(() => {
-		const handleClickOutside = (e: PointerEvent) => {
+		const handleClickOutside = (e: MouseEvent | TouchEvent) => {
 			if (!searchRef.current) return
 
 			if (!searchRef.current.contains(e.target as Node)) {
@@ -35,8 +35,13 @@ const FilmSearch = () => {
 			}
 		}
 
-		document.addEventListener("pointerdown", handleClickOutside)
-		return () => document.removeEventListener("pointerdown", handleClickOutside)
+		document.addEventListener("mousedown", handleClickOutside)
+		document.addEventListener("touchstart", handleClickOutside)
+
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside)
+			document.removeEventListener("touchstart", handleClickOutside)
+		}
 	}, [])
 
 	// ================= FETCH =================
@@ -146,9 +151,11 @@ const FilmSearch = () => {
 					value={keyword}
 					onChange={handleInputChange}
 					onFocus={() => {
-						if (keyword.length >= 2) setShowResults(true)
+						if (keyword.length >= 2) {
+							setShowResults(true)
+						}
 					}}
-					className="w-full text-xs font-light rounded-md bg-white/10 px-10 h-9 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all"
+					className="w-full text-base sm:text-xs font-light rounded-md bg-white/10 px-10 h-9 focus:outline-none focus:ring-1 focus:ring-purple-500 transition-all"
 					type="text"
 					placeholder="Tìm phim..."
 					autoComplete="off"
@@ -233,8 +240,8 @@ const FilmSearch = () => {
 							</div>
 
 							{/* PREVIEW (desktop only) */}
-							<AnimatePresence mode="wait">
-								{hoveredFilm && !isProcessing && (
+							{hoveredFilm && !isProcessing && (
+								<AnimatePresence mode="wait">
 									<motion.div
 										initial={{ opacity: 0, x: 15 }}
 										animate={{ opacity: 1, x: 0 }}
@@ -246,8 +253,8 @@ const FilmSearch = () => {
 											film={hoveredFilm}
 										/>
 									</motion.div>
-								)}
-							</AnimatePresence>
+								</AnimatePresence>
+							)}
 						</div>
 					</motion.div>
 				)}

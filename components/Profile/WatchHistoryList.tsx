@@ -91,6 +91,7 @@ export default function WatchHistoryList() {
 												alt={item.last_episode_name}
 												fill
 												className="object-cover transition-transform duration-700 group-hover:scale-110"
+												sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 											/>
 											<div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-black/20 to-transparent" />
 
@@ -110,6 +111,7 @@ export default function WatchHistoryList() {
 													src={`${IMAGE_URL}/${item.films.poster_url}`}
 													alt={item.films.name}
 													fill
+													sizes="(max-width: 640px) 80px, 96px"
 													className="object-cover"
 												/>
 											</div>

@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { Lock } from "lucide-react"
+import clsx from "clsx"
 
 interface InventoryItemProps {
 	asset: Asset
@@ -38,7 +39,11 @@ export const InventoryItem = ({
 						src={asset.image_url}
 						alt={asset.name}
 						fill
-						className={`object-contain p-2 transition-all ${!isInteractable ? "grayscale" : ""}`}
+						className={clsx(
+							`object-contain p-2 transition-all`,
+							!isInteractable && "grayscale",
+						)}
+						sizes="(max-width: 768px) 80px, 100px"
 					/>
 				)}
 			</div>

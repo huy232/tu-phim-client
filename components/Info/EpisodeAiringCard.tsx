@@ -33,6 +33,7 @@ const EpisodeAiringCard = ({
 					className="object-cover"
 					loading="lazy"
 					containerClassName="w-full h-full"
+					sizes="100vw"
 				/>
 				<div className="absolute inset-0 bg-gradient-to-r from-zinc-900 via-zinc-900/80 to-transparent" />
 			</div>
@@ -64,6 +65,7 @@ const EpisodeAiringCard = ({
 						className="object-cover"
 						loading="lazy"
 						containerClassName="w-full h-full"
+						sizes="(max-width: 768px) 100vw, 160px"
 					/>
 				</div>
 

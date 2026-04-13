@@ -183,6 +183,7 @@ export default function Footer() {
 									fill
 									loading="lazy"
 									className="object-contain p-2"
+									sizes="(max-width: 768px) 128px, 144px"
 								/>
 							</div>
 
