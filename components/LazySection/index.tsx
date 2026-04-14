@@ -2,35 +2,58 @@
 
 import { useEffect, useRef, useState } from "react"
 
-interface LazySectionProps {
+interface SmartLazySectionProps {
 	children: React.ReactNode
 	fallback?: React.ReactNode
 	rootMargin?: string
+	preload?: () => Promise<unknown>
 }
 
-export default function LazySection({
+export default function SmartLazySection({
 	children,
 	fallback = null,
 	rootMargin = "200px",
-}: LazySectionProps) {
+	preload,
+}: SmartLazySectionProps) {
 	const ref = useRef<HTMLDivElement | null>(null)
+
+	const [isNear, setIsNear] = useState(false)
 	const [isVisible, setIsVisible] = useState(false)
 
 	useEffect(() => {
-		const observer = new IntersectionObserver(
+		if (!ref.current) return
+
+		const el = ref.current
+
+		const preloadObserver = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setIsNear(true)
+					preload?.()
+					preloadObserver.disconnect()
+				}
+			},
+			{ rootMargin: "400px" },
+		)
+
+		const visibleObserver = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
 					setIsVisible(true)
-					observer.disconnect()
+					visibleObserver.disconnect()
 				}
 			},
 			{ rootMargin },
 		)
 
-		if (ref.current) observer.observe(ref.current)
+		preloadObserver.observe(el)
+		visibleObserver.observe(el)
 
-		return () => observer.disconnect()
-	}, [rootMargin])
+		return () => {
+			preloadObserver.disconnect()
+			visibleObserver.disconnect()
+		}
+	}, [rootMargin, preload])
 
-	return <div ref={ref}>{isVisible ? children : fallback}</div>
+	return <div ref={ref}>{isVisible ? children : isNear ? fallback : null}</div>
 }

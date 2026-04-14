@@ -124,6 +124,11 @@ const FilmSearch = () => {
 		}
 	}
 
+	const handleSelect = () => {
+		resetSearch()
+		close()
+	}
+
 	// ================= STATE =================
 	const isProcessing = isTyping || isLoading || keyword !== debouncedKeyword
 	const showList = !isProcessing && results.length > 0
@@ -183,8 +188,8 @@ const FilmSearch = () => {
 									total,
 									showViewAll,
 									keyword,
-									onClickItem: resetSearch,
-									onSearch: handleSearch,
+									onClickItem: handleSelect,
+									onSearch: handleSelect,
 									setHoveredFilm,
 									hoveredFilm,
 								}}
@@ -206,8 +211,8 @@ const FilmSearch = () => {
 							total,
 							showViewAll,
 							keyword,
-							onClickItem: resetSearch,
-							onSearch: handleSearch,
+							onClickItem: handleSelect,
+							onSearch: handleSelect,
 							setHoveredFilm,
 							hoveredFilm,
 						}}
@@ -264,7 +269,7 @@ function SearchContent(props: SearchContentProps) {
 								index={index}
 								setShowResults={() => {}}
 								onHover={setHoveredFilm}
-								onClick={onClickItem}
+								handleResetSearch={onClickItem}
 							/>
 						))}
 					</div>

@@ -458,6 +458,31 @@ body {
 	}
 }
 
+::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #ce53e0;
+	border-radius: 100px;
+	box-shadow: 0 0 10px #ce53e0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: #e27cf0;
+	box-shadow: 0 0 15px #e27cf0;
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: #ce53e0 transparent;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
 	width: 4px;
 }

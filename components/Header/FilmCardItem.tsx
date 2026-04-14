@@ -10,8 +10,7 @@ interface FilmCardItemProps {
 	index: number
 	setShowResults: (value: SetStateAction<boolean>) => void
 	onHover: React.Dispatch<React.SetStateAction<Film | null>>
-
-	onClick?: () => void // ✅ thêm dòng này
+	handleResetSearch: () => void
 }
 
 const FilmCardItem = ({
@@ -19,6 +18,7 @@ const FilmCardItem = ({
 	index,
 	setShowResults,
 	onHover,
+	handleResetSearch,
 }: FilmCardItemProps) => {
 	return (
 		<motion.div
@@ -33,6 +33,7 @@ const FilmCardItem = ({
 				href={`/thong-tin/${film.slug}`}
 				onClick={() => {
 					setShowResults(false)
+					handleResetSearch()
 				}}
 				className="flex items-center gap-3 p-2 hover:bg-purple-500/10 rounded-md transition-all group"
 			>

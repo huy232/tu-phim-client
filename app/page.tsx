@@ -15,7 +15,7 @@ import {
 } from "@/components/HomePage/SingleFilm"
 import { TopSeriesWrapper } from "@/components/HomePage/TopListWrapper"
 import { TVShowFullWrapper } from "@/components/HomePage/TVShowsWrapper"
-import LazySection from "@/components/LazySection"
+import SmartLazySection from "@/components/LazySection"
 import { Spacer } from "@/components/Spacer"
 import { fetchHomeDataFromBackend } from "@/services"
 import { Metadata } from "next"
@@ -81,57 +81,57 @@ export default async function Home() {
 
 				<Spacer y={10} />
 
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<TopSeriesWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
 
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<NewestSingleWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
 
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<TopSingleWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
 
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<TVShowFullWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
 
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<AnimeWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<DubbedWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 
 				<Spacer y={10} />
-				<LazySection fallback={<SectionSkeleton />}>
-					<Suspense fallback={<SectionSkeleton />}>
+				<Suspense fallback={<SectionSkeleton />}>
+					<SmartLazySection>
 						<CinemaWrapper />
-					</Suspense>
-				</LazySection>
+					</SmartLazySection>
+				</Suspense>
 			</div>
 		</main>
 	)

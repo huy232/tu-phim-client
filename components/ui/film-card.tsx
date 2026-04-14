@@ -102,7 +102,7 @@ const FilmCard = ({
 							</div>
 						)}
 
-						<p className="text-[10px] md:text-sm font-medium line-clamp-2 group-hover:text-purple-400 transition-colors">
+						<p className="text-[10px] md:text-sm font-medium line-clamp-2 group-hover:text-purple-400 transition-colors mt-1">
 							{film.name}
 						</p>
 

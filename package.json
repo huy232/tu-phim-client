@@ -12,6 +12,8 @@
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.102.0-canary.2",
     "@tanstack/react-virtual": "^3.13.23",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "artplayer": "^5.4.0",
     "artplayer-plugin-ambilight": "^1.1.0",
     "artplayer-plugin-auto-thumbnail": "^1.1.0",

@@ -9,6 +9,7 @@ import { getNavigationData } from "@/constants"
 import { AuthProvider } from "@/context/AuthContext"
 import ScrollToTheTop from "@/components/ScrollToTheTop"
 import { SidebarProvider } from "@/context/SidebarContext"
+import { Analytics } from "@vercel/analytics/next"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -86,6 +87,7 @@ export default async function RootLayout({
 						<ScrollToTop />
 					</AuthProvider>
 				</SidebarProvider>
+				<Analytics />
 			</body>
 		</html>
 	)
