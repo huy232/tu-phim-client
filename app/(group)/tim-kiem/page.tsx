@@ -1,6 +1,7 @@
 import { Metadata } from "next"
 import PageFilmListContainer from "@/components/PageFilmListContainer"
 import PageHeading from "@/components/PageHeading"
+import { Suspense } from "react"
 
 interface Props {
 	params: Promise<{ [key: string]: string }>
@@ -58,7 +59,6 @@ export default async function SearchPage({ searchParams }: Props) {
 				type="Truy Tìm Bí Tịch"
 				color="purple"
 			/>
-
 			<PageFilmListContainer initialSlug={keyword} type="tim-kiem" />
 
 			{!keyword && (

@@ -5,6 +5,7 @@ import { getStickers } from "@/services/emoji"
 import { IMAGE_URL } from "@/constants"
 import { fetchFilmInfoFromBackend } from "@/services"
 import { getWatchedEpisodes } from "@/services/lich-su"
+import { Suspense } from "react"
 
 interface Props {
 	params: Promise<{ film_slug: string }>

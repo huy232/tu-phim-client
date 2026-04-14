@@ -3,6 +3,7 @@ import PageFilmListContainer from "@/components/PageFilmListContainer"
 import PageHeading from "@/components/PageHeading"
 import { getNavigationData, LIST_CATALOG } from "@/constants" // LIST_CATALOG là data tĩnh
 import { Metadata } from "next"
+import { Suspense } from "react"
 
 interface Props {
 	params: Promise<{ slug: string }>
@@ -49,7 +50,6 @@ export default async function ListPage({ params }: Props) {
 				type="Thiên Bảng"
 				color="green"
 			/>
-
 			<AdvanceFilter
 				genres={genres}
 				countries={countries}

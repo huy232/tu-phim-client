@@ -2,7 +2,6 @@
 import { memo } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { useSearchParams } from "next/navigation"
 import clsx from "clsx"
 
 const EpisodeButton = ({

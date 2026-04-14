@@ -10,6 +10,8 @@ import { AuthProvider } from "@/context/AuthContext"
 import ScrollToTheTop from "@/components/ScrollToTheTop"
 import { SidebarProvider } from "@/context/SidebarContext"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Suspense } from "react"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -66,7 +68,7 @@ export default async function RootLayout({
 
 	return (
 		<html
-			lang="en"
+			lang="vi"
 			className={cn(
 				"antialiased",
 				rowdies.variable,
@@ -81,13 +83,16 @@ export default async function RootLayout({
 				<SidebarProvider>
 					<AuthProvider>
 						<Header initialData={navData} />
-						<ScrollToTheTop />
+						<Suspense>
+							<ScrollToTheTop />
+						</Suspense>
 						{children}
 						<Footer />
 						<ScrollToTop />
 					</AuthProvider>
 				</SidebarProvider>
 				<Analytics />
+				<SpeedInsights />
 			</body>
 		</html>
 	)

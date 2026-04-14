@@ -1,11 +1,6 @@
 import { Metadata } from "next"
 import Login from "./_clientComponent"
 
-interface Props {
-	params: Promise<{ film_slug: string }>
-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
-
 export const metadata: Metadata = {
 	title: "Ghi Danh Môn Phái | Tu Phim",
 	description:
@@ -22,7 +17,7 @@ export const metadata: Metadata = {
 	},
 }
 
-export default async function LoginPage({ params, searchParams }: Props) {
+export default async function LoginPage() {
 	return (
 		<main className="min-h-screen bg-[#0a0a0a] pt-16">
 			<Login />

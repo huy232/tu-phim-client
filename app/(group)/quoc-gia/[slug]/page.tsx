@@ -3,6 +3,7 @@ import AdvanceFilter from "@/components/AdvanceFilter"
 import PageFilmListContainer from "@/components/PageFilmListContainer"
 import PageHeading from "@/components/PageHeading"
 import { getNavigationData } from "@/constants"
+import { Suspense } from "react"
 
 interface Props {
 	params: Promise<{ slug: string }>
@@ -50,7 +51,6 @@ export default async function CountryPage({ params }: Props) {
 				type="Đại Lục"
 				color="orange"
 			/>
-
 			<AdvanceFilter
 				genres={genres}
 				countries={countries}
