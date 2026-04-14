@@ -42,7 +42,6 @@ const SideAndHighlight = ({ items }: { items: FilmInfo[] }) => {
 					<Banner film={activeFilm} />
 				</div>
 
-				{/* 👉 1 LIST DUY NHẤT */}
 				<HorizontalList
 					items={allItems}
 					activeId={activeId}

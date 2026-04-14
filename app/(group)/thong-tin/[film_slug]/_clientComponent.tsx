@@ -9,6 +9,8 @@ import YoutubePlayer from "@/components/Info/YoutubePlayer"
 import { departmentMap } from "@/constants"
 import FilmStats from "@/components/Info/FilmStats"
 import CommentSection from "@/components/CommentSection"
+import { ReviewFormWrapper } from "@/components/Review/ReviewFormWrapper"
+import { ReviewSection } from "@/components/Review/ReviewSection"
 
 const EpisodeSection = dynamic(
 	() => import("@/components/EpisodeSection.tsx"),
@@ -153,6 +155,7 @@ const InfoHero = ({
 							<RelatedFilm relatedFilm={film.related} />
 							<SuggestedFilm suggestedFilm={film.suggest} />
 
+							<ReviewSection film={film} />
 							<CommentSection
 								initialComments={initialComments}
 								stickers={stickers}

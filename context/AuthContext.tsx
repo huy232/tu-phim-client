@@ -162,20 +162,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		const {
 			data: { subscription },
-		} = supabase.auth.onAuthStateChange(async (_event, session) => {
-			const currentUser = session?.user ?? null
+		} = supabase.auth.onAuthStateChange((_event, session) => {
+			setTimeout(async () => {
+				const currentUser = session?.user ?? null
 
-			setUser(currentUser)
+				setUser(currentUser)
 
-			if (currentUser) {
-				await Promise.all([
-					fetchProfile(currentUser.id),
-					fetchFavorites(currentUser.id),
-				])
-			} else {
-				setProfile(null)
-				setFavoriteFilmIDs([])
-			}
+				if (currentUser) {
+					await Promise.all([
+						fetchProfile(currentUser.id),
+						fetchFavorites(currentUser.id),
+					])
+				} else {
+					setProfile(null)
+					setFavoriteFilmIDs([])
+				}
+			}, 0)
 		})
 
 		return () => {

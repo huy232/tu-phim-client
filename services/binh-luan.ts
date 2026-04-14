@@ -126,7 +126,6 @@ export const postComment = async (payload: {
 			exp: profiles?.exp || 0,
 			level: profiles?.level || 1,
 
-			// Các trường khác...
 			film_title: payload.film.name,
 			film_slug: payload.film.slug,
 			film_poster: payload.film.poster_url,

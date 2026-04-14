@@ -63,7 +63,7 @@ export async function getGlobalWatchHistory(
       )
     `,
 			{ count: "exact" },
-		) // Lấy tổng số dòng để làm phân trang
+		)
 		.eq("user_id", user.id)
 		.order("last_watched_at", { ascending: false })
 		.range(from, to)

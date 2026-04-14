@@ -140,7 +140,6 @@ export default function WatchHistoryList() {
 													</p>
 												</div>
 
-												{/* Bottom Actions */}
 												<div className="mt-3 flex items-center justify-between gap-2">
 													<p className="text-[10px] text-zinc-500 flex items-center gap-1 shrink-0">
 														<Clock size={10} />
