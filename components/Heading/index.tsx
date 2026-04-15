@@ -243,7 +243,7 @@ const AnimatedSectionHeader = ({
 	return (
 		<div
 			className={clsx(
-				"relative w-full overflow-hidden py-12 group",
+				"relative w-full overflow-hidden py-12 group mt-8",
 				"flex items-center",
 				isRight ? "justify-end" : "justify-start",
 			)}
@@ -254,10 +254,7 @@ const AnimatedSectionHeader = ({
 			</div>
 
 			{/* ===== GRADIENT OVERLAY ===== */}
-			<div
-				className="absolute inset-0 z-10 
-				bg-[linear-gradient(to_right,#0a0a0a_0%,transparent_20%,transparent_80%,#0a0a0a_100%),linear-gradient(to_bottom,#0a0a0a_0%,transparent_25%,transparent_75%,#0a0a0a_100%)]"
-			/>
+			<div className="absolute inset-0 z-10 bg-[linear-gradient(to_right,#0a0a0a_0%,transparent_20%,transparent_80%,#0a0a0a_100%),linear-gradient(to_bottom,#0a0a0a_0%,transparent_25%,transparent_75%,#0a0a0a_100%)]" />
 
 			{/* DARK LAYER */}
 			<div className="absolute inset-0 bg-[#0a0a0a]/50 z-10" />
