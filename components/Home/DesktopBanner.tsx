@@ -55,6 +55,7 @@ const DesktopBanner = ({ films }: { films: FilmInfo[] }) => {
 										? "border-purple scale-110 z-10"
 										: "border-transparent opacity-60",
 								)}
+								title={film.name}
 							>
 								<FilmImage
 									image_slug={film.thumb_url}

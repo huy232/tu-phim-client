@@ -46,7 +46,7 @@ export async function saveProgressAction(payload: {
 			{
 				user_id: userId,
 				film_id: internalFilmId,
-				episode_slug: episode.slug,
+				episode_slug: `${episode.slug}?sid=${sid}&svt=${svt}`,
 				episode_name: episode.name,
 				current_time_seconds: Math.floor(currentTime),
 				duration_seconds: Math.floor(duration),

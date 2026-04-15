@@ -134,3 +134,11 @@ export const calculateLevelProgress = (
 		color: levelData?.color_code || "#9ca3af",
 	}
 }
+
+export const stripHtml = (html: string) => {
+	return html?.replace(/<[^>]*>?/gm, "") || ""
+}
+
+export const buildEpisodeKey = (slug: string, sid: string, svt: string) => {
+	return `${slug}?sid=${sid}&svt=${svt}`
+}

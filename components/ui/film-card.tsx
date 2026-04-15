@@ -20,6 +20,7 @@ const FilmCard = ({
 				<Link
 					href={`/thong-tin/${film.slug}`}
 					className="flex flex-col gap-2 group cursor-pointer"
+					title={film.name}
 				>
 					<div className="w-full relative">
 						<div className="relative aspect-2/3 w-full bg-white/5 rounded-xl border border-white/10 group-hover:border-purple-500 transition-all overflow-hidden duration-300	">

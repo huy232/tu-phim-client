@@ -109,9 +109,17 @@ export default function WatchFilm({
 		router.push(`?${params.toString()}`, { scroll: false })
 	}, [nextEpisodeSlug, router, searchParams])
 
+	const handlePrevEpisode = useCallback(() => {
+		if (!prevEpisodeSlug) return
+		const params = new URLSearchParams(searchParams.toString())
+		params.set("ep", prevEpisodeSlug)
+		router.push(`?${params.toString()}`, { scroll: false })
+	}, [prevEpisodeSlug, router, searchParams])
+
 	const hasHydrated = usePlayerSettings((s) => s.hasHydrated)
 
 	const safeTheaterMode = hasHydrated ? isTheaterMode : false
+
 	useEffect(() => {
 		window.scrollTo({ top: 0, behavior: "smooth" })
 	}, [currentEpisode?.slug])
@@ -175,26 +183,26 @@ export default function WatchFilm({
 										transition={{ duration: 0.5 }}
 										className="relative w-full z-20 aspect-video"
 									>
-										<AnimatePresence mode="popLayout">
-											<motion.div
-												key={`${currentServer?.server_source}-${currentEpisode.slug}`}
-												initial={{ opacity: 0 }}
-												animate={{ opacity: 1 }}
-												exit={{ opacity: 0 }}
-												className="absolute inset-0 w-full"
-											>
-												<WatchSection
-													// key={`${currentServer?.server_source}-${currentEpisode.slug}`}
-													episode={currentEpisode}
-													onEnded={handleNextEpisode}
-													autoNext={hasHydrated ? autoNext : false}
-													autoNextOffset={hasHydrated ? autoNextOffset : 10}
-													film={film}
-													sid={currentServer?.server_source || ""}
-													svt={currentServer?.server_type || ""}
-												/>
-											</motion.div>
-										</AnimatePresence>
+										<motion.div
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											exit={{ opacity: 0 }}
+											className="absolute inset-0 w-full"
+										>
+											<WatchSection
+												episode={currentEpisode}
+												onEnded={handleNextEpisode}
+												autoNext={hasHydrated ? autoNext : false}
+												autoNextOffset={hasHydrated ? autoNextOffset : 10}
+												film={film}
+												sid={currentServer?.server_source || ""}
+												svt={currentServer?.server_type || ""}
+												prevEpisodeSlug={prevEpisodeSlug}
+												nextEpisodeSlug={nextEpisodeSlug}
+												handlePrevEpisode={handlePrevEpisode}
+												handleNextEpisode={handleNextEpisode}
+											/>
+										</motion.div>
 									</motion.div>
 								</div>
 

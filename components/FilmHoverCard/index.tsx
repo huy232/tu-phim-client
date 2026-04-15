@@ -88,7 +88,7 @@ export const FilmHoverWrapper = ({
 			window.removeEventListener("mousemove", handleMouseMove)
 			window.removeEventListener("mouseup", handleMouseUp)
 		}
-	}, [])
+	}, [canHover])
 
 	const updateCoords = () => {
 		if (!canHover) return
@@ -127,7 +127,7 @@ export const FilmHoverWrapper = ({
 
 			updateCoords()
 			setIsOpen(true)
-		}, 400)
+		}, 700)
 	}
 
 	const close = () => {
@@ -259,10 +259,16 @@ const PortalCard = ({
 					</div>
 				</div>
 				<div className="p-2 bg-[#141414] space-y-1">
-					<h3 className="text-[16px] font-bold text-white line-clamp-1">
+					<h3
+						className="text-[16px] font-bold text-white line-clamp-1"
+						title={film.name}
+					>
 						{film.name}
 					</h3>
-					<h4 className="text-[12px] font-medium line-clamp-1 text-purple">
+					<h4
+						className="text-[12px] font-medium line-clamp-1 text-purple"
+						title={film.origin_name}
+					>
 						{film.origin_name}
 					</h4>
 

@@ -58,10 +58,16 @@ export default function FilmCarousel({
 							</div>
 
 							<div className="flex flex-col px-1">
-								<p className="text-[10px] md:text-sm font-medium line-clamp-1 group-hover:text-purple-400 transition-colors">
+								<p
+									className="text-[10px] md:text-sm font-medium line-clamp-1 group-hover:text-purple-400 transition-colors"
+									title={film.name}
+								>
 									{film.name}
 								</p>
-								<p className="text-[8px] font-extralight md:text-xs text-white/50 line-clamp-1">
+								<p
+									className="text-[8px] font-extralight md:text-xs text-white/50 line-clamp-1"
+									title={film.origin_name}
+								>
 									{film.origin_name}
 								</p>
 							</div>

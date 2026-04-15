@@ -64,7 +64,7 @@ const PaginatedFilmList = ({
 			})
 		} catch (error) {
 			if (error instanceof Error) {
-				toast.error(error.message)
+				toast.error("Lỗi trong khi tải thêm phim.")
 				console.error(error)
 			}
 		} finally {

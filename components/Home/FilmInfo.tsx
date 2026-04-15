@@ -8,6 +8,7 @@ import { Heart, Info } from "lucide-react"
 import { FavoriteWrapper } from "../FavoriteWrapper"
 import clsx from "clsx"
 import { ShareButton } from "./ShareButton"
+import { stripHtml } from "@/utilities"
 interface FilmProps {
 	film: FilmInfo
 }
@@ -20,6 +21,7 @@ const FilmInfo = ({ film }: FilmProps) => {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, ease: "easeInOut" }}
 				className="text-2xl md:text-3xl font-extrabold text-white uppercase drop-shadow-2xl line-clamp-2 tracking-wider font-phudu"
+				title={film.name}
 			>
 				{film.name}
 			</motion.h2>
@@ -28,6 +30,7 @@ const FilmInfo = ({ film }: FilmProps) => {
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.3, delay: 0.2 }}
 				className="text-gray-300 text-sm md:text-md font-light drop-shadow-md line-clamp-2"
+				title={film.origin_name}
 			>
 				{film.origin_name}
 			</motion.p>
@@ -116,6 +119,7 @@ const FilmInfo = ({ film }: FilmProps) => {
 				<div
 					className="line-clamp-4 leading-relaxed"
 					dangerouslySetInnerHTML={{ __html: film.content }}
+					title={stripHtml(film.content)}
 				/>
 			</motion.div>
 

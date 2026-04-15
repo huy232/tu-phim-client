@@ -64,7 +64,6 @@ const CommentArea = ({
 			})
 
 			if (error) {
-				console.error("Lỗi gửi bình luận:", error)
 				toast.error("Lỗi gửi bình luận.")
 				return
 			}

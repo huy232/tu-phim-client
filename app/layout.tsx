@@ -13,6 +13,7 @@ import { Toaster, toast } from "sonner"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Suspense } from "react"
+import NextTopLoader from "nextjs-toploader"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -82,6 +83,18 @@ export default async function RootLayout({
 			)}
 		>
 			<body className="bg-foreground text-white flex flex-col min-h-screen">
+				<NextTopLoader
+					color="#ce53e0"
+					initialPosition={0.08}
+					crawlSpeed={200}
+					height={5}
+					crawl={true}
+					showSpinner={false}
+					easing="ease"
+					speed={200}
+					shadow={false}
+					showAtBottom={true}
+				/>
 				<SidebarProvider>
 					<AuthProvider>
 						<Header initialData={navData} />

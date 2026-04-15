@@ -34,7 +34,7 @@ const ActionButtons = ({
 			setTimeout(() => setCopied(false), 2000)
 		} catch (error) {
 			if (error instanceof Error) {
-				toast.error("Lỗi copy link")
+				toast.error("Lỗi không thể sao chép liên kết")
 				console.error("Lỗi copy link:", error)
 			}
 		}

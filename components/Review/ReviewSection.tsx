@@ -21,7 +21,7 @@ export function ReviewSection({ film }: { film: FilmInfo }) {
 			setTotalCount(res.totalCount)
 		} catch (error) {
 			if (error instanceof Error) {
-				toast.error(error.message)
+				toast.error("Lỗi khi tải bình phẩm")
 				console.error("Lỗi khi tải bình phẩm:", error)
 			}
 		} finally {

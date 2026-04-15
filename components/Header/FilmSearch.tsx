@@ -75,7 +75,6 @@ const FilmSearch = () => {
 				setTotal(pagination?.totalItems || 0)
 			} catch (error: unknown) {
 				if (error instanceof Error && error.name !== "AbortError") {
-					toast.error(error.message)
 					console.error(error.message)
 				}
 			} finally {

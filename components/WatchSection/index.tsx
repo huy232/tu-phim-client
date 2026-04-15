@@ -16,6 +16,10 @@ interface WatchSectionProps {
 	film: FilmInfo
 	sid: string
 	svt: string
+	prevEpisodeSlug: string | null
+	nextEpisodeSlug: string | null
+	handlePrevEpisode: () => void
+	handleNextEpisode: () => void
 }
 
 const WatchSection = ({
@@ -26,6 +30,10 @@ const WatchSection = ({
 	film,
 	sid,
 	svt,
+	prevEpisodeSlug,
+	nextEpisodeSlug,
+	handlePrevEpisode,
+	handleNextEpisode,
 }: WatchSectionProps) => {
 	const { user } = useAuth()
 	const isAutoResume = useSearchParams().get("xem-tiep") === "true"
@@ -82,10 +90,16 @@ const WatchSection = ({
 		onDestroy: handleArtDestroy,
 		sid,
 		svt,
+		prevEpisodeSlug,
+		nextEpisodeSlug,
+		onPrev: handlePrevEpisode,
+		onNext: handleNextEpisode,
 	})
 
 	useEffect(() => {
 		const onSeekSignal = (e: Event) => {
+			if (!(e instanceof CustomEvent)) return
+
 			const customEvent = e as CustomEvent<{ seconds: number }>
 			const seconds = customEvent.detail?.seconds
 
