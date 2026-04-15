@@ -8,6 +8,7 @@ import { AnimatePresence, easeInOut, motion } from "framer-motion"
 import { filmStatusMap, filmTypeMap } from "@/constants/film"
 import Link from "next/link"
 import { FavoriteWrapper } from "../FavoriteWrapper"
+import { toast } from "sonner"
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -62,8 +63,11 @@ const BannerHighlight = ({
 				videoId: youtubeId,
 				startSeconds: 0,
 			})
-		} catch (err) {
-			console.warn("loadVideoById error:", err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.warning(error.message)
+			}
+			console.warn("loadVideoById error:", error)
 		}
 	}, [youtubeId])
 

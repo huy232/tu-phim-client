@@ -28,10 +28,10 @@ export function ReviewItem({
 		if (!confirm("Bạn có chắc muốn xóa bình phẩm này?")) return
 		try {
 			await deleteReview(review.id)
-			toast.success("Đã xóa bình phẩm")
+			toast.success("Đã xóa bình phẩm.")
 			onUpdate()
 		} catch (error) {
-			toast.error("Không thể xóa lúc này")
+			toast.error("Không thể xóa lúc này.")
 		}
 	}
 
@@ -42,6 +42,9 @@ export function ReviewItem({
 			setIsLiked(true)
 			await incrementHelpfulCount(review.id)
 		} catch (error) {
+			if (error instanceof Error) {
+				toast.error("Lỗi khi vote hữu ích...")
+			}
 			setLocalHelpful((prev) => prev - 1)
 			setIsLiked(false)
 		}

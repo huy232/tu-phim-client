@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import FilmCard from "../ui/film-card"
 import { SkeletonGrid } from "./SkeletonCard"
 import { AnimatePresence, motion } from "framer-motion"
+import { toast } from "sonner"
 
 interface InfiniteFilmListProps {
 	params: Record<string, string | string[] | undefined | null>
@@ -75,8 +76,11 @@ const InfiniteFilmList = ({
 			setHasMore(hasNext)
 
 			pageRef.current += 1
-		} catch (err) {
-			console.error(err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message)
+				console.error(error)
+			}
 		} finally {
 			setLoading(false)
 			setInitialLoading(false)

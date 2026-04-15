@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react"
+import { toast } from "sonner"
 
 export const useFilmData = (type: string, slug: string) => {
 	const [isLoading, setIsLoading] = useState(false)
@@ -31,6 +32,7 @@ export const useFilmData = (type: string, slug: string) => {
 				return result.data
 			} catch (error: unknown) {
 				if (error instanceof Error && error.name !== "AbortError") {
+					toast.error("Lỗi lấy dữ liệu phim")
 					console.error("Fetch error:", error.message)
 				}
 				return null

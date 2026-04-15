@@ -11,6 +11,7 @@ import CommentList from "./CommentList"
 import CommentHeader from "./CommentHeader"
 import { useAuth } from "@/hooks/useAuth"
 import CommentSort from "./CommentSort"
+import { toast } from "sonner"
 
 const LIMIT = 10
 
@@ -57,8 +58,11 @@ const CommentSection = ({
 			} else {
 				setHasMore(false)
 			}
-		} catch (err) {
-			console.error("Error loading more:", err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message)
+				console.error("Error loading more:", error)
+			}
 		} finally {
 			setLoading(false)
 		}

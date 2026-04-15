@@ -79,8 +79,11 @@ const CommentArea = ({
 				setPreviewContent("")
 				setIsSpoiler(false)
 			}
-		} catch (err) {
-			console.error("Critical error:", err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message)
+				console.error("Critical error:", error)
+			}
 		} finally {
 			setIsSubmitting(false)
 		}

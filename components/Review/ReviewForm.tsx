@@ -27,22 +27,29 @@ export function ReviewForm({
 
 	const handleSubmit = async () => {
 		if (rating === 0) return toast.warning("Chọn một cấp độ cảm xúc!")
+
 		setLoading(true)
+
 		try {
-			await submitReviewAction({
+			const res = await submitReviewAction({
 				film,
 				userId,
 				rating,
 				content,
 				is_spoiler: isSpoiler,
 			})
+
+			if (!res.success) {
+				toast.error(res.error)
+				return
+			}
+
 			await onUpdate()
-			toast.success("Khắc bia thành công!")
+			toast.success("Khắc bia bình phẩm thành công!")
+
 			setContent("")
 			setRating(0)
 			setIsSpoiler(false)
-		} catch (error) {
-			toast.error("Thiên cơ bị nhiễu, hãy thử lại!")
 		} finally {
 			setLoading(false)
 		}

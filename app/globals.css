@@ -626,6 +626,46 @@ input[type="number"]::-webkit-outer-spin-button {
 	--x: 20px;
 }
 
+@theme {
+	--animate-float: float 4s ease-in-out infinite;
+	@keyframes float {
+		0%,
+		100% {
+			transform: translateY(0px) rotate(0deg);
+		}
+		50% {
+			transform: translateY(-12px) rotate(2deg);
+		}
+	}
+
+	--animate-float-slow: floatSlow 12s ease-in-out infinite;
+	@keyframes floatSlow {
+		0%,
+		100% {
+			transform: translate(0, 0);
+		}
+		50% {
+			transform: translate(60px, -40px);
+		}
+	}
+
+	--animate-particle: particle 4s ease-out infinite;
+
+	@keyframes particle {
+		0% {
+			transform: translateY(0);
+			opacity: 0;
+		}
+		50% {
+			opacity: 1;
+		}
+		100% {
+			transform: translateY(-40px);
+			opacity: 0;
+		}
+	}
+}
+
 /*
 text-zinc-400 text-zinc-100 text-slate-300 text-stone-300 text-green-400 text-green-500 
 text-emerald-400 text-emerald-500 text-teal-400 text-blue-400 text-blue-500 text-cyan-400 

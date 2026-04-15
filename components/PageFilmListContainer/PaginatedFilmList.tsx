@@ -6,6 +6,7 @@ import FilmCard from "../ui/film-card"
 import { SkeletonGrid } from "./SkeletonCard"
 import { motion, AnimatePresence } from "framer-motion"
 import PaginationHeader from "./PaginateHeader"
+import { toast } from "sonner"
 
 interface PaginatedFilmListProps {
 	params: Record<string, string | string[] | undefined | null>
@@ -61,8 +62,11 @@ const PaginatedFilmList = ({
 				totalPages: Math.ceil(pagin.totalItems / pagin.totalItemsPerPage),
 				totalItems: pagin.totalItems,
 			})
-		} catch (err) {
-			console.error(err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error(error.message)
+				console.error(error)
+			}
 		} finally {
 			setLoading(false)
 			fetchingRef.current = false

@@ -11,6 +11,7 @@ import FilmPreviewCard from "./FilmPreviewCard"
 import { WEB_URL } from "@/constants"
 import { useIsMobile } from "@/hooks/useMediaQuery"
 import { useSidebar } from "@/context/SidebarContext"
+import { toast } from "sonner"
 
 const FilmSearch = () => {
 	const { isOpen: isMobileMenuOpen, toggle, close } = useSidebar()
@@ -74,6 +75,7 @@ const FilmSearch = () => {
 				setTotal(pagination?.totalItems || 0)
 			} catch (error: unknown) {
 				if (error instanceof Error && error.name !== "AbortError") {
+					toast.error(error.message)
 					console.error(error.message)
 				}
 			} finally {

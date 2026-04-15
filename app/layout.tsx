@@ -9,6 +9,7 @@ import { getNavigationData } from "@/constants"
 import { AuthProvider } from "@/context/AuthContext"
 import ScrollToTheTop from "@/components/ScrollToTheTop"
 import { SidebarProvider } from "@/context/SidebarContext"
+import { Toaster, toast } from "sonner"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Suspense } from "react"
@@ -61,9 +62,10 @@ export default async function RootLayout({
 			navData = data
 		}
 	} catch (error) {
-		console.error(
+		toast.error(
 			"⚠️ RootLayout: Không thể kết nối API. Đang dùng dữ liệu dự phòng để Build.",
 		)
+		console.error(error)
 	}
 
 	return (
@@ -83,6 +85,7 @@ export default async function RootLayout({
 				<SidebarProvider>
 					<AuthProvider>
 						<Header initialData={navData} />
+						<Toaster position="top-center" expand visibleToasts={5} />
 						<Suspense>
 							<ScrollToTheTop />
 						</Suspense>

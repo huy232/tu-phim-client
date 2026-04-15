@@ -22,8 +22,10 @@ export const ShareButton = ({ slug }: ShareButtonProps) => {
 			setTimeout(() => {
 				setCopied(false)
 			}, 2000)
-		} catch (err) {
-			toast.error("Không thể sao chép liên kết")
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error("Không thể sao chép liên kết")
+			}
 		}
 	}
 

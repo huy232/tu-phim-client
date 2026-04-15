@@ -5,6 +5,7 @@ import { ReviewFormWrapper } from "./ReviewFormWrapper"
 import { getFilmReviews } from "@/services/binh-pham"
 import { useAuth } from "@/hooks/useAuth"
 import { MessageSquare, Sparkles, Loader2 } from "lucide-react"
+import { toast } from "sonner"
 
 export function ReviewSection({ film }: { film: FilmInfo }) {
 	const [reviews, setReviews] = useState<ReviewWithProfile[]>([])
@@ -19,7 +20,10 @@ export function ReviewSection({ film }: { film: FilmInfo }) {
 			setReviews(res.reviews)
 			setTotalCount(res.totalCount)
 		} catch (error) {
-			console.error("Lỗi khi tải bình phẩm:", error)
+			if (error instanceof Error) {
+				toast.error(error.message)
+				console.error("Lỗi khi tải bình phẩm:", error)
+			}
 		} finally {
 			setLoading(false)
 		}

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import YouTube, { YouTubeProps } from "react-youtube"
 import FilmInfo from "./FilmInfo"
 import clsx from "clsx"
+import { toast } from "sonner"
 
 const BannerSlide = ({
 	film,
@@ -39,7 +40,10 @@ const BannerSlide = ({
 			try {
 				event.target.playVideo()
 			} catch (error) {
-				console.warn("YouTube playVideo failed:", error)
+				if (error instanceof Error) {
+					toast.warning(error.message)
+					console.warn("YouTube playVideo failed:", error)
+				}
 			}
 		}
 	}

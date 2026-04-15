@@ -2,6 +2,7 @@
 import { supabase } from "@/supabase/client"
 import { RealtimeChannel } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 export const useReplies = (parentId: string, enabled: boolean) => {
 	const [replies, setReplies] = useState<CommentWithProfile[]>([])
@@ -71,7 +72,10 @@ export const useReplies = (parentId: string, enabled: boolean) => {
 					)
 					.subscribe()
 			} catch (error) {
-				console.error("Lỗi fetch replies:", error)
+				if (error instanceof Error) {
+					toast.error("Lỗi lấy phản hồi.")
+					console.error("Lỗi fetch replies:", error)
+				}
 			} finally {
 				setLoading(false)
 			}

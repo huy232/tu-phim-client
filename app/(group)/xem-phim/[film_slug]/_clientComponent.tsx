@@ -184,7 +184,7 @@ export default function WatchFilm({
 												className="absolute inset-0 w-full"
 											>
 												<WatchSection
-													key={`${currentServer?.server_source}-${currentEpisode.slug}`}
+													// key={`${currentServer?.server_source}-${currentEpisode.slug}`}
 													episode={currentEpisode}
 													onEnded={handleNextEpisode}
 													autoNext={hasHydrated ? autoNext : false}

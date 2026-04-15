@@ -18,6 +18,7 @@ import artplayerPluginAmbilight from "artplayer-plugin-ambilight"
 import artplayerPluginHlsControl from "artplayer-plugin-hls-control"
 import { handleGainExp } from "@/services/thang-cap"
 import { useAuth } from "./useAuth"
+import { toast } from "sonner"
 
 interface UseArtplayerProps {
 	artRef: RefObject<HTMLDivElement | null>
@@ -96,8 +97,11 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 						await fetchProfile(userId)
 					}
 				}
-			} catch (err) {
-				console.error("Lỗi gì đó, chưa thể cộng EXP:", err)
+			} catch (error) {
+				if (error instanceof Error) {
+					toast.error(error.message)
+					console.error("Lỗi gì đó, chưa thể cộng EXP:", error)
+				}
 			}
 		},
 		[fetchProfile],

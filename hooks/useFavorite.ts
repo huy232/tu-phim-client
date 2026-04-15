@@ -23,8 +23,11 @@ export const useFavorite = (film: FilmInfo) => {
 			} else {
 				toast.error(result.error)
 			}
-		} catch (err) {
-			toast.error("Thao tác thất bại")
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error("Thao tác yêu thích thất bại.")
+				console.error(error.message)
+			}
 		} finally {
 			setLoading(false)
 		}

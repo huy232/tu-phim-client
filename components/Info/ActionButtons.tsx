@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { FavoriteWrapper } from "../FavoriteWrapper"
 import clsx from "clsx"
+import { toast } from "sonner"
 
 const ActionButtons = ({
 	firstEpisode,
@@ -31,8 +32,11 @@ const ActionButtons = ({
 			await navigator.clipboard.writeText(window.location.href)
 			setCopied(true)
 			setTimeout(() => setCopied(false), 2000)
-		} catch (err) {
-			console.error("Lỗi copy link:", err)
+		} catch (error) {
+			if (error instanceof Error) {
+				toast.error("Lỗi copy link")
+				console.error("Lỗi copy link:", error)
+			}
 		}
 	}
 
