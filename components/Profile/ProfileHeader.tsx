@@ -1,5 +1,5 @@
 "use client"
-import { useLayoutEffect, useMemo, useRef, useState } from "react"
+import { useMemo } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Sparkles, Trophy } from "lucide-react"
@@ -25,6 +25,20 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 		return { currentLevel, nextLevel, progress, color }
 	}, [profile, levels])
 
+	const maskStyle = profile.equippedFrameMask
+		? {
+				WebkitMaskImage: `url(${profile.equippedFrameMask})`,
+				maskImage: `url(${profile.equippedFrameMask})`,
+				WebkitMaskSize: "contain",
+				maskSize: "contain",
+				WebkitMaskPosition: "center",
+				maskPosition: "center",
+				WebkitMaskRepeat: "no-repeat",
+				maskRepeat: "no-repeat",
+				maskMode: "luminance",
+			}
+		: {}
+
 	return (
 		<div className="relative w-full rounded-3xl overflow-hidden border border-white/5 bg-zinc-900/50 backdrop-blur-xl p-8 md:p-12">
 			<div
@@ -41,24 +55,14 @@ export default function ProfileHeader({ profile, levels }: ProfileHeaderProps) {
 
 					<div
 						className="absolute inset-0 z-10 w-full h-full flex items-center justify-center"
-						style={{
-							WebkitMaskImage: `url(${profile.equippedFrameMask})`,
-							maskImage: `url(${profile.equippedFrameMask})`,
-							WebkitMaskSize: "contain",
-							maskSize: "contain",
-							WebkitMaskPosition: "center",
-							maskPosition: "center",
-							WebkitMaskRepeat: "no-repeat",
-							maskRepeat: "no-repeat",
-							maskMode: "luminance",
-						}}
+						style={maskStyle}
 					>
 						<Image
 							src={profile.avatar_url || "/default-avatar.png"}
 							alt="Avatar"
 							width={200}
 							height={200}
-							className="object-cover w-full h-full p-4"
+							className="object-cover w-full h-full p-4 rounded-full"
 						/>
 					</div>
 

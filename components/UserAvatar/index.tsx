@@ -65,7 +65,10 @@ export default function UserAvatar({
 					alt="Avatar"
 					width={200}
 					height={200}
-					className={clsx("object-cover w-full h-full", getPadding())}
+					className={clsx(
+						"object-cover w-full h-full rounded-full",
+						getPadding(),
+					)}
 				/>
 			</div>
 

@@ -30,7 +30,7 @@ export async function generateMetadata({
 	}
 
 	const currentEp = ep ? ` - Tập ${ep}` : ""
-	const title = `Đang Xem: ${film.name}${currentEp} | Tu Phim`
+	const title = `Xem ${film.name}${currentEp} | Tu Phim`
 	const description = `Tu luyện bí tịch ${film.name}${currentEp}. ${film.content?.slice(0, 100)}...`
 
 	const thumbUrl = film.thumb_url
