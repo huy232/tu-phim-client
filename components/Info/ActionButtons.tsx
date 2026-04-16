@@ -128,9 +128,7 @@ const ActionButtons = ({
 						: "bg-blue-500/10 border-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white",
 				)}
 			>
-				<motion.div whileHover={!copied ? { rotate: 15 } : {}}>
-					{copied ? <Check size={18} /> : <Share2 size={18} />}
-				</motion.div>
+				{copied ? <Check size={18} /> : <Share2 size={18} />}
 			</motion.button>
 		</motion.div>
 	)

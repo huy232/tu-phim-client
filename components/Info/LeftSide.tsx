@@ -128,7 +128,7 @@ const LeftSide = ({
 
 			{film?.top_type?.length > 0 && (
 				<CollapsibleCard title="Top 10 đề xuất">
-					<div className="relative pl-7 mb-10 lg:mb-12 group">
+					<div className="relative pl-7 mb-2 md:mb-10 lg:mb-12 group">
 						<div className="absolute left-0 top-0 h-full w-1 bg-linear-to-b from-amber-400 via-orange-500 to-transparent shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-amberFlicker" />
 
 						<div className="absolute -left-8.5 top-1/2 -translate-y-1/2 -rotate-90 origin-center text-[9px] font-bold uppercase tracking-[0.4em] text-white/20 whitespace-nowrap">
@@ -151,7 +151,7 @@ const LeftSide = ({
 							#10
 						</span>
 					</div>
-					<div className="flex flex-col lg:flex-col max-lg:flex-row max-lg:overflow-x-auto max-lg:gap-4 max-lg:snap-x max-lg:snap-mandatory gap-5 overflow-x-auto snap-x snap-mandatory px-8 py-12 -mx-2">
+					<div className="flex flex-col lg:flex-col max-lg:flex-row max-lg:overflow-x-auto max-lg:gap-4 max-lg:snap-x max-lg:snap-mandatory gap-5 overflow-x-auto snap-x snap-mandatory px-8 py-2 md:py-4 lg:py-6 mx-2 lg:-mx-2">
 						{film.top_type.map((top, index) => (
 							<div
 								key={top._id}

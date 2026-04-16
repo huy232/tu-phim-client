@@ -22,9 +22,5 @@ export const FavoriteWrapper = ({ film, children }: FavoriteWrapperProps) => {
 		handleToggle()
 	}
 
-	return (
-		<div title={"Yêu thích"}>
-			{children({ isFavorited, handleToggle: onToggle, loading })}
-		</div>
-	)
+	return <>{children({ isFavorited, handleToggle: onToggle, loading })}</>
 }

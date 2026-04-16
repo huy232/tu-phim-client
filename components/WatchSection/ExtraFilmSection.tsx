@@ -148,6 +148,7 @@ const ExtraFilmSection = ({
 				<FavoriteWrapper film={film}>
 					{({ isFavorited, handleToggle }) => (
 						<button
+							title={isFavorited ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"}
 							onClick={handleToggle}
 							className={clsx(
 								"p-2 rounded-lg transition-colors shrink-0",

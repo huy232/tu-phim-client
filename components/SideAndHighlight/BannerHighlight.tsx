@@ -333,6 +333,11 @@ const BannerHighlight = ({
 								<FavoriteWrapper film={film}>
 									{({ isFavorited, handleToggle, loading }) => (
 										<button
+											title={
+												isFavorited
+													? "Xóa khỏi yêu thích"
+													: "Thêm vào yêu thích"
+											}
 											onClick={handleToggle}
 											disabled={loading}
 											className={clsx(

@@ -21,7 +21,7 @@ export function ReviewFormWrapper({ film, onUpdate }: ReviewFormWrapperProps) {
 
 	if (!user) {
 		return (
-			<div className="group bg-linear-to-br from-blue-500/5 to-purple-500/5 border border-blue-500/20 p-8 rounded-2xl my-8 text-center backdrop-blur-sm relative overflow-hidden">
+			<div className="group bg-linear-to-br from-blue-500/5 to-purple-500/5 border border-blue-500/20 p-4 md:p-8 rounded-2xl my-8 text-center backdrop-blur-sm relative overflow-hidden">
 				<div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
 					<LockKeyhole className="w-12 h-12 text-blue-400" />
 				</div>

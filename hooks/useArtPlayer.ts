@@ -18,6 +18,7 @@ import artplayerPluginAmbilight from "artplayer-plugin-ambilight"
 import artplayerPluginHlsControl from "artplayer-plugin-hls-control"
 import { handleGainExp } from "@/services/thang-cap"
 import { useAuth } from "./useAuth"
+import { useMediaQuery } from "./useMediaQuery"
 
 interface UseArtplayerProps {
 	artRef: RefObject<HTMLDivElement | null>
@@ -72,6 +73,8 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 		onPrev,
 		onNext,
 	} = props
+
+	const isMobile = useMediaQuery("(max-width: 1024px)")
 
 	const hlsRef = useRef<Hls | null>(null)
 	const internalArtRef = useRef<Artplayer | null>(null)
@@ -223,6 +226,25 @@ export const useArtplayer = (props: UseArtplayerProps) => {
 			onDestroy()
 		}
 	}, [])
+
+	// ======================
+	// DISPLAY NEXT/PREV BUTTON
+	// ======================
+
+	useEffect(() => {
+		const prevBtn = controlElsRef.current.prev
+		const nextBtn = controlElsRef.current.next
+
+		if (!prevBtn || !nextBtn) return
+
+		if (isMobile) {
+			prevBtn.style.display = "none"
+			nextBtn.style.display = "none"
+		} else {
+			prevBtn.style.display = "flex"
+			nextBtn.style.display = "flex"
+		}
+	}, [isMobile])
 
 	// ======================
 	// SWITCH EPISODE
