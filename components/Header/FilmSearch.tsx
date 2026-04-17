@@ -11,7 +11,6 @@ import FilmPreviewCard from "./FilmPreviewCard"
 import { WEB_URL } from "@/constants"
 import { useIsMobile } from "@/hooks/useMediaQuery"
 import { useSidebar } from "@/context/SidebarContext"
-import { toast } from "sonner"
 
 const FilmSearch = () => {
 	const { isOpen: isMobileMenuOpen, toggle, close } = useSidebar()
@@ -41,8 +40,9 @@ const FilmSearch = () => {
 			}
 		}
 
-		document.addEventListener("mousedown", handleClickOutside)
-		return () => document.removeEventListener("mousedown", handleClickOutside)
+		document.addEventListener("pointerdown", handleClickOutside)
+
+		return () => document.removeEventListener("pointerdown", handleClickOutside)
 	}, [isMobile])
 
 	// ================= FETCH =================
@@ -108,9 +108,9 @@ const FilmSearch = () => {
 		e?.preventDefault()
 		if (!keyword.trim()) return
 
+		router.push(`${WEB_URL}/tim-kiem?keyword=${encodeURIComponent(keyword)}`)
 		resetSearch()
 		close()
-		router.push(`${WEB_URL}/tim-kiem?keyword=${encodeURIComponent(keyword)}`)
 	}
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,7 +277,7 @@ function SearchContent(props: SearchContentProps) {
 
 					{showViewAll && (
 						<button
-							onClick={onSearch}
+							onClick={() => onSearch()}
 							className="w-full py-2 text-xs text-purple-400"
 						>
 							Xem thêm {total} kết quả cho &quot;{keyword}&quot;
