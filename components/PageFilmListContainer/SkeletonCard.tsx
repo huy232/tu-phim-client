@@ -1,5 +1,5 @@
 export const SkeletonCard = () => (
-	<div className="flex flex-col gap-3 animate-pulse">
+	<div className="flex flex-col animate-pulse mt-8">
 		<div className="relative aspect-2/3 w-full bg-white/5 rounded-xl border border-white/10 overflow-hidden">
 			<div className="absolute top-2 right-2 w-12 h-4 bg-white/10 rounded-full" />
 			<div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-16 h-4 bg-white/10 rounded border border-white/5" />
