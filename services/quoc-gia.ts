@@ -38,7 +38,7 @@ export async function getFilmByCountry(
 		const url = `${API}/quoc-gia/${slug}?${params.toString()}`
 
 		const res = await fetch(url, {
-			next: { revalidate: 10800 },
+			next: { revalidate: 3600 },
 		})
 
 		if (!res.ok) return { data: { items: [] } }

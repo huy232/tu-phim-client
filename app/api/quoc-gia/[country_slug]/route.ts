@@ -20,7 +20,7 @@ export async function GET(
 				"Content-Type": "application/json",
 			},
 			credentials: "include",
-			next: { revalidate: 10800 },
+			next: { revalidate: 3600 },
 		})
 
 		if (!res.ok) {

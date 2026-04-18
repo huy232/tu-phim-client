@@ -1,4 +1,4 @@
-export const revalidate = 10800
+export const revalidate = 3600
 
 import ShowcaseWrapper from "@/components/CommentShowcase/CommentShowcaseWrapper"
 import Banner from "@/components/Home/Banner"

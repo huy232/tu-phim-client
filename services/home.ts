@@ -7,7 +7,7 @@ export async function fetchHomeDataFromBackend() {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			next: { revalidate: 10800 },
+			next: { revalidate: 3600 },
 		})
 
 		if (!res.ok) return null
