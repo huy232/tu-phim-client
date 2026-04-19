@@ -14,7 +14,7 @@ interface FilmProps {
 }
 const FilmInfo = ({ film }: FilmProps) => {
 	return (
-		<div className="absolute top-10 left-6 md:top-14 md:left-10 z-30 max-w-[90%] md:max-w-[40%] text-white min-h-125">
+		<div className="absolute top-10 left-6 md:top-14 md:left-10 z-30 max-w-[90%] md:max-w-[60%] lg:max-w-[40%] text-white min-h-125">
 			{/* TÊN PHIM */}
 			<motion.h2
 				initial={{ opacity: 0, y: -50 }}
@@ -134,7 +134,7 @@ const FilmInfo = ({ film }: FilmProps) => {
 				<Link
 					href={`/thong-tin/${film.slug}`}
 					className={clsx(
-						"h-12.5 lg:px-3 xl:px-4 flex items-center gap-2",
+						"h-12.5 px-2 lg:px-3 xl:px-4 flex items-center gap-2",
 						"bg-white/5 hover:bg-white/10",
 						"border border-white/10 hover:border-white/20",
 						"rounded-full backdrop-blur-md",
@@ -154,6 +154,9 @@ const FilmInfo = ({ film }: FilmProps) => {
 					<FavoriteWrapper film={film}>
 						{({ isFavorited, handleToggle, loading }) => (
 							<button
+								title={
+									isFavorited ? "Xóa khỏi yêu thích" : "Thêm vào yêu thích"
+								}
 								onClick={handleToggle}
 								disabled={loading}
 								className={clsx(

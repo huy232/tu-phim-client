@@ -39,7 +39,7 @@ const CommentContent = ({
 			<div className="w-full min-w-0">
 				{comment.is_spoiler && !isRevealed ? (
 					<button className="w-full p-3 md:p-4 rounded-2xl bg-red-500/5 border border-red-500/20 text-center">
-						<span className="text-xs text-red-400 break-words">
+						<span className="text-xs text-red-400 wrap-break-word	">
 							Bình luận chứa spoiler. Nhấn để xem
 						</span>
 					</button>

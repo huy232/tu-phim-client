@@ -74,7 +74,7 @@ const BannerSlide = ({
 	const backgroundClass = clsx(
 		"absolute inset-0 bg-no-repeat bg-right bg-black",
 		"transition-opacity duration-1500 ease-in-out z-0",
-		"bg-size-[100%] md:bg-size-[70%]",
+		"bg-size-[100%] lg:bg-size-[70%]",
 		{
 			"opacity-0": shouldShowVideo && isActive,
 			"opacity-100": !(shouldShowVideo && isActive),

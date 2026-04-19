@@ -65,7 +65,7 @@ const NavDropdown = ({
 			{/* TRIGGER */}
 			<div
 				className="flex items-center justify-between cursor-pointer select-none py-2 group"
-				onClick={() => handleToggle()}
+				onClick={handleToggle}
 			>
 				<span className="group-hover:text-purple-400 transition-colors uppercase tracking-widest text-sm lg:text-[11px]">
 					{title}

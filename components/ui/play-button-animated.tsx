@@ -7,7 +7,7 @@ const PlayButtonAnimated = ({ filmSlug }: { filmSlug: string }) => {
 	return (
 		<Link href={`/xem-phim/${filmSlug}`}>
 			<motion.button
-				className="relative z-30 cursor-pointer lg:px-3 xl:px-4 py-2 border-[0.5px] border-purple/50 rounded-full flex items-center gap-2 h-12.5 bg-purple/80 text-white shadow-lg overflow-hidden group"
+				className="px-2 relative z-30 cursor-pointer lg:px-3 xl:px-4 py-2 border-[0.5px] border-purple/50 rounded-full flex items-center gap-2 h-12.5 bg-purple/80 text-white shadow-lg overflow-hidden group"
 				whileHover={{
 					scale: 1.05,
 					backgroundColor: "#a855f7",

@@ -11,6 +11,7 @@ import FilmPreviewCard from "./FilmPreviewCard"
 import { WEB_URL } from "@/constants"
 import { useIsMobile } from "@/hooks/useMediaQuery"
 import { useSidebar } from "@/context/SidebarContext"
+import Link from "next/link"
 
 const FilmSearch = () => {
 	const { isOpen: isMobileMenuOpen, toggle, close } = useSidebar()
@@ -276,12 +277,13 @@ function SearchContent(props: SearchContentProps) {
 					</div>
 
 					{showViewAll && (
-						<button
-							onClick={() => onSearch()}
-							className="w-full py-2 text-xs text-purple-400"
+						<Link
+							href={`/tim-kiem?keyword=${encodeURIComponent(keyword)}`}
+							onClick={onClickItem}
+							className="block w-full py-2 text-xs text-purple-400 text-center"
 						>
 							Xem thêm {total} kết quả cho &quot;{keyword}&quot;
-						</button>
+						</Link>
 					)}
 				</div>
 			) : showNotFound ? (

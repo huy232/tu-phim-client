@@ -97,7 +97,7 @@ const Header = ({ initialData }: HeaderProps) => {
 				</Link>
 
 				{/* SEARCH */}
-				<div className="hidden sm:flex items-center gap-2">
+				<div className="hidden lg:flex items-center gap-2">
 					<FilmSearch />
 				</div>
 
