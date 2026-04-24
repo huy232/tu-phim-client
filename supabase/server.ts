@@ -20,6 +20,11 @@ export async function createClient() {
 					} catch {}
 				},
 			},
+			auth: {
+				lock: async (_name, _acquireTimeout, fn) => {
+					return await fn()
+				},
+			},
 		},
 	)
 }
