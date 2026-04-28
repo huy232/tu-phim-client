@@ -87,7 +87,7 @@ export default function WatchHistoryList() {
 									>
 										<div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/5 shadow-2xl">
 											<Image
-												src={`${IMAGE_URL}/${item.films.thumb_url}`}
+												src={`${IMAGE_URL}/${item.films.poster_url}`}
 												alt={item.last_episode_name}
 												fill
 												className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -108,7 +108,7 @@ export default function WatchHistoryList() {
 										<div className="relative px-4 -mt-10 flex gap-4 flex-1">
 											<div className="relative w-20 sm:w-24 aspect-2/3 shrink-0 rounded-lg overflow-hidden border-2 border-[#0a0a0a] shadow-[0_8px_20px_rgba(0,0,0,0.8)] z-10 bg-[#121212]">
 												<Image
-													src={`${IMAGE_URL}/${item.films.poster_url}`}
+													src={`${IMAGE_URL}/${item.films.thumb_url}`}
 													alt={item.films.name}
 													fill
 													sizes="(max-width: 640px) 80px, 96px"
