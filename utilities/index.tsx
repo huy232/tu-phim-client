@@ -142,3 +142,35 @@ export const stripHtml = (html: string) => {
 export const buildEpisodeKey = (slug: string, sid: string, svt: string) => {
 	return `${slug}?sid=${sid}&svt=${svt}`
 }
+
+export const extractMentions = (text: string): string[] => {
+	const matches = text.match(/@([a-zA-Z0-9_]+)/g)
+	if (!matches) return []
+	return matches.map((m) => m.slice(1).toLowerCase())
+}
+
+export const groupComments = (comments: CommentWithProfile[]) => {
+	const map = new Map<
+		string,
+		CommentWithProfile & { replies: CommentWithProfile[] }
+	>()
+
+	const roots: (CommentWithProfile & { replies: CommentWithProfile[] })[] = []
+
+	for (const c of comments) {
+		map.set(c.id, { ...c, replies: [] })
+	}
+
+	for (const c of comments) {
+		if (c.parent_id) {
+			const parent = map.get(c.parent_id)
+			if (parent) {
+				parent.replies.push(map.get(c.id)!)
+			}
+		} else {
+			roots.push(map.get(c.id)!)
+		}
+	}
+
+	return roots
+}

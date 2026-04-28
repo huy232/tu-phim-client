@@ -110,7 +110,9 @@ export const postComment = async (payload: {
 			)
 			.single()
 
-		if (insertError) throw insertError
+		if (insertError) {
+			throw insertError
+		}
 
 		if (!insertedData.profiles) {
 			console.error("Không tìm thấy profile cho user_id:", payload.user_id)
@@ -154,11 +156,16 @@ export const toggleInteraction = async (
 	type: "like" | "dislike",
 ) => {
 	const supabase = await createClient()
-	return await supabase.rpc("toggle_comment_interaction", {
+	const { data, error } = await supabase.rpc("toggle_comment_interaction", {
 		p_comment_id: commentId,
 		p_user_id: userId,
 		p_type: type,
 	})
+
+	// console.log("RPC error:", error)
+	// console.log("RPC data:", data)
+
+	return data
 }
 
 export const deleteComment = async (commentId: string, userId: string) => {
@@ -166,6 +173,24 @@ export const deleteComment = async (commentId: string, userId: string) => {
 	return await supabase
 		.from("comments")
 		.delete()
+		.eq("id", commentId)
+		.eq("user_id", userId)
+}
+
+export const updateComment = async (
+	commentId: string,
+	userId: string,
+	content: string,
+	is_spoiler: boolean,
+) => {
+	const supabase = await createClient()
+
+	return await supabase
+		.from("comments")
+		.update({
+			content,
+			is_spoiler,
+		})
 		.eq("id", commentId)
 		.eq("user_id", userId)
 }

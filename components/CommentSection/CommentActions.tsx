@@ -13,6 +13,8 @@ interface Props {
 	onDislikeClick: () => void
 	onDeleteClick: () => void
 	isDeleting?: boolean
+	onEditClick?: () => void
+	canEdit?: boolean
 }
 
 const CommentActions = ({
@@ -27,6 +29,8 @@ const CommentActions = ({
 	onDislikeClick,
 	onDeleteClick,
 	isDeleting,
+	onEditClick,
+	canEdit,
 }: Props) => (
 	<div className="mt-3 px-1 flex flex-wrap items-center gap-x-4 gap-y-2">
 		{/* LEFT ACTIONS */}
@@ -96,6 +100,15 @@ const CommentActions = ({
 				<span className="hidden sm:inline">
 					{isDeleting ? "Đang xóa..." : "Xóa"}
 				</span>
+			</button>
+		)}
+		{/* EDIT */}
+		{canEdit && (
+			<button
+				onClick={onEditClick}
+				className="text-[10px] text-white/20 hover:text-blue-400 uppercase"
+			>
+				Sửa
 			</button>
 		)}
 	</div>
