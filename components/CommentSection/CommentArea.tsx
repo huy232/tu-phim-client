@@ -28,7 +28,6 @@ interface CommentAreaProps {
 	defaultValue?: string
 	commentId?: string
 
-	// ✅ thêm cái này
 	onCancel?: () => void
 }
 
@@ -45,7 +44,7 @@ const CommentArea = ({
 	mode,
 	defaultValue,
 	commentId,
-	onCancel, // ✅ nhận prop
+	onCancel,
 }: CommentAreaProps) => {
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [isSpoiler, setIsSpoiler] = useState(false)
@@ -219,6 +218,32 @@ const CommentArea = ({
 							className="w-full p-4 text-sm text-gray-200 outline-none min-h-[100px] max-h-[400px] resize-none bg-transparent"
 						/>
 
+						{showMentionBox && mentionUsers.length > 0 && (
+							<div className="absolute left-0 right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto">
+								{mentionUsers.map((u) => (
+									<button
+										key={u.id}
+										type="button"
+										onClick={() => insertMention(u.username)}
+										className="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/10 text-left"
+									>
+										{u.avatar_url && (
+											<Image
+												src={u.avatar_url}
+												alt="avatar"
+												width={24}
+												height={24}
+												className="rounded-full"
+											/>
+										)}
+										<span className="text-sm text-white">
+											{u.full_name || u.username}
+										</span>
+									</button>
+								))}
+							</div>
+						)}
+
 						<div className="flex items-center justify-between px-4 py-3 border-t border-white/[0.05]">
 							<div className="flex gap-2">
 								<CommentSpoilerButton
@@ -232,7 +257,6 @@ const CommentArea = ({
 							</div>
 
 							<div className="flex items-center gap-2">
-								{/* ✅ NÚT HỦY */}
 								{mode === "edit" && (
 									<button
 										type="button"

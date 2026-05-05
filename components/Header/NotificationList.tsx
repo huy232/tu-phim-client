@@ -16,7 +16,7 @@ const formatActors = (n: AppNotification) => {
 
 	const names = actors
 		.slice(0, 2)
-		.map((a) => a.profile?.full_name || a.profile?.username || "Ai đó")
+		.map((a) => a.full_name || a.username || "Ai đó")
 
 	if (n.actors_count === 1) return names[0]
 	if (n.actors_count === 2) return names.join(" và ")
@@ -39,7 +39,7 @@ const formatNotification = (n: AppNotification) => {
 
 // ================= ITEM =================
 const NotificationItem = ({ n }: { n: AppNotification }) => {
-	const firstActor = n.actors?.[0]?.profile
+	const firstActor = n.actors?.[0]
 
 	return (
 		<div

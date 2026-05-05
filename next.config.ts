@@ -38,7 +38,9 @@ const nextConfig: NextConfig = {
 				hostname: "aywlgeduzayczgrfbumy.supabase.co",
 			},
 		],
+		unoptimized: true
 	},
+	
 }
 
 export default nextConfig

@@ -84,7 +84,7 @@ const BannerSlide = ({
 	const videoWrapperClass = clsx(
 		"absolute inset-0 transition-opacity duration-1500 ease-in-out",
 		{
-			"opacity-100 pointer-events-auto": shouldShowVideo && isActive,
+			"opacity-100 pointer-events-none": shouldShowVideo && isActive,
 			"opacity-0 pointer-events-none": !shouldShowVideo || !isActive,
 		},
 	)
@@ -118,13 +118,16 @@ const BannerSlide = ({
 								iv_load_policy: 3,
 								disablekb: 1,
 								fs: 0,
+								playsinline: 1,
+								wmode: "opaque",
+								autohide: 1,
 							},
 						}}
 						onReady={onPlayerReady}
 						onStateChange={onPlayerStateChange}
 						onError={() => setHasError(true)}
-						className="absolute top-1/2 left-1/2 min-w-full min-h-full w-[115vw] h-[115vh] -translate-x-1/2 -translate-y-1/2 object-cover"
-						iframeClassName="w-full h-full pointer-events-none scale-125"
+						className="absolute top-1/2 left-1/2 min-w-full min-h-full w-[115vw] h-[115vh] -translate-x-1/2 -translate-y-1/2 object-cover pointer-events-none"
+						iframeClassName="w-full h-full pointer-events-none scale-100"
 					/>
 				</div>
 			)}

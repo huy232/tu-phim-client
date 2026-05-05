@@ -47,7 +47,6 @@ const CommentItem = ({
 	const [showReplyForm, setShowReplyForm] = useState(false)
 	const [isEditing, setIsEditing] = useState(false)
 
-	// ✅ FIX: KHÔNG mutate comment nữa
 	const [content, setContent] = useState(comment.content)
 
 	const [likes, setLikes] = useState(comment.likes_count || 0)
