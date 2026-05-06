@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react"
 import YouTube, { YouTubeProps } from "react-youtube"
 import FilmInfo from "./FilmInfo"
 import clsx from "clsx"
-import { toast } from "sonner"
 
 const BannerSlide = ({
 	film,
@@ -20,7 +19,6 @@ const BannerSlide = ({
 }) => {
 	const [isVideoReady, setIsVideoReady] = useState(false)
 	const [hasError, setHasError] = useState(false)
-
 	const [isFadingOut, setIsFadingOut] = useState(false)
 	const timerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -40,21 +38,27 @@ const BannerSlide = ({
 			try {
 				event.target.playVideo()
 			} catch (error) {
-				if (error instanceof Error) {
-					toast.warning(error.message)
-					console.warn("YouTube playVideo failed:", error)
-				}
+				console.warn("YouTube playVideo failed:", error)
 			}
 		}
 	}
+
 	const onPlayerStateChange: YouTubeProps["onStateChange"] = (event) => {
 		const player = event.target
 
-		if (event.data === 1) {
-			setIsVideoReady(true)
-			setIsFadingOut(false)
-			clearFadeTimer()
+		if (event.data === 2) {
+			event.target.playVideo()
+		}
 
+		if (event.data === 1) {
+			setTimeout(() => {
+				if (isActive) {
+					setIsVideoReady(true)
+					setIsFadingOut(false)
+				}
+			}, 800)
+
+			clearFadeTimer()
 			const timeRemaining =
 				(player.getDuration() - player.getCurrentTime()) * 1000
 			if (timeRemaining > 2000) {
@@ -84,8 +88,8 @@ const BannerSlide = ({
 	const videoWrapperClass = clsx(
 		"absolute inset-0 transition-opacity duration-1500 ease-in-out",
 		{
-			"opacity-100 pointer-events-none": shouldShowVideo && isActive,
-			"opacity-0 pointer-events-none": !shouldShowVideo || !isActive,
+			"opacity-100": shouldShowVideo && isActive,
+			"opacity-0": !shouldShowVideo || !isActive,
 		},
 	)
 
@@ -102,6 +106,8 @@ const BannerSlide = ({
 
 			{isDesktop && youtubeId && !hasError && isActive && (
 				<div className={videoWrapperClass}>
+					<div className="absolute inset-0 z-20 bg-transparent pointer-events-auto" />
+
 					<YouTube
 						videoId={youtubeId}
 						id={`youtube-player-${film._id}`}
@@ -119,7 +125,7 @@ const BannerSlide = ({
 								disablekb: 1,
 								fs: 0,
 								playsinline: 1,
-								wmode: "opaque",
+								wmode: "transparent",
 								autohide: 1,
 							},
 						}}
@@ -131,10 +137,11 @@ const BannerSlide = ({
 					/>
 				</div>
 			)}
-			<div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_60px_#0a0a0a] z-10" />
-			<div className="absolute inset-0 pointer-events-none bg-linear-to-r from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent z-10" />
-			<div className="absolute inset-0 pointer-events-none bg-linear-to-t from-[#0a0a0a] via-transparent to-transparent z-10" />
-			<div className="absolute inset-0 pointer-events-none bg-[#0a0a0a]/20 z-10" />
+
+			<div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_60px_#0a0a0a] z-30" />
+			<div className="absolute inset-0 pointer-events-none bg-linear-to-r from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent z-30" />
+			<div className="absolute inset-0 pointer-events-none bg-linear-to-t from-[#0a0a0a] via-transparent to-transparent z-30" />
+			<div className="absolute inset-0 pointer-events-none bg-[#0a0a0a]/20 z-30" />
 
 			<FilmInfo film={film} />
 		</div>

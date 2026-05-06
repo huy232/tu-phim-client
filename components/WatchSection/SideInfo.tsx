@@ -154,7 +154,7 @@ const SideInfo = ({ film, isDimmed }: SideInfoProps) => {
 						{
 							icon: Calendar,
 							label: "Trạng thái",
-							value: film.episode_current,
+							value: film.episode_current || "???",
 						},
 						{
 							icon: LibraryBig,
@@ -164,7 +164,7 @@ const SideInfo = ({ film, isDimmed }: SideInfoProps) => {
 						{
 							icon: Clock,
 							label: "Thời lượng",
-							value: film.time,
+							value: film.time || "???",
 						},
 						{
 							icon: CalendarDays,
