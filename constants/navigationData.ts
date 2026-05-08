@@ -11,7 +11,18 @@ export async function getCategoriesFromBackend(queryString: string = "") {
 	const res = await fetch(`${API}/the-loai/list?${queryString}`, {
 		next: { revalidate: 3600 },
 	})
-	return res.ok ? res.json() : null
+
+	if (!res.ok) return null
+
+	const result = await res.json()
+
+	if (result && result.data && result.data.items) {
+		result.data.items = result.data.items.filter(
+			(item: Category) => item.slug !== "18" && item.name !== "Phim 18+",
+		)
+	}
+
+	return result
 }
 
 export async function getYearsFromBackend() {
