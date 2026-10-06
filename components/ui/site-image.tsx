@@ -28,7 +28,6 @@ const SiteImage = ({
 	...props
 }: SiteImageProps) => {
 	const normalized = normalizeSrc(src)
-
 	const [isLoaded, setIsLoaded] = useState(false)
 	const [imgSrc, setImgSrc] = useState<string>(normalized)
 	const [retryCount, setRetryCount] = useState(0)

@@ -21,7 +21,8 @@ export const FilmImage = ({
 	return (
 		<SiteImage
 			{...props}
-			src={`${IMAGE_URL}/${image_slug}`}
+			// src={`${IMAGE_URL}/${image_slug}`}
+			src={image_slug}
 			width={width}
 			height={height}
 			alt={name}

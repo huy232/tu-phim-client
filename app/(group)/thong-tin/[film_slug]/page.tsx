@@ -28,12 +28,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		? film.content.slice(0, 160) + "..."
 		: `Xem phim ${film.name} tại Tu Phim - Nơi hội tụ các đại năng đam mê điện ảnh.`
 
-	const thumbUrl = film.thumb_url
-		? `${IMAGE_URL}/${film.thumb_url}`
-		: `${IMAGE_URL}/${film.poster_url}`
-	const posterUrl = film.poster_url
-		? `${IMAGE_URL}/${film.poster_url}`
-		: thumbUrl
+	// const thumbUrl = film.thumb_url
+	// 	? `${IMAGE_URL}/${film.thumb_url}`
+	// 	: `${IMAGE_URL}/${film.poster_url}`
+	// const posterUrl = film.poster_url
+	// 	? `${IMAGE_URL}/${film.poster_url}`
+	// 	: thumbUrl
+
+	const thumbUrl = film.thumb_url ? film.thumb_url : film.poster_url
+	const posterUrl = film.poster_url ? film.poster_url : thumbUrl
 
 	return {
 		title,

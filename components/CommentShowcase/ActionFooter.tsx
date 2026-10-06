@@ -60,7 +60,8 @@ const ActionFooter = ({ comment }: ActionFooterProps) => (
 				group-hover/watch:shadow-[0_0_12px_rgba(168,85,247,0.3)]"
 			>
 				<SiteImage
-					src={`${IMAGE_URL}/${comment.film_thumbnail}`}
+					// src={`${IMAGE_URL}/${comment.film_thumbnail}`}
+					src={comment.film_thumbnail || ""}
 					width={40}
 					height={56}
 					className="w-full h-full object-cover transition-transform duration-700 group-hover/watch:scale-110"

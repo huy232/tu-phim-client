@@ -37,10 +37,13 @@ const nextConfig: NextConfig = {
 				protocol: "https",
 				hostname: "aywlgeduzayczgrfbumy.supabase.co",
 			},
+			{
+				protocol: "https",
+				hostname: "phimimg.com",
+			},
 		],
-		unoptimized: true
+		unoptimized: true,
 	},
-	
 }
 
 export default nextConfig

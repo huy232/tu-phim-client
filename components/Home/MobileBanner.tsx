@@ -12,7 +12,8 @@ const MobileSlide = React.memo(({ film }: { film: FilmInfo }) => {
 
 			{/* IMAGE */}
 			<SiteImage
-				src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${film.poster_url}`}
+				// src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${film.poster_url}`}
+				src={film.poster_url}
 				alt={film.name}
 				fill
 				className="object-cover"

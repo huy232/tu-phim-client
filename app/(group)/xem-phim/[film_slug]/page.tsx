@@ -33,9 +33,11 @@ export async function generateMetadata({
 	const title = `Xem ${film.name}${currentEp} | Tu Phim`
 	const description = `Tu luyện bí tịch ${film.name}${currentEp}. ${film.content?.slice(0, 100)}...`
 
-	const thumbUrl = film.thumb_url
-		? `${IMAGE_URL}/${film.thumb_url}`
-		: `${IMAGE_URL}/${film.poster_url}`
+	// const thumbUrl = film.thumb_url
+	// 	? `${IMAGE_URL}/${film.thumb_url}`
+	// 	: `${IMAGE_URL}/${film.poster_url}`
+
+	const thumbUrl = film.thumb_url ? film.thumb_url : film.poster_url
 
 	return {
 		title,

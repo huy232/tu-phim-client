@@ -30,7 +30,7 @@ const SideAndHighlight = ({ items }: { items: FilmInfo[] }) => {
 				</div>
 
 				{/* RIGHT */}
-				<div className="col-span-9 flex flex-col h-[660px]">
+				<div className="col-span-9 flex flex-col h-full">
 					<Banner film={activeFilm} />
 				</div>
 			</div>
