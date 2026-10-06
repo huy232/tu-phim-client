@@ -76,18 +76,18 @@ export default async function InfoPage({ params }: Props) {
 	const { film_slug } = await params
 	const [
 		mainFilmInfoResponse,
-		actorInfoResponse,
+		// actorInfoResponse,
 		watchedEpisodesResponse,
 		stickersResponse,
 	] = await Promise.all([
 		fetchFilmInfoFromBackend(film_slug),
-		fetchActorInfoFromBackend(film_slug),
+		// fetchActorInfoFromBackend(film_slug),
 		getWatchedEpisodes(film_slug),
 		getStickers(),
 	])
 
 	const film = mainFilmInfoResponse?.data
-	const actors = actorInfoResponse?.data || []
+	const actors = mainFilmInfoResponse?.data?.tmdb?.credits || []
 	const stickers = stickersResponse || []
 	const watchedData = watchedEpisodesResponse.data || {}
 

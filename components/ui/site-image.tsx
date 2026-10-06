@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { ImageProps, StaticImageData } from "next/image"
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import clsx from "clsx"
 
 interface SiteImageProps extends Omit<ImageProps, "src"> {
@@ -15,7 +15,6 @@ const normalizeSrc = (src: string | StaticImageData): string => {
 }
 
 const FALLBACK_IMAGE = "/img/not-found.webp"
-const MAX_RETRIES = 3
 
 const SiteImage = ({
 	className,
@@ -28,46 +27,20 @@ const SiteImage = ({
 	...props
 }: SiteImageProps) => {
 	const normalized = normalizeSrc(src)
+
 	const [isLoaded, setIsLoaded] = useState(false)
-	const [imgSrc, setImgSrc] = useState<string>(normalized)
-	const [retryCount, setRetryCount] = useState(0)
+	const [hasError, setHasError] = useState(false)
 
-	const [prevSrc, setPrevSrc] = useState(normalized)
+	const currentSrc = hasError ? FALLBACK_IMAGE : normalized
 
-	if (normalized !== prevSrc) {
-		setPrevSrc(normalized)
-		setImgSrc(normalized)
-		setRetryCount(0)
-		setIsLoaded(false)
+	const handleLoad = () => {
+		setIsLoaded(true)
 	}
-
-	const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	const handleError = () => {
-		if (retryCount < MAX_RETRIES) {
-			const nextRetry = retryCount + 1
-
-			if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current)
-
-			retryTimeoutRef.current = setTimeout(() => {
-				setRetryCount(nextRetry)
-
-				const separator = normalized.includes("?") ? "&" : "?"
-				setImgSrc(`${normalized}${separator}retry=${nextRetry}`)
-			}, 1000 * nextRetry)
-		} else {
-			if (imgSrc !== FALLBACK_IMAGE) {
-				setImgSrc(FALLBACK_IMAGE)
-				setIsLoaded(true)
-			}
-		}
+		setHasError(true)
+		setIsLoaded(true)
 	}
-
-	useEffect(() => {
-		return () => {
-			if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current)
-		}
-	}, [])
 
 	return (
 		<div
@@ -83,7 +56,7 @@ const SiteImage = ({
 
 			<Image
 				{...props}
-				src={imgSrc}
+				src={currentSrc}
 				alt={alt}
 				fill={fill}
 				width={!fill ? width : undefined}
@@ -99,9 +72,8 @@ const SiteImage = ({
 						: undefined
 				}
 				loading="lazy"
-				onLoad={() => setIsLoaded(true)}
+				onLoad={handleLoad}
 				onError={handleError}
-				key={imgSrc}
 			/>
 		</div>
 	)

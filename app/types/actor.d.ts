@@ -1,6 +1,6 @@
 type Person = {
-	// tmdb_people_id: number
-	id: number
+	tmdb_people_id: number
+	// id: number
 	adult: boolean
 	gender: number
 	gender_name: string
@@ -33,6 +33,30 @@ type Actor = {
 	}
 	peoples: Person[]
 }
+
+type NewActor = {
+	adult: boolean
+	gender: number
+	id: number
+	known_for_department: string
+	name: string
+	original_name: string
+	popularity: number
+	profile_path: string
+	cast_id: number
+	character: string
+	credit_id: string
+	order: number
+	character?: string
+
+	job?: string
+	department_vi?: string
+	gender_vi?: string
+	character_vi?: string
+}
+
+type Cast = NewActor[]
+type Crew = NewActor[]
 
 type Department =
 	| "Acting"

@@ -68,26 +68,28 @@ const InfoHero = ({
 	watchedSlugs,
 }: {
 	film: FilmInfo
-	actors: Actor
+	actors: { cast: NewActor[]; crew: NewActor[] }
 	initialComments: CommentWithProfile[]
 	stickers: Sticker[]
 	watchedSlugs: string[]
 }) => {
-	const peoples = actors?.peoples || []
+	// const peoples = actors?.peoples || []
 
-	const cast = peoples.filter((p) => p.known_for_department === "Acting")
-	const crew = peoples.filter((p) => p.known_for_department !== "Acting")
+	// const cast = peoples.filter((p) => p.known_for_department === "Acting")
+	// const crew = peoples.filter((p) => p.known_for_department !== "Acting")
+	const cast = actors?.cast as Cast
+	const crew = actors?.crew as Crew
 
-	const groupCrew = crew.reduce(
-		(acc, p) => {
-			const key =
-				departmentMap[p.known_for_department] || p.known_for_department
-			if (!acc[key]) acc[key] = []
-			acc[key].push(p)
-			return acc
-		},
-		{} as Record<string, Person[]>,
-	)
+	// const groupCrew = crew.reduce(
+	// 	(acc, p) => {
+	// 		const key =
+	// 			departmentMap[p.known_for_department] || p.known_for_department
+	// 		if (!acc[key]) acc[key] = []
+	// 		acc[key].push(p)
+	// 		return acc
+	// 	},
+	// 	{} as Record<string, Person[]>,
+	// )
 
 	return (
 		<div className="relative w-full bg-[#0a0a0a]">
@@ -145,7 +147,7 @@ const InfoHero = ({
 							/>
 
 							<ExtraTMDBContent tmdbData={film.tmdb} film={film} />
-							<PeopleSection cast={cast} groupCrew={groupCrew} />
+							<PeopleSection cast={cast} groupCrew={crew} />
 
 							<MediaGallery
 								backdrops={film.tmdb?.images?.backdrops || []}

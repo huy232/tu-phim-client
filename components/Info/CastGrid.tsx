@@ -1,7 +1,7 @@
 import { AnonymousUser } from "@/assets/icons"
 import { formatCharacter, TMDB_IMAGE_URL } from "@/constants"
 import SiteImage from "../ui/site-image"
-const CastGrid = ({ cast }: { cast: Person[] }) => {
+const CastGrid = ({ cast }: { cast: NewActor[] }) => {
 	return (
 		<div className="bg-white/5 border border-white/10 rounded-xl p-4">
 			<p className="text-xs text-gray-400 mb-3 uppercase tracking-widest">
@@ -11,9 +11,9 @@ const CastGrid = ({ cast }: { cast: Person[] }) => {
 			<div className="max-h-64 overflow-y-auto pr-1 custom-scrollbar scroll-smooth">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 					{cast.length > 0 ? (
-						cast.map((p) => (
+						cast.map((p, idx) => (
 							<div
-								key={p.id}
+								key={idx}
 								className="flex items-center gap-2 bg-white/5 p-2 rounded-lg min-w-0"
 							>
 								{p.profile_path ? (

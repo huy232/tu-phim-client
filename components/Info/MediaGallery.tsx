@@ -162,7 +162,7 @@ const MediaGallery = ({
 							onClick={(e) => e.stopPropagation()}
 						>
 							<SiteImage
-								src={`${TMDB_IMAGE_URL}/original${allMedia[selectedIndex].file_path}`}
+								src={allMedia[selectedIndex].file_path}
 								alt="media"
 								width={allMedia[selectedIndex].width}
 								height={allMedia[selectedIndex].height}

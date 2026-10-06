@@ -7,8 +7,8 @@ const PeopleSection = ({
 	cast,
 	groupCrew,
 }: {
-	cast: Person[]
-	groupCrew: Record<string, Person[]>
+	cast: NewActor[]
+	groupCrew: NewActor[]
 }) => {
 	return (
 		<motion.div
