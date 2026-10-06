@@ -1,5 +1,6 @@
 type Person = {
-	tmdb_people_id: number
+	// tmdb_people_id: number
+	id: number
 	adult: boolean
 	gender: number
 	gender_name: string

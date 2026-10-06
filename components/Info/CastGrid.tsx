@@ -13,7 +13,7 @@ const CastGrid = ({ cast }: { cast: Person[] }) => {
 					{cast.length > 0 ? (
 						cast.map((p) => (
 							<div
-								key={p.tmdb_people_id}
+								key={p.id}
 								className="flex items-center gap-2 bg-white/5 p-2 rounded-lg min-w-0"
 							>
 								{p.profile_path ? (
