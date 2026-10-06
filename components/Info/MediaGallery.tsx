@@ -118,7 +118,7 @@ const MediaGallery = ({
 								onClick={() => setSelectedIndex(idx)}
 							>
 								<WebImage
-									image_src={`${TMDB_IMAGE_URL}/w500${img.file_path}`}
+									image_src={img.file_path}
 									name={img.file_path}
 									height={img.height}
 									width={img.width}

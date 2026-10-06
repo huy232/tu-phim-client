@@ -18,7 +18,7 @@ const CastGrid = ({ cast }: { cast: Person[] }) => {
 							>
 								{p.profile_path ? (
 									<SiteImage
-										src={`${TMDB_IMAGE_URL}/w185${p.profile_path}`}
+										src={p.profile_path}
 										className="w-10 h-10 rounded-full object-cover shrink-0"
 										alt={p.name}
 										width={40}
