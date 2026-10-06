@@ -15,8 +15,8 @@ interface CommentWithProfile {
 	film_origin_name: string | null
 	film_slug: string
 	film_type: string | null
-	film_poster: string | null
-	film_thumbnail: string | null
+	film_poster: string
+	film_thumbnail: string
 	film_year: number | null
 	film_category: { name: string; slug: string; id: string }[]
 	film_country: { name: string; slug: string; id: string }[]

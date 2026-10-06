@@ -48,7 +48,8 @@ const CommentCardMobile = ({
 					className="w-12 h-16 rounded-md overflow-hidden border border-white/10 shrink-0"
 				>
 					<SiteImage
-						src={`${IMAGE_URL}/${comment.film_thumbnail}`}
+						// src={`${IMAGE_URL}/${comment.film_thumbnail}`}
+						src={comment.film_thumbnail}
 						width={48}
 						height={64}
 						className="w-full h-full object-cover"

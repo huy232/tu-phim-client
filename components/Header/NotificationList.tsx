@@ -4,9 +4,18 @@ import { useEffect, useRef, useState, useMemo } from "react"
 import { Bell } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import clsx from "clsx"
-import { useNotifications } from "@/hooks/useNotifications"
+// import { useNotifications } from "@/hooks/useNotifications"
 import Image from "next/image"
 import { useIsMobile } from "@/hooks/useMediaQuery"
+
+type NotificationData = {
+	mode?: "desktop" | "mobile"
+	notifications: AppNotification[]
+	loadMore: () => Promise<void>
+	hasMore: boolean
+	loading: boolean
+	markAllAsRead: () => Promise<void>
+}
 
 // ================= FORMAT =================
 const formatActors = (n: AppNotification) => {
@@ -84,14 +93,17 @@ const NotificationItem = ({ n }: { n: AppNotification }) => {
 // ================= MAIN =================
 export default function NotificationList({
 	mode = "desktop",
-}: {
-	mode?: "desktop" | "mobile"
-}) {
+	notifications,
+	loadMore,
+	hasMore,
+	loading,
+	markAllAsRead,
+}: NotificationData) {
 	const isMobile = useIsMobile()
 	const isMobileMode = mode === "mobile" || isMobile
 
-	const { notifications, loadMore, hasMore, loading, markAllAsRead } =
-		useNotifications()
+	// const { notifications, loadMore, hasMore, loading, markAllAsRead } =
+	// 	useNotifications()
 
 	const fetchingRef = useRef(false)
 	const [open, setOpen] = useState(false)

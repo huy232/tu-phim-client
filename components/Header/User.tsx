@@ -11,12 +11,14 @@ import Link from "next/link"
 import { calculateLevelProgress } from "@/utilities"
 import UserAvatar from "../UserAvatar"
 import NotificationList from "./NotificationList"
+import { useNotifications } from "@/hooks/useNotifications"
 
 interface Props {
 	mode?: "desktop" | "mobile"
+	notifications: ReturnType<typeof useNotifications>
 }
 
-const User = ({ mode = "desktop" }: Props) => {
+const User = ({ mode = "desktop", notifications }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const { user, profile, loading, logout, allLevels } = useAuth()
 	const isMobile = useIsMobile()
@@ -102,7 +104,14 @@ const User = ({ mode = "desktop" }: Props) => {
 
 				{/* MENU */}
 				<div className="flex flex-col gap-1">
-					<NotificationList mode="mobile" />
+					<NotificationList
+						mode="mobile"
+						notifications={notifications.notifications}
+						loadMore={notifications.loadMore}
+						hasMore={notifications.hasMore}
+						loading={notifications.loading}
+						markAllAsRead={notifications.markAllAsRead}
+					/>
 
 					{menuItems.map((item, idx) => {
 						const content = (
@@ -136,7 +145,14 @@ const User = ({ mode = "desktop" }: Props) => {
 	/* ================= DESKTOP MODE ================= */
 	return (
 		<div className="flex items-center gap-2">
-			<NotificationList />
+			<NotificationList
+				notifications={notifications.notifications}
+				loadMore={notifications.loadMore}
+				hasMore={notifications.hasMore}
+				loading={notifications.loading}
+				markAllAsRead={notifications.markAllAsRead}
+			/>
+
 			<div
 				className="relative py-1 mx-2"
 				onMouseEnter={() => !isMobile && setIsOpen(true)}

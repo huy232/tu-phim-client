@@ -70,7 +70,7 @@ export default function UserComments({ userId }: { userId: string }) {
 						<div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
 							<div className="absolute -right-10 -top-10 w-[70%] h-[140%] opacity-[0.15] blur-sm group-hover:opacity-25 duration-700 transition-all group-hover:scale-110">
 								<SiteImage
-									src={comment.film_poster || ""}
+									src={comment.film_poster}
 									alt=""
 									width={600}
 									height={900}
@@ -85,7 +85,7 @@ export default function UserComments({ userId }: { userId: string }) {
 							<div className="relative shrink-0 flex justify-center md:block">
 								<div className="relative w-32 h-48 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,0,0,0.5)] border border-white/10 group-hover:scale-105 transition-transform duration-500">
 									<SiteImage
-										src={comment.film_thumbnail || ""}
+										src={comment.film_thumbnail}
 										alt={comment.film_title}
 										width={128}
 										height={192}

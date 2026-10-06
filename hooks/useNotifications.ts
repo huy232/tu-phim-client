@@ -7,7 +7,7 @@ const LIMIT = 10
 
 export const useNotifications = () => {
 	const loadingRef = useRef(false)
-	const mounted = useRef(false)
+	const mountedRef = useRef(false)
 
 	const [notifications, setNotifications] = useState<AppNotification[]>([])
 	const [page, setPage] = useState(0)
@@ -22,121 +22,183 @@ export const useNotifications = () => {
 			loadingRef.current = true
 			setLoading(true)
 
-			const from = pageParam * LIMIT
-			const to = from + LIMIT - 1
+			try {
+				const from = pageParam * LIMIT
+				const to = from + LIMIT - 1
 
-			const { data, error } = await supabase
-				.from("notification_with_actors")
-				.select("*")
-				.order("created_at", { ascending: false })
-				.range(from, to)
+				const { data, error } = await supabase
+					.from("notification_with_actors")
+					.select("*")
+					.order("created_at", { ascending: false })
+					.range(from, to)
 
-			if (error) {
-				console.error("Fetch notifications error:", error)
-				loadingRef.current = false
-				setLoading(false)
-				return
-			}
+				if (error) {
+					console.error("Fetch notifications error:", error)
+					return
+				}
 
-			if (!mounted.current) return
+				// Component đã unmount
+				if (!mountedRef.current) return
 
-			if (data) {
+				if (!data) return
+
 				setNotifications((prev) => {
-					// 👉 reset khi realtime hoặc load lần đầu
-					if (reset) return data
+					if (reset) {
+						return data as AppNotification[]
+					}
 
-					const map = new Map(prev.map((i) => [i.id, i]))
-					data.forEach((item) => map.set(item.id, item))
-					return Array.from(map.values())
+					const map = new Map(prev.map((item) => [item.id, item]))
+
+					data.forEach((item) => {
+						map.set(item.id, item as AppNotification)
+					})
+
+					return Array.from(map.values()).sort(
+						(a, b) =>
+							new Date(b.created_at).getTime() -
+							new Date(a.created_at).getTime(),
+					)
 				})
 
-				// 👉 chỉ set hasMore khi KHÔNG phải reset
-				if (!reset) {
-					if (data.length < LIMIT) setHasMore(false)
-				} else {
-					setHasMore(true) // reset lại
+				if (data.length < LIMIT) {
+					setHasMore(false)
+				} else if (reset) {
+					setHasMore(true)
+				}
+			} finally {
+				loadingRef.current = false
+
+				if (mountedRef.current) {
+					setLoading(false)
 				}
 			}
-
-			loadingRef.current = false
-			setLoading(false)
 		},
 		[],
 	)
 
 	// ================= INIT =================
 	useEffect(() => {
-		mounted.current = true
+		mountedRef.current = true
 
 		const init = async () => {
 			await fetchNotifications(0, true)
-			setPage(1)
+
+			if (mountedRef.current) {
+				setPage(1)
+			}
 		}
 
 		init()
 
 		return () => {
-			mounted.current = false
+			mountedRef.current = false
 		}
 	}, [fetchNotifications])
 
 	// ================= LOAD MORE =================
 	const loadMore = useCallback(async () => {
-		if (loading || !hasMore) return
+		if (loadingRef.current || !hasMore) return
 
-		await fetchNotifications(page)
-		setPage((p) => p + 1)
-	}, [fetchNotifications, page, loading, hasMore])
+		const currentPage = page
 
-	// ================= REALTIME (FIX CHUẨN) =================
+		await fetchNotifications(currentPage)
+
+		if (mountedRef.current) {
+			setPage((p) => p + 1)
+		}
+	}, [fetchNotifications, page, hasMore])
+
+	// ================= REALTIME =================
+
 	useEffect(() => {
-		const channel = supabase
-			.channel("notifications-realtime")
-			.on(
-				"postgres_changes",
-				{
-					event: "INSERT",
-					schema: "public",
-					table: "notifications",
-				},
-				async (payload) => {
-					const newItem = payload.new as AppNotification
+		let cancelled = false
 
-					// 👉 optimistic update (mượt hơn fetch lại)
-					setNotifications((prev) => {
-						// tránh duplicate
-						if (prev.some((n) => n.id === newItem.id)) return prev
-						return [newItem, ...prev]
-					})
+		const channelName = `notifications-realtime-${crypto.randomUUID()}`
 
-					// 👉 optional: sync lại cho chắc (background)
-					await fetchNotifications(0, true)
+		const channel = supabase.channel(channelName).on(
+			"postgres_changes",
+			{
+				event: "INSERT",
+				schema: "public",
+				table: "notifications",
+			},
+			async () => {
+				if (cancelled || !mountedRef.current) return
+
+				console.log("[Notifications] New notification")
+
+				await fetchNotifications(0, true)
+
+				if (!cancelled && mountedRef.current) {
 					setPage(1)
-				},
-			)
-			.subscribe()
+				}
+			},
+		)
+
+		channel.subscribe((status, error) => {
+			if (cancelled) return
+
+			switch (status) {
+				case "SUBSCRIBED":
+					console.log("[Notifications] Realtime subscribed:", channelName)
+					break
+
+				case "CHANNEL_ERROR":
+					console.error("[Notifications] Realtime error:", error)
+					break
+
+				case "TIMED_OUT":
+					console.error("[Notifications] Realtime timeout:", error)
+					break
+
+				case "CLOSED":
+					console.log("[Notifications] Realtime closed:", channelName)
+					break
+			}
+		})
 
 		return () => {
-			supabase.removeChannel(channel)
+			cancelled = true
+
+			void supabase.removeChannel(channel)
 		}
 	}, [fetchNotifications])
 
-	// ================= MARK =================
+	// ================= MARK AS READ =================
 	const markAsRead = async (id: string) => {
-		await supabase.from("notifications").update({ is_read: true }).eq("id", id)
+		const { error } = await supabase
+			.from("notifications")
+			.update({ is_read: true })
+			.eq("id", id)
+
+		if (error) {
+			console.error("Mark notification as read error:", error)
+			return
+		}
 
 		setNotifications((prev) =>
 			prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
 		)
 	}
 
+	// ================= MARK ALL AS READ =================
 	const markAllAsRead = async () => {
-		await supabase
+		const { error } = await supabase
 			.from("notifications")
 			.update({ is_read: true })
 			.eq("is_read", false)
 
-		setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })))
+		if (error) {
+			console.error("Mark all notifications as read error:", error)
+			return
+		}
+
+		setNotifications((prev) =>
+			prev.map((n) => ({
+				...n,
+				is_read: true,
+			})),
+		)
 	}
 
 	return {

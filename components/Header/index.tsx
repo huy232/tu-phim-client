@@ -10,6 +10,7 @@ import clsx from "clsx"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { useSidebar } from "@/context/SidebarContext"
+import { useNotifications } from "@/hooks/useNotifications"
 
 interface HeaderProps {
 	initialData: {
@@ -22,6 +23,7 @@ const Header = ({ initialData }: HeaderProps) => {
 	const [activeMenu, setActiveMenu] = useState<string | null>(null)
 	const [isScrolled, setIsScrolled] = useState(false)
 	const { isOpen: isMobileMenuOpen, toggle, close } = useSidebar()
+	const notifications = useNotifications()
 
 	const openMenu = (menu: string) => setActiveMenu(menu)
 	const closeMenu = (menu: string) => {
@@ -136,7 +138,7 @@ const Header = ({ initialData }: HeaderProps) => {
 				</ul>
 
 				<div className="hidden lg:flex items-center gap-2">
-					<User mode="desktop" />
+					<User mode="desktop" notifications={notifications} />
 				</div>
 			</div>
 
@@ -161,7 +163,7 @@ const Header = ({ initialData }: HeaderProps) => {
 							className="fixed top-0 left-0 h-full w-full max-w-sm bg-[#050505] z-50 shadow-2xl overflow-y-auto overscroll-contain"
 						>
 							<div className="p-6 pt-24">
-								<User mode="mobile" />
+								<User mode="mobile" notifications={notifications} />
 
 								<div className="mt-6 space-y-6">
 									<FilmSearch />
