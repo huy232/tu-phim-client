@@ -61,7 +61,7 @@ const ActionFooter = ({ comment }: ActionFooterProps) => (
 			>
 				<SiteImage
 					// src={`${IMAGE_URL}/${comment.film_thumbnail}`}
-					src={comment.film_thumbnail || ""}
+					src={comment.film_thumbnail}
 					width={40}
 					height={56}
 					className="w-full h-full object-cover transition-transform duration-700 group-hover/watch:scale-110"

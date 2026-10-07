@@ -58,7 +58,7 @@ const DesktopBanner = ({ films }: { films: FilmInfo[] }) => {
 								title={film.name}
 							>
 								<FilmImage
-									image_slug={film.thumb_url}
+									image_slug={film.poster_url}
 									width={320}
 									height={480}
 									name={film.name}

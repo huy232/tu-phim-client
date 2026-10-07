@@ -22,7 +22,8 @@ const FilmHeader = ({ comment, isMobile }: FilmHeaderProps) => {
 		>
 			<div className="absolute inset-0 z-0 transition-transform duration-1000 group-hover:scale-110">
 				<SiteImage
-					src={`${IMAGE_URL}/${comment.film_poster || comment.film_thumbnail}`}
+					// src={`${IMAGE_URL}/${comment.film_poster || comment.film_thumbnail}`}
+					src={comment.film_poster || comment.film_thumbnail}
 					alt={comment.film_title}
 					width={500}
 					height={400}

@@ -21,7 +21,7 @@ export default function FilmCard({ fav }: { fav: FavoriteFilmItem }) {
 				<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent z-10" />
 
 				<SiteImage
-					src={`${IMAGE_URL}/${film.thumb_url || film.poster_url || ""}`}
+					src={film.poster_url || film.thumb_url }
 					alt={film.name}
 					width={300}
 					height={450}

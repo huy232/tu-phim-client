@@ -48,7 +48,7 @@ export default function FilmCarousel({
 							<div className="relative aspect-video w-full bg-white/5 rounded-xl overflow-hidden border border-white/10 group-hover:border-purple-500 transition-all">
 								<FilmImage
 									name={film.name}
-									image_slug={film.poster_url || film.thumb_url}
+									image_slug={film.thumb_url || film.poster_url }
 									width={400}
 									height={225}
 									className="object-cover w-full h-full transition-transform duration-500"
