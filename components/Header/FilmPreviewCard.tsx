@@ -26,7 +26,7 @@ const FilmPreviewCard = ({ film }: { film: Film }) => {
 			<div className="relative aspect-video w-full overflow-hidden bg-white/5">
 				<FilmImage
 					key={film._id}
-					image_slug={film.poster_url || film.thumb_url}
+					image_slug={film.thumb_url || film.poster_url}
 					name={film.name}
 					width={400}
 					height={225}

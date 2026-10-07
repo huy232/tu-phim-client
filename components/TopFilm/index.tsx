@@ -65,7 +65,7 @@ export default function TopFilm({ items }: TopTenListProps) {
 									<div className="relative z-10 w-full max-w-[220px] aspect-[2/3] rounded-lg overflow-hidden border border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-4 group-hover:scale-105">
 										<FilmImage
 											name={film.name}
-											image_slug={film.thumb_url}
+											image_slug={film.poster_url}
 											className="object-cover w-full h-full"
 											width={220}
 											height={330}

@@ -55,7 +55,7 @@ const TopCard = ({
 					<div className="relative z-10 aspect-video w-full rounded-xl overflow-hidden border border-white/10 group-hover:border-purple-500/50 transition-all duration-500 shadow-2xl bg-neutral-900">
 						<FilmImage
 							name={filmCard.name}
-							image_slug={filmCard.poster_url || filmCard.thumb_url}
+							image_slug={filmCard.thumb_url || filmCard.poster_url}
 							width={400}
 							height={225}
 							className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"

@@ -38,10 +38,10 @@ const SideInfo = ({ film, isDimmed }: SideInfoProps) => {
 		>
 			{/* ===== HEADER ===== */}
 			<div className="relative w-full h-40 sm:h-48 bg-neutral-900">
-				{film.poster_url && (
+				{film.thumb_url && (
 					<div className="absolute inset-0">
 						<SiteImage
-							src={film.poster_url}
+							src={film.thumb_url}
 							alt=""
 							className="w-full h-full object-cover blur-xs brightness-50 scale-105"
 							width={400}
@@ -54,10 +54,10 @@ const SideInfo = ({ film, isDimmed }: SideInfoProps) => {
 
 				<div className="absolute bottom-3 left-3 right-3 flex items-end gap-2">
 					{/* POSTER */}
-					{film.thumb_url && (
+					{film.poster_url && (
 						<div className="w-16 sm:w-20 aspect-2/3 rounded-md overflow-hidden border border-white/20 shrink-0">
 							<SiteImage
-								src={film.thumb_url}
+								src={film.poster_url}
 								alt=""
 								width={120}
 								height={180}

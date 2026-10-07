@@ -47,7 +47,7 @@ export default function ContinueWatching({
 						{/* POSTER SECTION */}
 						<div className="relative aspect-video rounded-2xl overflow-hidden border border-white/5 bg-zinc-900 shadow-xl">
 							<SiteImage
-								src={`${IMAGE_URL}/${item.film.poster_url || item.film.thumb_url}`}
+								src={item.film.thumb_url || item.film.poster_url}
 								alt={item.film.name}
 								className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100 w-full h-full"
 								height={450}

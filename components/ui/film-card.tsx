@@ -26,7 +26,7 @@ const FilmCard = ({
 						<div className="relative aspect-2/3 w-full bg-white/5 rounded-xl border border-white/10 group-hover:border-purple-500 transition-all overflow-hidden duration-300	">
 							<FilmImage
 								name={film.name}
-								image_slug={film.thumb_url || film.poster_url}
+								image_slug={film.poster_url || film.thumb_url}
 								width={140}
 								height={210}
 								className="object-cover transition-transform duration-500 h-full w-full"

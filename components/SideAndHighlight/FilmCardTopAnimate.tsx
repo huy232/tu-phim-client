@@ -39,8 +39,8 @@ const FilmCardTopAnimate = ({
 					name={film.name}
 					image_slug={
 						layout === "row"
-							? film.thumb_url || film.poster_url
-							: film.poster_url || film.thumb_url
+							? film.poster_url || film.thumb_url
+							: film.thumb_url || film.poster_url
 					}
 					className="object-cover h-full w-full transition-transform duration-500 group-hover:scale-110"
 					containerClassName="w-full h-full"

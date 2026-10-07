@@ -113,7 +113,7 @@ const BannerHighlight = ({
 				style={{
 					backgroundImage: `linear-gradient(to left, #000 0%, #000 5%, transparent 25%, transparent 75%, #000 95%, #000 100%), 
 					linear-gradient(to top, #000 0%, transparent 40%), 
-					url('${film.poster_url}')`,
+					url('${film.thumb_url}')`,
 				}}
 			/>
 

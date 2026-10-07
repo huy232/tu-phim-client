@@ -93,7 +93,7 @@ const InfoHero = ({
 
 	return (
 		<div className="relative w-full bg-[#0a0a0a]">
-			<Banner poster_url={film.poster_url} />
+			<Banner poster_url={film.thumb_url} />
 
 			<div className="relative z-20 px-2 md:px-4 lg:px-6 -mt-24 md:-mt-32 lg:-mt-40 mb-20">
 				<div className="mx-auto w-full">

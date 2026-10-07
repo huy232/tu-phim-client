@@ -202,7 +202,7 @@ const PortalCard = ({
 			>
 				<div className="relative aspect-video w-full bg-neutral-900 overflow-hidden">
 					<FilmImage
-						image_slug={film.poster_url || film.thumb_url}
+						image_slug={film.thumb_url || film.poster_url}
 						name={film.name}
 						className="object-cover w-full h-full"
 						containerClassName="h-full w-full"

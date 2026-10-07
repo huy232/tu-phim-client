@@ -21,7 +21,7 @@ const LeftSide = ({
 			<div className="relative max-w-[320px] mx-auto lg:max-w-none">
 				<div className="aspect-2/3 w-full rounded-2xl overflow-hidden shadow-xl border border-white/5">
 					<FilmImage
-						image_slug={film.thumb_url || film.poster_url}
+						image_slug={film.poster_url || film.thumb_url}
 						name={film.name}
 						className="object-cover w-full h-full"
 						height={450}
