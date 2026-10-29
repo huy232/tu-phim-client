@@ -10,7 +10,7 @@ const CastGrid = ({ cast }: { cast: NewActor[] }) => {
 
 			<div className="max-h-64 overflow-y-auto pr-1 custom-scrollbar scroll-smooth">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-					{cast.length > 0 ? (
+					{cast ? (
 						cast.map((p, idx) => (
 							<div
 								key={idx}

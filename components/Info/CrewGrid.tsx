@@ -4,7 +4,7 @@ import { AnonymousUser } from "@/assets/icons"
 import SiteImage from "../ui/site-image"
 
 const CrewGrid = ({ groupCrew }: { groupCrew: NewActor[] }) => {
-	const hasData = groupCrew.length > 0
+	const hasData = groupCrew && groupCrew.length > 0
 
 	return (
 		<div className="bg-white/5 border border-white/10 rounded-xl p-4">
